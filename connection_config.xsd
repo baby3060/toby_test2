@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="config">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="className" type="xs:string" minOccurs="0" />
+                <xs:element name="host" type="xs:string" minOccurs="0" />
+                <xs:element name="databaseName" type="xs:string" minOccurs="0" />
+                <xs:element name="userName" type="xs:string" minOccurs="0" />
+                <xs:element name="userPass" type="xs:string" minOccurs="0" />
+            </xs:sequence> 
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -10,8 +10,8 @@ public class ConnectionBeanFactory implements FactoryBean<ConnectionBean> {
     public ConnectionBean getObject() {
         ConnectionBean connBean = new ConnectionBean();
 
-        XmlConvertNoOxm converter = new XmlConvertNoOxm();
-        converter.setConfigFile("mysql_conn.xml");
+        Converter converter = new JaxbConverter();
+        converter.setConfigFile("config.xml");
         
         try {
             connBean = converter.makeConnBean();
