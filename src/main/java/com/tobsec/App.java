@@ -11,7 +11,8 @@ public class App
     public static void main( String[] args ) {
         ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
 
-        ConnectionBean connBean = ctx.getBean("connBean", ConnectionBean.class);
+        // ConnectionBeanFactory에서 생산된 건 ConnectionBean
+        ConnectionBean connBean = ctx.getBean("connBeanFactory", ConnectionBean.class);
 
         System.out.println(connBean.getClassName());
     }

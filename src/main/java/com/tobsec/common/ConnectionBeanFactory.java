@@ -1,5 +1,6 @@
 package com.tobsec.common;
 
+import com.tobsec.common.convert.*;
 import org.springframework.beans.factory.FactoryBean;
 
 /**
@@ -9,8 +10,14 @@ public class ConnectionBeanFactory implements FactoryBean<ConnectionBean> {
     public ConnectionBean getObject() {
         ConnectionBean connBean = new ConnectionBean();
 
-        connBean.setClassName("test");
+        XmlConvertNoOxm converter = new XmlConvertNoOxm();
+        converter.setConfigFile("mysql_conn.xml");
         
+        try {
+            connBean = converter.makeConnBean();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         return connBean;
     }
 

@@ -16,5 +16,6 @@
 >> Todo List
 - [ ] Connection 연결 시 필요한 정보를 XML에 저장하여, Bean으로 작성하기.
 - [ ] Connection 연결 시 필요한 정보에 작성할 XML을 XJC 사용하여 형식 만들기. 
+>>> 참조 URL : https://thoughts-on-java.org/generate-your-jaxb-classes-in-second/
 - [ ] ConnectionBean의 설정 정보 Jaxb, Castor 사용해보기
 - [ ] ConnectionBean의 설정 정보를 XML 뿐만 아니라, json에서 읽어보기
