@@ -65,6 +65,15 @@
         <artifactId>javax.annotation</artifactId>
         <version>3.1.1</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.codehaus.castor/castor-xml -->
+    <dependency>
+        <groupId>org.codehaus.castor</groupId>
+        <artifactId>castor-xml</artifactId>
+        <version>1.4.1</version>
+    </dependency>
+
+
   </dependencies>
 
   <build>

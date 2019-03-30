@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<mapping>
+    <class name="com.tobsec.common.convert.jaxb.Config">
+        <map-to xml="config" />
+
+        <field name="className" type="string" >
+            <bind-xml name="className" node="element" />
+        </field>
+
+        <field name="host" type="string" >
+            <bind-xml name="host" node="element" />
+        </field>
+
+        <field name="databaseName" type="string" >
+            <bind-xml name="databaseName" node="element" />
+        </field>
+
+        <field name="userName" type="string" >
+            <bind-xml name="userName" node="element" />
+        </field>
+
+        <field name="userPass" type="string" >
+            <bind-xml name="userPass" node="element" />
+        </field>
+    </class>
+ 
+</mapping>
