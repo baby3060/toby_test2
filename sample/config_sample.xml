@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>   
+    
+    <className>클래스 이름</className>
+    <host>데이터베이스 접속 정보</host>
+    <databaseName>데이터베이스 이름</databaseName>
+    <userName>유저 아이디</userName>
+    <userPass>유저 비번</userPass>
+
+</config>    
