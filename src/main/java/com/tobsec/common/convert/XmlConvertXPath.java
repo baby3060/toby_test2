@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
  * XPATH 이용해서 변환
  */
 public class XmlConvertXPath implements Converter {
-    private String DEFAULT_CONFIG_FILE = "mysql_conn.xml";
+    private String DEFAULT_CONFIG_FILE = "mysql_config.xml";
     private String configFile = DEFAULT_CONFIG_FILE;
 
     public void setConfigFile( String configFile ) {
