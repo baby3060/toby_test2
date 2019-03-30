@@ -3,6 +3,8 @@ package com.tobsec;
 import com.tobsec.context.*;
 import com.tobsec.common.*;
 
+import com.tobsec.common.convert.*;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -12,8 +14,10 @@ public class App
         ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
 
         // ConnectionBeanFactory에서 생산된 건 ConnectionBean
-        ConnectionBean connBean = ctx.getBean("connBeanFactory", ConnectionBean.class);
+        ConnectionBeanFactory connBeanFactory = ctx.getBean("&connBeanFactory", ConnectionBeanFactory.class);
 
-        System.out.println(connBean.getClassName());
+        ConnectionBean connBean = connBeanFactory.getObject();
+
+        System.out.println("ConnectionBean" + connBean.getClassName());
     }
 }
