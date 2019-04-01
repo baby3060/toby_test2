@@ -8,16 +8,16 @@ import com.tobsec.common.convert.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class App 
-{
+import javax.sql.DataSource;
+
+import java.sql.Connection;
+
+public class App {
+
     public static void main( String[] args ) {
         ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
 
-        // ConnectionBeanFactory에서 생산된 건 ConnectionBean
-        ConnectionBeanFactory connBeanFactory = ctx.getBean("&connBeanFactory", ConnectionBeanFactory.class);
-        connBeanFactory.setConverter(new JsonConvert());
-
-        ConnectionBean connBean = connBeanFactory.getObject();
+        ConnectionBean connBean = ctx.getBean("connBeanFactory", ConnectionBean.class);
 
     }
 }

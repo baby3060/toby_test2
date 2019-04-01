@@ -7,7 +7,7 @@ import org.springframework.beans.factory.FactoryBean;
  * ConnectionBean을 생성하는 팩토리
  */
 public class ConnectionBeanFactory implements FactoryBean<ConnectionBean> {
-    private Converter converter = new JaxbConverter();
+    private Converter converter = new JsonConvert();
 
     public void setConverter(Converter converter) {
         this.converter = converter;
