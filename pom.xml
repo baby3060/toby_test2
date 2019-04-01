@@ -113,6 +113,7 @@
         <configuration>
           <executable>maven</executable>
           <mainClass>com.tobsec.App</mainClass>
+          <cleanupDaemonThreads>false</cleanupDaemonThreads>
         </configuration>
       </plugin>
     </plugins>
