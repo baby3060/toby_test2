@@ -19,5 +19,10 @@ public class App {
 
         ConnectionBean connBean = ctx.getBean("connBeanFactory", ConnectionBean.class);
 
+        DataSource dataSource = ctx.getBean("dataSource", DataSource.class);
+
+        System.out.println(dataSource == null);
+
+        
     }
 }

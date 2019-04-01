@@ -19,10 +19,10 @@
     <bean id="dataSource" 
         class="org.apache.commons.dbcp2.BasicDataSource"
         destroy-method="close"
-        p:url="jdbc:mysql://localhost:3307/toby1"
-        p:driverClassName="com.mysql.cj.jdbc.Driver"
-        p:username="toby1"
-        p:password="toby1db"
+        p:url="#{connBeanFactory.getConnStr()}"
+        p:driverClassName="#{connBeanFactory.getClassName()}"
+        p:username="#{connBeanFactory.getUserName()}"
+        p:password="#{connBeanFactory.getUserPass()}"
         p:maxIdle="10"
     />
         
