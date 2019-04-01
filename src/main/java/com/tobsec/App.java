@@ -15,8 +15,9 @@ public class App
 
         // ConnectionBeanFactory에서 생산된 건 ConnectionBean
         ConnectionBeanFactory connBeanFactory = ctx.getBean("&connBeanFactory", ConnectionBeanFactory.class);
-        connBeanFactory.setConverter(new CastorConvert());
+        connBeanFactory.setConverter(new JsonConvert());
 
         ConnectionBean connBean = connBeanFactory.getObject();
+
     }
 }
