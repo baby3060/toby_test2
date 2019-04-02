@@ -19,3 +19,20 @@
 >>> 참조 URL : https://thoughts-on-java.org/generate-your-jaxb-classes-in-second/
 - [X] ConnectionBean의 설정 정보 Jaxb, Castor 사용해보기
 - [X] ConnectionBean의 설정 정보를 XML 뿐만 아니라, json에서 읽어보기
+
+2. UserDao, ConfirmDao 생성(DataSource 넘겨받는)
+>> Todo List
+- [X] UserDao 인터페이스로 생성
+- [X] UserDao JDBC 용 구현 클래스 생성
+- [ ] Jdbc 동적 조회 쿼리 생성(whereOption)
+- [ ] ConfirmDao 인터페이스로 생성(Procedure 호출 구현) 및 JDBC 용 구현 클래스 생성
+- [ ] 조회용 RowMapper를 제공하는 클래스 구현(User, Confirm 둘 다 사용) 및 사용.
+- [ ] MyBatis로 구현(UserDao, ConfirmDao 둘 다)
+
+3. 해당 Dao 사용하는 Service 객체 생성
+>> Todo List
+- [ ] UserService 인터페이스로 생성
+- [ ] UserService 구현하는 클래스 생성
+- [ ] 트랜잭션 어드바이저 등록(존재할 경우)
+- [ ] Confirm도 동일
+- [ ] Sql 가져올 방법 모색(Json : GENSON, XML : JAXB, CASTOR, 내장 DB : H2)
