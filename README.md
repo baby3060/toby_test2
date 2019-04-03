@@ -27,6 +27,8 @@
 >>> 동적 SQL 생성 시 파라미터를 DAO 메소드로 가져오는 것도 생각하였으나, 그것은 Dao "자체의 역할"과는 전혀 별개의 것 같아서 서비스 단에서 검색문을 만드는 것으로 결론
 - [X] Jdbc 동적 조회 쿼리 생성(whereOption)
 - [X] ConfirmDao 인터페이스로 생성(Procedure 호출 구현) 및 JDBC 용 구현 클래스 생성
+>>> MariaDB에서 Procedure 생성 시 BEGIN과 Declare 문 사이에 다른게 하나도 없어야 한다.
+>>> DONE을 이용하여 FETCH 관련 NO DATA ~ 해결
 - [ ] 조회용 RowMapper를 제공하는 클래스 구현(User, Confirm 둘 다 사용) 및 사용.
 - [ ] MyBatis로 구현(UserDao, ConfirmDao 둘 다)
 
