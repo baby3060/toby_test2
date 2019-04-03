@@ -98,7 +98,7 @@ public class UserDaoJdbc implements UserDao {
     }
 
     public int countUserCondition(String option) {
-        throw new UnsupportedOperationException("아직 구현된 기능이 아닙니다.");
+        return this.jdbcTemplate.queryForObject("Select Count(*) As wherecnt From USER Where 1 = 1 " + option, nullParam(), Integer.class);
     }
 
     public User getUser(String id) {
@@ -134,8 +134,6 @@ public class UserDaoJdbc implements UserDao {
      * 조건에 따른 조회 쿼리
      */
     public List<User> selectUserCondition(String option) {
-
-        // return this.jdbcTemplate.query("Select * From USER", nullParam(), this.userMapper);
-        throw new UnsupportedOperationException("아직 구현된 기능이 아닙니다.");
+        return this.jdbcTemplate.query("Select * From USER Where 1 = 1" + option, nullParam(), this.userMapper);
     }
 }

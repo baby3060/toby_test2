@@ -8,9 +8,9 @@ import lombok.*;
 // equals와 hashCode 구현 시 level, login, recommend 필드 제외하고 구현
 @EqualsAndHashCode(exclude = {"level", "login", "recommend"})
 public class User {
-    @NonNull private String id;
-    @NonNull private String name;
-    @NonNull private String password;
+    private String id;
+    private String name;
+    private String password;
     private Level level;
     private int login;
     private int recommend;

@@ -17,12 +17,6 @@ public class App {
     public static void main( String[] args ) {
         ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
 
-        ConnectionBean connBean = ctx.getBean("connBeanFactory", ConnectionBean.class);
-
-        DataSource dataSource = ctx.getBean("dataSource", DataSource.class);
-
-        System.out.println(dataSource == null);
-
-        
+        ConnectionBean connBean = ctx.getBean("connBeanFactory", ConnectionBean.class);        
     }
 }

@@ -24,7 +24,8 @@
 >> Todo List
 - [X] UserDao 인터페이스로 생성
 - [X] UserDao JDBC 용 구현 클래스 생성
-- [ ] Jdbc 동적 조회 쿼리 생성(whereOption)
+>>> 동적 SQL 생성 시 파라미터를 DAO 메소드로 가져오는 것도 생각하였으나, 그것은 Dao "자체의 역할"과는 전혀 별개의 것 같아서 서비스 단에서 검색문을 만드는 것으로 결론
+- [X] Jdbc 동적 조회 쿼리 생성(whereOption)
 - [ ] ConfirmDao 인터페이스로 생성(Procedure 호출 구현) 및 JDBC 용 구현 클래스 생성
 - [ ] 조회용 RowMapper를 제공하는 클래스 구현(User, Confirm 둘 다 사용) 및 사용.
 - [ ] MyBatis로 구현(UserDao, ConfirmDao 둘 다)
@@ -33,6 +34,8 @@
 >> Todo List
 - [ ] UserService 인터페이스로 생성
 - [ ] UserService 구현하는 클래스 생성
+- [ ] UserService에서 동적 조회 쿼리 이용 구문 테스트
+- [ ] UserService에서 유효성 검사(추가 시 카운트가 0인지? 유효한 데이터인지 등)
 - [ ] 트랜잭션 어드바이저 등록(존재할 경우)
 - [ ] Confirm도 동일
 - [ ] Sql 가져올 방법 모색(Json : GENSON, XML : JAXB, CASTOR, 내장 DB : H2)
