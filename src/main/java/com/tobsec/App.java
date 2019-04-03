@@ -1,7 +1,12 @@
 package com.tobsec;
 
+import java.util.*;
+
 import com.tobsec.context.*;
 import com.tobsec.common.*;
+import com.tobsec.model.*;
+
+import com.tobsec.dao.*;
 
 import com.tobsec.common.convert.*;
 
@@ -17,6 +22,7 @@ public class App {
     public static void main( String[] args ) {
         ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
 
-        ConnectionBean connBean = ctx.getBean("connBeanFactory", ConnectionBean.class);        
+        ConfirmDao confirmDao = ctx.getBean("confirmDao", ConfirmDao.class);        
+
     }
 }

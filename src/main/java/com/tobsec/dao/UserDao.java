@@ -1,8 +1,8 @@
 package com.tobsec.dao;
 
-import com.tobsec.model.*;
+import com.tobsec.model.User;
 
-import java.util.*;
+import java.util.List;
 
 public interface UserDao {
     public int addUser(User user) throws RuntimeException;

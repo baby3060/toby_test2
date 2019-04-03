@@ -26,7 +26,7 @@
 - [X] UserDao JDBC 용 구현 클래스 생성
 >>> 동적 SQL 생성 시 파라미터를 DAO 메소드로 가져오는 것도 생각하였으나, 그것은 Dao "자체의 역할"과는 전혀 별개의 것 같아서 서비스 단에서 검색문을 만드는 것으로 결론
 - [X] Jdbc 동적 조회 쿼리 생성(whereOption)
-- [ ] ConfirmDao 인터페이스로 생성(Procedure 호출 구현) 및 JDBC 용 구현 클래스 생성
+- [X] ConfirmDao 인터페이스로 생성(Procedure 호출 구현) 및 JDBC 용 구현 클래스 생성
 - [ ] 조회용 RowMapper를 제공하는 클래스 구현(User, Confirm 둘 다 사용) 및 사용.
 - [ ] MyBatis로 구현(UserDao, ConfirmDao 둘 다)
 
