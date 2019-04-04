@@ -61,7 +61,7 @@ public class UserDaoJdbc implements UserDao {
     }
 
     public int updateUser(User user) {
-        return this.jdbcTemplate.update("Update User Set name = :name, password = :password, level = :level, login = :login, recommend = :recommend, email = :email Where id = :id ", makeParam(user));
+        return this.jdbcTemplate.update("Update User Set name = :name, password = :password, email = :email Where id = :id ", makeParam(user));
     }
 
     public int deleteUser(String id) {
