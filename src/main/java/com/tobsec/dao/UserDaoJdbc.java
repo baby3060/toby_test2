@@ -3,6 +3,8 @@ package com.tobsec.dao;
 import java.util.*;
 import com.tobsec.model.*;
 
+import javax.annotation.Resource;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -21,20 +23,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
 @Repository("userDao")
 public class UserDaoJdbc implements UserDao {
-
-    private final RowMapper<User> userMapper = new RowMapper<User>() {
-        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            User user = new User();
-            user.setId(rs.getString("id"));
-            user.setName(rs.getString("name"));
-            user.setPassword(rs.getString("password"));
-            user.setLevel(Level.valueOf(rs.getInt("level")));
-            user.setLogin(rs.getInt("login"));
-            user.setRecommend(rs.getInt("recommend"));
-            user.setEmail(rs.getString("email"));
-            return user;
-        }
-    };
+    @Resource(name="getUserMapper")
+    private RowMapper<User> getUserMapper;
 
     private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -106,13 +96,13 @@ public class UserDaoJdbc implements UserDao {
 
         paramSource.addValue("id", id);
 
-        return this.jdbcTemplate.queryForObject("Select * From USER Where id = :id", paramSource, this.userMapper);
+        return this.jdbcTemplate.queryForObject("Select * From USER Where id = :id", paramSource, this.getUserMapper);
     }
 
     public List<User> selectUserAll() {
         return this.jdbcTemplate.query("Select * From USER Order By id", nullParam(), 
             /**
-             * 이것 대신해서 this.userMapper 사용하면 됨
+             * 이것 대신해서 this.getUserMapper 사용하면 됨
              */
             new RowMapper<User>() {
                 public User mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -134,6 +124,6 @@ public class UserDaoJdbc implements UserDao {
      * 조건에 따른 조회 쿼리
      */
     public List<User> selectUserCondition(String option) {
-        return this.jdbcTemplate.query("Select * From USER Where 1 = 1" + option, nullParam(), this.userMapper);
+        return this.jdbcTemplate.query("Select * From USER Where 1 = 1" + option, nullParam(), this.getUserMapper);
     }
 }

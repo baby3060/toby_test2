@@ -29,7 +29,7 @@
 - [X] ConfirmDao 인터페이스로 생성(Procedure 호출 구현) 및 JDBC 용 구현 클래스 생성
 >>> MariaDB에서 Procedure 생성 시 BEGIN과 Declare 문 사이에 다른게 하나도 없어야 한다.
 >>> DONE을 이용하여 FETCH 관련 NO DATA ~ 해결
-- [ ] 조회용 RowMapper를 제공하는 클래스 구현(User, Confirm 둘 다 사용) 및 사용.
+- [X] 조회용 RowMapper를 제공하는 클래스 구현(User, Confirm 둘 다 사용) 및 사용.
 - [ ] MyBatis로 구현(UserDao, ConfirmDao 둘 다)
 
 3. 해당 Dao 사용하는 Service 객체 생성

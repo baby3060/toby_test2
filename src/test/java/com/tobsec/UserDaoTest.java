@@ -136,4 +136,36 @@ public class UserDaoTest {
 
         assertThat(count, is(0));
     }
+
+    @Test
+    public void getUserTest() {
+        userDao.deleteAll();
+
+        for( User user : list ) {
+            userDao.addUser(user);
+        }
+        
+        
+        User user1 = list.get(0);
+        User user2 = list.get(1);
+        User user3 = list.get(2);
+        User user4 = list.get(3);
+        User user5 = list.get(4);
+        User user6 = list.get(5);
+
+        User anotherUser1 = userDao.getUser(user1.getId());
+        User anotherUser2 = userDao.getUser(user2.getId());
+        User anotherUser3 = userDao.getUser(user3.getId());
+        User anotherUser4 = userDao.getUser(user4.getId());
+        User anotherUser5 = userDao.getUser(user5.getId());
+        User anotherUser6 = userDao.getUser(user6.getId());
+
+        assertThat(user1, equalTo(anotherUser1));
+        assertThat(user2, equalTo(anotherUser2));
+        assertThat(user3, equalTo(anotherUser3));
+        assertThat(user4, equalTo(anotherUser4));
+        assertThat(user5, equalTo(anotherUser5));
+        assertThat(user6, equalTo(anotherUser6));
+    }
+
 }

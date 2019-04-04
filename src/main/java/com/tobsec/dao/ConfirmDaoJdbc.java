@@ -3,6 +3,8 @@ package com.tobsec.dao;
 import java.util.*;
 import com.tobsec.model.*;
 
+import javax.annotation.Resource;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -22,24 +24,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
 @Repository("confirmDao")
 public class ConfirmDaoJdbc implements ConfirmDao {
-
-    private final RowMapper<Confirm> confirmMapper = new RowMapper<Confirm>() {
-        public Confirm mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Confirm confirm = new Confirm();
-
-            confirm.setId(rs.getString("id"));
-            confirm.setConfirm_date(rs.getInt("confirm_date"));
-            confirm.setConfirm_seq(rs.getInt("confirm_seq"));
-            confirm.setConfirm_time(rs.getString("confirm_time"));
-            confirm.setContent(rs.getString("content"));
-            confirm.setSolve_content(rs.getString("solve_content"));
-            confirm.setCheckflagad(rs.getString("checkflagad"));
-            confirm.setCheckflagus(rs.getString("checkflagus"));
-            confirm.setSolve_timestamp(rs.getTimestamp("solve_timestamp"));
-
-            return confirm;
-        }
-    };
+    @Resource(name="getConfirmMapper")
+    private RowMapper<Confirm> getConfirmMapper;
 
     private SqlParameterSource makeParam(Confirm confirm) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
@@ -125,7 +111,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
 
         param.addValue("id", id);
 
-        return this.jdbcTemplate.query("Select * From CONFIRM Where id = :id And Ifnull(checkflagad, 'N') = 'N' ", param, this.confirmMapper);
+        return this.jdbcTemplate.query("Select * From CONFIRM Where id = :id And Ifnull(checkflagad, 'N') = 'N' ", param, this.getConfirmMapper);
     }
     // 주어진 일자 사이에 미해결 리스트(유저별)
     public List<Confirm> selectNoSolveByUserBetDt(String id, int date_from, int date_to) {
@@ -135,7 +121,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
         param.addValue("date_from", date_from);
         param.addValue("date_to", date_to);
 
-        return this.jdbcTemplate.query("Select * From CONFIRM Where id = :id And confirm_date Between :date_from And :date_to And Ifnull(checkflagad, 'N') = 'N' ", param, this.confirmMapper);
+        return this.jdbcTemplate.query("Select * From CONFIRM Where id = :id And confirm_date Between :date_from And :date_to And Ifnull(checkflagad, 'N') = 'N' ", param, this.getConfirmMapper);
     }
 
     // 주어진 일자 사이에 미해결 리스트
@@ -145,7 +131,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
         param.addValue("date_from", date_from);
         param.addValue("date_to", date_to);
 
-        return this.jdbcTemplate.query("Select * From CONFIRM Where confirm_date Between :date_from And :date_to And Ifnull(checkflagad, 'N') = 'N' ", param, this.confirmMapper);
+        return this.jdbcTemplate.query("Select * From CONFIRM Where confirm_date Between :date_from And :date_to And Ifnull(checkflagad, 'N') = 'N' ", param, this.getConfirmMapper);
     }
 
     // 해결은 되었는데 해당 유저가 아직 확인해주지 않은 것.
@@ -155,7 +141,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
 
         param.addValue("id", id);
 
-        return this.jdbcTemplate.query("Select * From CONFIRM Where id = :id And Ifnull(checkflagad, 'N') = 'Y' And Ifnull(checkflagus, 'N') = 'N' ", param, this.confirmMapper);
+        return this.jdbcTemplate.query("Select * From CONFIRM Where id = :id And Ifnull(checkflagad, 'N') = 'Y' And Ifnull(checkflagus, 'N') = 'N' ", param, this.getConfirmMapper);
     }
 
     // 해당 유저가 확인해준거, 해결일자 Between
@@ -166,7 +152,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
         param.addValue("date_from", date_from);
         param.addValue("date_to", date_to);
 
-        return this.jdbcTemplate.query("Select * From CONFIRM Where id = :id And DATE_FORMAT(solve_timestamp, '%Y%m%d') Between :date_from And :date_to And Ifnull(checkflagad, 'N') = 'Y' And Ifnull(checkflagus, 'N') = 'Y' Order By solve_timestamp ", param, this.confirmMapper);
+        return this.jdbcTemplate.query("Select * From CONFIRM Where id = :id And DATE_FORMAT(solve_timestamp, '%Y%m%d') Between :date_from And :date_to And Ifnull(checkflagad, 'N') = 'Y' And Ifnull(checkflagus, 'N') = 'Y' Order By solve_timestamp ", param, this.getConfirmMapper);
     }
 
     // 해당 유저가 확인해준거, 모든 내역
@@ -175,7 +161,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
 
         param.addValue("id", id);
 
-        return this.jdbcTemplate.query("Select * From CONFIRM Where id = :id And Ifnull(checkflagad, 'N') = 'Y' And Ifnull(checkflagus, 'N') = 'Y' Order By solve_timestamp", param, this.confirmMapper);
+        return this.jdbcTemplate.query("Select * From CONFIRM Where id = :id And Ifnull(checkflagad, 'N') = 'Y' And Ifnull(checkflagus, 'N') = 'Y' Order By solve_timestamp", param, this.getConfirmMapper);
     }
 
     // 미해결 내역을 해결로
