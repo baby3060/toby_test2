@@ -34,10 +34,10 @@
 
 3. 해당 Dao 사용하는 Service 객체 생성
 >> Todo List
-- [ ] UserService 인터페이스로 생성
+- [X] UserService 인터페이스로 생성
 - [ ] UserService 구현하는 클래스 생성
 - [ ] UserService에서 동적 조회 쿼리 이용 구문 테스트
-- [ ] UserService에서 유효성 검사(추가 시 카운트가 0인지? 유효한 데이터인지 등)
+- [X] UserService에서 유효성 검사(추가 시 카운트가 0인지? 유효한 데이터인지 등)
 - [ ] 트랜잭션 어드바이저 등록(존재할 경우)
 - [ ] Confirm도 동일
 - [ ] Sql 가져올 방법 모색(Json : GENSON, XML : JAXB, CASTOR, 내장 DB : H2)
