@@ -1,20 +1,23 @@
 package com.tobsec.service;
 
+import java.util.Objects;
+
 import com.tobsec.model.User;
 import com.tobsec.model.Level;
-
 import com.tobsec.dao.UserDao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.stereotype.Service;
-
 import com.tobsec.service.exception.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private LevelUpStrategy levelUpStrategy;
 
     @Override
     public void addUser(User user) throws EmptyResultException{
@@ -30,6 +33,18 @@ public class UserServiceImpl implements UserService {
                 // 신규 유저 등록일 경우 무조건 둘 다 0
                 user.setLogin(0);
                 user.setRecommend(0);
+
+                // Java 7 이상에서 지원 Null String을 ""로
+                user.setRecid(Objects.toString(user.getRecid(), "").trim());
+
+                if( ((!user.getRecid().equals("")) && (userDao.countUser(user.getRecid()) == 1)) ) {
+                    // 추천 대상
+                    User target = userDao.getUser(user.getRecid());
+
+                    userDao.plusRecommend(target, 1);
+                } else {
+                    user.setRecid("");
+                }
 
                 result = userDao.addUser(user);
             }
@@ -75,6 +90,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUser(String id) {
+        return userDao.getUser(id);
+    }
+
+    @Override
     public void deleteAll() {
         userDao.deleteAll();
     }
@@ -87,5 +107,34 @@ public class UserServiceImpl implements UserService {
     @Override
     public int countAll() {
         return userDao.countUserAll();
+    }
+
+    @Override
+    public void upgradeLevels(User user) throws LevelUpFailException {
+
+        try {
+            if( user.isLvlUpTarget(levelUpStrategy) ) {
+                user.upgradeLevel();
+                userDao.upgradeLevel(user);
+            } 
+        } catch(IllegalStateException ise) {
+            throw new LevelUpFailException(ise.getMessage(), ise);
+        }
+    }
+
+    /**
+     * 실제로 사용되어야 하는 메소드
+     */
+    public void plusLogin(User user) throws RuntimeException { 
+        userDao.plusLogin(user, 1);
+    }
+
+    /**
+     * target : 추천수 증가시킬 User
+     * recoUser : target을 추천한 User
+     */
+    public void plusRecommend(User target, User recoUser) throws RuntimeException {
+        userDao.plusRecommend(target, 1);
+        userDao.checkedRecommend(recoUser);
     }
 }

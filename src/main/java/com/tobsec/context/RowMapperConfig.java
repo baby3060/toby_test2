@@ -25,6 +25,7 @@ public class RowMapperConfig {
                 user.setLogin(rs.getInt("login"));
                 user.setRecommend(rs.getInt("recommend"));
                 user.setEmail(rs.getString("email"));
+                user.setRecid(rs.getString("recid"));
                 return user;
             }
         };

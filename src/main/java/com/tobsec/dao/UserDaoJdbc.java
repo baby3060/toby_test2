@@ -21,6 +21,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
 @Repository("userDao")
 public class UserDaoJdbc implements UserDao {
     @Resource(name="getUserMapper")
@@ -46,6 +49,7 @@ public class UserDaoJdbc implements UserDao {
         paramSource.addValue("login", user.getLogin());
         paramSource.addValue("recommend", user.getRecommend());
         paramSource.addValue("email", user.getEmail());
+        paramSource.addValue("recid", user.getRecid());
 
         return paramSource;
     }
@@ -57,7 +61,7 @@ public class UserDaoJdbc implements UserDao {
     }
 
     public int addUser(User user)  {
-        return this.jdbcTemplate.update("Insert Into User (id, name, password, level, login, recommend, email) Values (:id, :name, :password, :level, :login, :recommend, :email) ", makeParam(user));
+        return this.jdbcTemplate.update("Insert Into User (id, name, password, level, login, recommend, email, recid) Values (:id, :name, :password, :level, :login, :recommend, :email, :recid) ", makeParam(user));
     }
 
     public int updateUser(User user) {
@@ -71,14 +75,34 @@ public class UserDaoJdbc implements UserDao {
         return this.jdbcTemplate.update("Delete From User Where id = :id ", paramSource);
     }
 
+    // 임시 사용(원래는 무조건 하나씩만)
+    public void plusLogin(User user, int login) throws RuntimeException {
+        this.jdbcTemplate.update("Update User Set login = login + " + login + " Where id = :id ", makeParam(user));
+    }
+
+    // 임시 사용(원래는 무조건 하나씩만)
+    public void plusRecommend(User target, int recommend) throws RuntimeException {
+        this.jdbcTemplate.update("Update User Set recommend = recommend + " + recommend + " Where id = :id ", makeParam(target));
+    }
+
+    public void checkedRecommend(User user) throws RuntimeException {
+        this.jdbcTemplate.update("Update User Set recid = :recid Where id = :id ", makeParam(user));
+    }
+
+    public void upgradeLevel(User user) {
+        this.jdbcTemplate.update("Update User Set level = :level Where id = :id ", makeParam(user));
+    }
+
     public int deleteAll() {
         return this.jdbcTemplate.update("Delete From User ", nullParam());
     }
 
+    @Transactional(readOnly=true)
     public int countUserAll() {
         return this.jdbcTemplate.queryForObject("Select Count(*) As allcnt From USER ", nullParam(), Integer.class);
     }
 
+    @Transactional(readOnly=true)
     public int countUser(String id) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
 
@@ -87,10 +111,12 @@ public class UserDaoJdbc implements UserDao {
         return this.jdbcTemplate.queryForObject("Select Count(*) As cnt From USER Where id = :id ", paramSource, Integer.class);
     }
 
+    @Transactional(readOnly=true)
     public int countUserCondition(String option) {
         return this.jdbcTemplate.queryForObject("Select Count(*) As wherecnt From USER Where 1 = 1 " + option, nullParam(), Integer.class);
     }
 
+    @Transactional(readOnly=true)
     public User getUser(String id) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
 
@@ -99,6 +125,7 @@ public class UserDaoJdbc implements UserDao {
         return this.jdbcTemplate.queryForObject("Select * From USER Where id = :id", paramSource, this.getUserMapper);
     }
 
+    @Transactional(readOnly=true)
     public List<User> selectUserAll() {
         return this.jdbcTemplate.query("Select * From USER Order By id", nullParam(), 
             /**
@@ -114,6 +141,7 @@ public class UserDaoJdbc implements UserDao {
                     user.setLogin(rs.getInt("login"));
                     user.setRecommend(rs.getInt("recommend"));
                     user.setEmail(rs.getString("email"));
+                    user.setRecid(rs.getString("recid"));
                     return user;
                 }
             }
@@ -123,6 +151,7 @@ public class UserDaoJdbc implements UserDao {
     /**
      * 조건에 따른 조회 쿼리
      */
+    @Transactional(readOnly=true)
     public List<User> selectUserCondition(String option) {
         return this.jdbcTemplate.query("Select * From USER Where 1 = 1" + option, nullParam(), this.getUserMapper);
     }

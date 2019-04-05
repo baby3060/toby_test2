@@ -66,6 +66,14 @@
         <version>${spring.version}</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+
+
       <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
     <dependency>
         <groupId>javax.xml.bind</groupId>

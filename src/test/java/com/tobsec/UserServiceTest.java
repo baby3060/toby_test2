@@ -65,4 +65,46 @@ public class UserServiceTest {
         fail("테스트 실패");
     }
 
+    // LevelUpFailException 뜰 거임
+    @Test(expected=LevelUpFailException.class)
+    public void upgradeLevel() {
+        userService.deleteAll();
+
+        User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
+
+        userService.addUser(user);
+
+        userService.upgradeLevels(user);
+
+        user = userService.getUser("1");
+
+        assertThat(user.getLevel(), is(Level.BRONZE));
+
+        user.setLevel(Level.PLATINUM);
+
+        userService.upgradeLevels(user);
+    }
+
+    @Test
+    public void recommendTest() {
+        userService.deleteAll();
+
+        User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
+        
+        userService.addUser(user);
+
+        user = userService.getUser(user.getId());
+
+        assertThat(user.getRecommend(), is(0));
+
+        User user2 = new User("2", "사용자2", "2", Level.BRONZE, 0, 0, "b@b.com");
+        user2.setRecid("1");
+        userService.addUser(user2);
+
+        user2 = userService.getUser(user2.getId());
+
+        user = userService.getUser(user.getId());
+        assertThat(user.getRecommend(), is(1));
+        assertThat(user2.getRecid(), is(user.getId()));
+    }
 }

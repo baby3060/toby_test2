@@ -3,16 +3,25 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
                            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
                            "
 >
+
+    <tx:annotation-driven />
 
     <context:component-scan base-package="com.tobsec">
         <context:exclude-filter type="annotation" expression="org.springframework.context.annotation.Configuration" />
     </context:component-scan>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 
     <!-- ConnectionBeanFactory를 통해 생성된 Bean 바로 사용 -->
     <!-- SpEl : #{}, Properties 사용 : ${} -->
@@ -26,4 +35,7 @@
         p:maxIdle="10"
     />
     
+    <bean id="levelUpStrategy" class="com.tobsec.service.StrategyFactory"
+        factory-method="defaultStrategy"
+    />
 </beans>

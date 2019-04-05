@@ -2,62 +2,44 @@ package com.tobsec.model;
 
 import lombok.*;
 
+import com.tobsec.service.LevelUpStrategy;
+
 @Getter
 @Setter
 @ToString
+// 기본 생성자
+@NoArgsConstructor
+// 필수 생성자(@NonNull, final)
+@RequiredArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 // equals와 hashCode 구현 시 level, login, recommend 필드 제외하고 구현
-@EqualsAndHashCode(exclude = {"level", "login", "recommend"})
+@EqualsAndHashCode(exclude = {"level", "login", "recommend", "recid"})
 public class User {
-    private final int LOGIN_MIN_SILVER = 50;
-    private final int RECOMMEND_MIN_GOLD = 30;
+    @NonNull private String id;
+    @NonNull private String name;
+    @NonNull private String password;
+    @NonNull private Level level;
+    @NonNull private int login;
+    @NonNull private int recommend;
+    @NonNull private String email;
+    private String recid;
 
-    private String id;
-    private String name;
-    private String password;
-    private Level level;
-    private int login;
-    private int recommend;
-    private String email;
-
-    public User() { }
-
-    public User(String id, String name, String password, Level level, int login, int recommend, String email) {
-		this.id = id;
-		this.name = name;
-		this.password = password;
-		this.level = level;
-		this.login = login;
-		this.recommend = recommend;
-		this.email = email;
-    }
-    
     public void upgradeLevel() {
         // this의 다음 레벨 
         Level nextLevel = this.level.getNextLevel();
 
         if(nextLevel == null) {
             throw new IllegalStateException(this.level + "은 업그레이드가 불가능합니다.");
-        } else {    
+        } else {
             this.setLevel(nextLevel);
         }
     }
 
     /**
-     * User의 등급 상승 대상인지?
+     * 해당 User의 등급이 상승 대상인지?
+     * 전략에 따른 구현
      */
-    public boolean isLvlUpTarget() {
-        boolean isSilver = (login >= 50);
-
-        switch(this.level) {
-            case BRONZE : 
-                return isSilver;
-            case SILVER : 
-                return isSilver && recommend >= RECOMMEND_MIN_GOLD;
-            case GOLD:
-                return false;
-            default:
-                throw new IllegalStateException("잘못된 등급입니다.");
-        }
+    public boolean isLvlUpTarget(LevelUpStrategy upStrategy) {
+        return upStrategy.checkLevelUp(this);
     }
-
 }

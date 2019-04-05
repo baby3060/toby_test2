@@ -1,7 +1,7 @@
 package com.tobsec.model;
 
 public enum Level {
-    GOLD(3, null), SILVER(2, GOLD), BRONZE(1, SILVER);
+    PLATINUM(4, null), GOLD(3, PLATINUM), SILVER(2, GOLD), BRONZE(1, SILVER);
 
     private int value;
     private Level next;
@@ -24,6 +24,7 @@ public enum Level {
             case 1 : return BRONZE; 
             case 2 : return SILVER;
             case 3 : return GOLD;
+            case 4 : return PLATINUM;
             default : throw new AssertionError("Unknown value : " + value);
         }
     }

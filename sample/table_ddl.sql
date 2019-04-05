@@ -6,6 +6,7 @@ CREATE TABLE `user` (
   `login` int(8) DEFAULT NULL,
   `recommend` int(8) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
+  `recid` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

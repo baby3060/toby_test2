@@ -9,8 +9,14 @@ public interface UserService {
     public void updateUser(User user) throws EmptyResultException;
     public void deleteUser(User user) throws EmptyResultException;
     public void deleteAll();
-
+    public User getUser(String id);
     public int countUser(String id);
 
     public int countAll();
+
+    public void upgradeLevels(User user) throws RuntimeException;
+
+    public void plusLogin(User user) throws RuntimeException;
+    public void plusRecommend(User target, User recoUser) throws RuntimeException;
+
 }
