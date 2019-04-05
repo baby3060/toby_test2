@@ -42,3 +42,4 @@
 - [X] 트랜잭션 적용(애노테이션)
 - [ ] Confirm도 동일
 - [ ] Sql 가져올 방법 모색(Json : GENSON, XML : JAXB, CASTOR, 내장 DB : H2)
+- [ ] Logger 애노테이션 생성
