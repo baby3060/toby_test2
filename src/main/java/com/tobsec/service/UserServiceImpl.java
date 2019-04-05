@@ -1,5 +1,6 @@
 package com.tobsec.service;
 
+import java.util.List;
 import java.util.Objects;
 
 import com.tobsec.model.User;
@@ -137,4 +138,29 @@ public class UserServiceImpl implements UserService {
         userDao.plusRecommend(target, 1);
         userDao.checkedRecommend(recoUser);
     }
+
+    @Override
+    public int countUserLevel(Level level, String gubun, Level toLevel) {
+        String option = "";
+
+        int levelValue = level.getValue();
+
+        if( gubun.equals("EQ") ) {
+            option = " And level = " + levelValue + " ";
+        } else if( gubun.equals("OV")) {
+            option = " And level > " + levelValue + " ";
+        } else if(gubun.equals("UN")) {
+            option = " And level < " + levelValue + " ";
+        } else {
+            option = " And level Between " + levelValue + " And " + toLevel.getValue() + " ";
+        }
+
+        return userDao.countUserCondition(option);
+    }
+    
+    @Override
+    public List<User> selectUserAll() {
+        return userDao.selectUserAll();
+    }
+
 }
