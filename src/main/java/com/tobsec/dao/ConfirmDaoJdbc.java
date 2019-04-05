@@ -21,7 +21,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Repository("confirmDao")
 public class ConfirmDaoJdbc implements ConfirmDao {
     @Resource(name="getConfirmMapper")
@@ -50,7 +52,9 @@ public class ConfirmDaoJdbc implements ConfirmDao {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
+
     // 해당 ID로 등록된 모든 내역(정식으로는 이 내역이 있으면 삭제 안 되게 해야 함)
+    @Transactional(readOnly=true)
     public int countAllUser(String id) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -60,6 +64,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
     }
 
     // Max Seqno 구할 때에만 사용할 거임
+    @Transactional(readOnly=true)
     public int countUserDate(String id, int confirm_date) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -79,6 +84,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
     }
 
     // Add 시에만 사용(서비스 단에서 countUserDate가 0일 경우에만 호출)
+    @Transactional(readOnly=true)
     public int getMaxSeq(String id, int confirm_date) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -106,6 +112,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
     }
     
     // 미해결 리스트(유저별) : checkflagad = 'N'
+    @Transactional(readOnly=true)
     public List<Confirm> selectNoSolveByUser(String id) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -113,7 +120,9 @@ public class ConfirmDaoJdbc implements ConfirmDao {
 
         return this.jdbcTemplate.query("Select * From CONFIRM Where id = :id And Ifnull(checkflagad, 'N') = 'N' ", param, this.getConfirmMapper);
     }
+
     // 주어진 일자 사이에 미해결 리스트(유저별)
+    @Transactional(readOnly=true)
     public List<Confirm> selectNoSolveByUserBetDt(String id, int date_from, int date_to) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -125,6 +134,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
     }
 
     // 주어진 일자 사이에 미해결 리스트
+    @Transactional(readOnly=true)
     public List<Confirm> selectNoSolveBetDt(int date_from, int date_to) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -136,6 +146,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
 
     // 해결은 되었는데 해당 유저가 아직 확인해주지 않은 것.
     // checkflagad는 Y인데, checkflagus가 N인거
+    @Transactional(readOnly=true)
     public List<Confirm> selectSolveNoCheckUser(String id) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -145,6 +156,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
     }
 
     // 해당 유저가 확인해준거, 해결일자 Between
+    @Transactional(readOnly=true)
     public List<Confirm> selectSolveCheckUserSDt(String id, int date_from, int date_to) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -156,6 +168,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
     }
 
     // 해당 유저가 확인해준거, 모든 내역
+    @Transactional(readOnly=true)
     public List<Confirm> selectSolveCheckUser(String id) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -202,6 +215,7 @@ public class ConfirmDaoJdbc implements ConfirmDao {
     /**
      * 프로시저 관련 임시
      */
+    @Transactional(readOnly=true)
     public int countEmptySolveContent() {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
