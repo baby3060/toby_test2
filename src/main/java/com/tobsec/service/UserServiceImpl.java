@@ -14,8 +14,30 @@ import org.springframework.stereotype.Service;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
+    @Service("userServiceTest")
+    public static class UserServiceTest extends UserServiceImpl {
+        @Override
+        public void addUser(User user) throws EmptyResultException{
+            int result = 0;
+
+            if(user == null) {
+                result = 0;
+            } else {
+                if( userDao.countUser(user.getId()) == 0 ) {
+                    // Java 7 이상에서 지원 Null String을 ""로
+                    user.setRecid(Objects.toString(user.getRecid(), "").trim());
+                    result = userDao.addUser(user);
+                }
+            }
+
+            if( result < 1 ) {
+                throw new EmptyResultException("저장 중 에러가 발생하였습니다. 데이터가 저장되지 않았습니다.");
+            }
+        }
+    }
+
     @Autowired
-    private UserDao userDao;
+    UserDao userDao;
 
     @Autowired
     private LevelUpStrategy levelUpStrategy;
