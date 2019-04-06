@@ -142,7 +142,30 @@ public class UserServiceTest {
 
             assertThat(infoUser.getLevel(), is(user.getLevel()));
         }
+    }
 
+    @Test
+    public void countConditionTest() {
+        userServiceTest.deleteAll();
 
+        for( User user : testList ) {
+            userServiceTest.addUser(user);
+        }
+
+        int count = userServiceTest.countUserLevel(Level.BRONZE, "EQ", null);
+
+        assertThat(count, is(2));
+
+        count = userServiceTest.countUserLevel(Level.BRONZE, "OV", null);
+
+        assertThat(count, is(4));
+
+        count = userServiceTest.countUserLevel(Level.SILVER, "UN", null);
+        
+        assertThat(count, is(2));
+
+        count = userServiceTest.countUserLevel(Level.SILVER, "BT", Level.GOLD);
+
+        assertThat(count, is(4));
     }
 }
