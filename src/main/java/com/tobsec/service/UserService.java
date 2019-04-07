@@ -17,7 +17,7 @@ public interface UserService {
 
     public int countAll();
 
-    public void upgradeLevels(User user) throws RuntimeException;
+    public void upgradeLevels() throws RuntimeException;
 
     public void plusLogin(User user) throws RuntimeException;
     public void plusRecommend(User target, User recoUser) throws RuntimeException;

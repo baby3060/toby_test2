@@ -14,9 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @Repository("userDao")
 public class UserDaoJdbc extends DaoSupport implements UserDao {
     @Resource(name="getUserMapper")
@@ -91,12 +89,10 @@ public class UserDaoJdbc extends DaoSupport implements UserDao {
         return getNamedParameterJdbcTemplate().update("Delete From User ", nullParam());
     }
 
-    @Transactional(readOnly=true)
     public int countUserAll() {
         return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As allcnt From USER ", nullParam(), Integer.class);
     }
 
-    @Transactional(readOnly=true)
     public int countUser(String id) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
 
@@ -105,12 +101,10 @@ public class UserDaoJdbc extends DaoSupport implements UserDao {
         return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As cnt From USER Where id = :id ", paramSource, Integer.class);
     }
 
-    @Transactional(readOnly=true)
     public int countUserCondition(String option) {
         return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As wherecnt From USER Where 1 = 1 " + option, nullParam(), Integer.class);
     }
 
-    @Transactional(readOnly=true)
     public User getUser(String id) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
 
@@ -119,7 +113,6 @@ public class UserDaoJdbc extends DaoSupport implements UserDao {
         return getNamedParameterJdbcTemplate().queryForObject("Select * From USER Where id = :id", paramSource, this.getUserMapper);
     }
 
-    @Transactional(readOnly=true)
     public List<User> selectUserAll() {
         return getNamedParameterJdbcTemplate().query("Select * From USER Order By id", nullParam(), this.getUserMapper);
     }
@@ -127,7 +120,6 @@ public class UserDaoJdbc extends DaoSupport implements UserDao {
     /**
      * 조건에 따른 조회 쿼리
      */
-    @Transactional(readOnly=true)
     public List<User> selectUserCondition(String option) {
         return getNamedParameterJdbcTemplate().query("Select * From USER Where 1 = 1" + option, nullParam(), this.getUserMapper);
     }

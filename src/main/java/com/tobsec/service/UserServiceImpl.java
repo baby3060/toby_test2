@@ -12,10 +12,25 @@ import com.tobsec.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
 @Service("userService")
 public class UserServiceImpl implements UserService {
-    @Service("userServiceTest")
-    public static class UserServiceTest extends UserServiceImpl {
+
+    @Service("testService")
+    public static class TestUserServiceImpl extends UserServiceImpl {
+        private String id = "5";
+
+        protected void upgradeLevel(User user) {
+            
+            if(user.getId().equals(this.id)) {
+                throw new TestUserServiceException();
+            } else {
+                super.upgradeLevel(user);
+            }
+        }
+
         @Override
         public void addUser(User user) throws EmptyResultException{
             int result = 0;
@@ -35,6 +50,9 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
+
+    public static class TestUserServiceException extends RuntimeException { }
+
 
     @Autowired
     UserDao userDao;
@@ -113,6 +131,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly=true)
     public User getUser(String id) {
         return userDao.getUser(id);
     }
@@ -123,32 +142,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly=true)
     public int countUser(String id) {
         return userDao.countUser(id);
     }
 
     @Override
+    @Transactional(readOnly=true)
     public int countAll() {
         return userDao.countUserAll();
     }
 
     @Override
-    public void upgradeLevels(User user) throws LevelUpFailException {
-
-        try {
-            if( user.isLvlUpTarget(levelUpStrategy) ) {
-                user.upgradeLevel();
-                userDao.upgradeLevel(user);
-            } 
-        } catch(IllegalStateException ise) {
-            throw new LevelUpFailException(ise.getMessage(), ise);
+    public void upgradeLevels() throws LevelUpFailException {
+        List<User> users = userDao.selectUserAll();
+        boolean changed = false;
+        for( User user : users ) {
+            try {
+                if( user.isLvlUpTarget(levelUpStrategy) ) {
+                    upgradeLevel(user);
+                } 
+            } catch(IllegalStateException ise) {
+                throw new LevelUpFailException(ise.getMessage(), ise);
+            }
         }
+    }
+
+    // Test를 위하여 protected로 지정
+    protected void upgradeLevel(User user) {
+        user.upgradeLevel();
+        userDao.updateUser(user);
     }
 
     /**
      * 실제로 사용되어야 하는 메소드
      */
-    public void plusLogin(User user) throws RuntimeException { 
+    public void plusLogin(User user) { 
         userDao.plusLogin(user, 1);
     }
 
@@ -156,12 +185,13 @@ public class UserServiceImpl implements UserService {
      * target : 추천수 증가시킬 User
      * recoUser : target을 추천한 User
      */
-    public void plusRecommend(User target, User recoUser) throws RuntimeException {
+    public void plusRecommend(User target, User recoUser) {
         userDao.plusRecommend(target, 1);
         userDao.checkedRecommend(recoUser);
     }
 
     @Override
+    @Transactional(readOnly=true)
     public int countUserLevel(Level level, String gubun, Level toLevel) {
         String option = "";
 
@@ -181,6 +211,7 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
+    @Transactional(readOnly=true)
     public List<User> selectUserAll() {
         return userDao.selectUserAll();
     }
