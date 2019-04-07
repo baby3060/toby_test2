@@ -42,7 +42,15 @@
 - [X] UserService에서 유효성 검사(추가 시 카운트가 0인지? 유효한 데이터인지 등)
 - [X] 트랜잭션 적용(애노테이션)
 >>> @Transactionl 애노테이션의 경우 Dao에 적용할 수도 있고, Service에도 적용할 수 있는데 어지간하면 Service에 적용하는 편이 더 낫다.
->>>> User의 경우 @Transactional 사용, Confirm은 AOP 사용
+>>>> User의 경우 @Transactional 사용, Confirm은 aop 네임스페이스의 전용태그 사용
+>>>> @Transactional은 메소드별로 좀 더 세부적인 설정 가능, 다만 자바 코드에 작성해야 함(소스 라인 증가).
+>>>> aop 네임스페이스의 전용태그는 반대 : 소스코드는 증가하지 않고 트랜잭션 가능하지만, 메소드별로 세부적인 사항은 적용하기 힘듦
+>>>> Before : 비즈니스 메소드 실행 전 실행(다이내믹 프록시에서 타깃 메소드 실행 전에 : ret = invocation.proceed 호출 전)
+>>>> After : 비즈니스 메소드 실행 후 실행(다이내믹 프록시에서 타깃 메소드 실행 전에 : ret = invocation.proceed 호출 후)
+>>>>> After Returning : 비즈니스 메소드가 성공적으로 수행 후
+>>>>> After Throwing : 비즈니스 메소드가 수행 중 예외 발생후 동작
+>>>>> After : 비즈니스 메소드의 수행 결과에 상관없이 무조건 동작
+>>>> Around : 메소드 실행 전 후에 처리할 로직
 - [ ] Confirm도 동일
 - [ ] Sql 가져올 방법 모색(Json : GENSON, XML : JAXB, CASTOR, 내장 DB : H2)
 - [ ] Logger 애노테이션 생성
