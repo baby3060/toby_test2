@@ -5,6 +5,7 @@ import com.tobsec.model.User;
 
 import com.tobsec.context.AppConfig;
 import com.tobsec.service.UserService;
+import com.tobsec.service.UserServiceImpl;
 
 import com.tobsec.service.exception.*;
 
@@ -31,11 +32,12 @@ public class UserServiceTest {
     private UserService userService;
 
     @Autowired
-    @Qualifier("userServiceTest")
+    @Qualifier("testService")
     private UserService userServiceTest;
 
     private List<User> list;
     private List<User> testList;
+    List<User> users;
 
     @Before
     public void setUp() {
@@ -54,7 +56,17 @@ public class UserServiceTest {
             new User("3", "사용자3", "3", Level.BRONZE, 0, 0, "c@c.com"),
             new User("4", "사용자4", "4", Level.SILVER, 55, 0, "d@d.com"),
             new User("5", "사용자5", "5", Level.GOLD, 51, 36, "e@e.com"),
-            new User("6", "사용자6", "6", Level.BRONZE, 0, 0, "f@f.com")
+            new User("6", "사용자6", "6", Level.BRONZE, 0, 0, "f@f.com"),
+            new User("7", "사용자7", "7", Level.BRONZE, 0, 0, "g@f.com")
+        ));
+
+        users = new ArrayList<User>(Arrays.asList(
+            new User("1", "김길동", "비번1", Level.BRONZE, 49, 0, "a@n.com"),
+            new User("2", "배길동", "비번2", Level.SILVER, 60, 31, "b@n.com"),
+            new User("3", "이길동", "비번3", Level.BRONZE, 45, 0, "c@n.com"),
+            new User("4", "고길동", "비번4", Level.GOLD, 60, 33, "d@n.com"),
+            new User("5", "최길동", "비번5", Level.SILVER, 54, 30, "e@n.com"),
+            new User("6", "박길동", "비번6", Level.BRONZE, 51, 0, "f@n.com")
         ));
     }
 
@@ -81,8 +93,36 @@ public class UserServiceTest {
         fail("테스트 실패");
     }
 
-    // LevelUpFailException 뜰 거임
-    @Test(expected=LevelUpFailException.class)
+    @Test
+    public void upgradeAllOrNothing() throws Exception {
+        userServiceTest.deleteAll();
+
+        for(User user : users) {
+            userServiceTest.addUser(user);
+        }
+
+        try {
+            userServiceTest.upgradeLevels();
+            fail("TestUserServiceException expected");
+        } catch(UserServiceImpl.TestUserServiceException e) {
+            
+        }
+
+        checkLevelUpgraded(users.get(1), false);
+    }
+
+    private void checkLevelUpgraded(User user, boolean upgraded) {
+        User userUpgrade = userService.getUser(user.getId());
+        
+        if( upgraded ) {
+            assertThat(userUpgrade.getLevel(), is(user.getLevel().getNextLevel()));
+        } else {
+            assertThat(userUpgrade.getLevel(), is(user.getLevel()));
+        }
+        
+    }
+
+    @Test
     public void upgradeLevel() {
         userService.deleteAll();
 
@@ -90,7 +130,7 @@ public class UserServiceTest {
 
         userService.addUser(user);
 
-        userService.upgradeLevels(user);
+        userService.upgradeLevels();
 
         user = userService.getUser("1");
 
@@ -98,7 +138,7 @@ public class UserServiceTest {
 
         user.setLevel(Level.PLATINUM);
 
-        userService.upgradeLevels(user);
+        userService.upgradeLevels();
     }
 
     @Test
@@ -154,15 +194,15 @@ public class UserServiceTest {
 
         int count = userServiceTest.countUserLevel(Level.BRONZE, "EQ", null);
 
-        assertThat(count, is(2));
+        assertThat(count, is(3));
 
         count = userServiceTest.countUserLevel(Level.BRONZE, "OV", null);
 
         assertThat(count, is(4));
 
-        count = userServiceTest.countUserLevel(Level.SILVER, "UN", null);
+        count = userServiceTest.countUserLevel(Level.GOLD, "UN", null);
         
-        assertThat(count, is(2));
+        assertThat(count, is(5));
 
         count = userServiceTest.countUserLevel(Level.SILVER, "BT", Level.GOLD);
 
