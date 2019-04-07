@@ -10,13 +10,15 @@ import java.util.List;
 public interface ConfirmDao {
     public int addConfirm(Confirm confirm) throws RuntimeException;
     public int deleteConfirm(Confirm confirm) throws RuntimeException;
-    
+    // 테스트용 전체 삭제
+    public void deleteAll();
+
     public int getMaxSeq(String id, int confirm_date);
 
     public int countAllUser(String id);
-
-    public int countUserDate(String id, int confirm_date);
     
+    public int countUserDate(String id, int confirm_date);
+    public int countConfirm(String id, int confirm_date, int confirm_seq);
     public void deleteAllUser(String id);
 
     // 미해결 리스트(유저별)

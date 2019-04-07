@@ -14,9 +14,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
-import org.springframework.transaction.annotation.Transactional;
-
-@Transactional
 @Repository("confirmDao")
 public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     @Resource(name="getConfirmMapper")
@@ -39,7 +36,6 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     }
 
     // 해당 ID로 등록된 모든 내역(정식으로는 이 내역이 있으면 삭제 안 되게 해야 함)
-    @Transactional(readOnly=true)
     public int countAllUser(String id) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -48,8 +44,13 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
         return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As cnt From CONFIRM Where id = :id", param, Integer.class );
     }
 
+    public void deleteAll() {
+        MapSqlParameterSource param = new MapSqlParameterSource();
+
+        getNamedParameterJdbcTemplate().update("Delete From CONFIRM", param);
+    }
+
     // Max Seqno 구할 때에만 사용할 거임
-    @Transactional(readOnly=true)
     public int countUserDate(String id, int confirm_date) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -57,6 +58,16 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
         param.addValue("confirm_date", confirm_date);
 
         return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As cnt From CONFIRM Where id = :id And confirm_date = :confirm_date", param, Integer.class );
+    }
+
+    public int countConfirm(String id, int confirm_date, int confirm_seq) {
+        MapSqlParameterSource param = new MapSqlParameterSource();
+
+        param.addValue("id", id);
+        param.addValue("confirm_date", confirm_date);
+        param.addValue("confirm_seq", confirm_seq);
+
+        return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As cnt From CONFIRM Where id = :id And confirm_date = :confirm_date And confirm_seq = :confirm_seq", param, Integer.class );
     }
 
     // 해당 ID로 등록된 모든 CONFIRM 삭제(회원탈퇴 시 쓰일 수 있음)
@@ -69,7 +80,6 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     }
 
     // Add 시에만 사용(서비스 단에서 countUserDate가 0일 경우에만 호출)
-    @Transactional(readOnly=true)
     public int getMaxSeq(String id, int confirm_date) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -97,7 +107,6 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     }
     
     // 미해결 리스트(유저별) : checkflagad = 'N'
-    @Transactional(readOnly=true)
     public List<Confirm> selectNoSolveByUser(String id) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -107,7 +116,6 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     }
 
     // 주어진 일자 사이에 미해결 리스트(유저별)
-    @Transactional(readOnly=true)
     public List<Confirm> selectNoSolveByUserBetDt(String id, int date_from, int date_to) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -119,7 +127,6 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     }
 
     // 주어진 일자 사이에 미해결 리스트
-    @Transactional(readOnly=true)
     public List<Confirm> selectNoSolveBetDt(int date_from, int date_to) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -131,7 +138,6 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
 
     // 해결은 되었는데 해당 유저가 아직 확인해주지 않은 것.
     // checkflagad는 Y인데, checkflagus가 N인거
-    @Transactional(readOnly=true)
     public List<Confirm> selectSolveNoCheckUser(String id) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -141,7 +147,6 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     }
 
     // 해당 유저가 확인해준거, 해결일자 Between
-    @Transactional(readOnly=true)
     public List<Confirm> selectSolveCheckUserSDt(String id, int date_from, int date_to) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -153,7 +158,6 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     }
 
     // 해당 유저가 확인해준거, 모든 내역
-    @Transactional(readOnly=true)
     public List<Confirm> selectSolveCheckUser(String id) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -200,10 +204,10 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     /**
      * 프로시저 관련 임시
      */
-    @Transactional(readOnly=true)
     public int countEmptySolveContent() {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
         return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As empty_con From CONFIRM Where solve_content Is Null", param, Integer.class);
     }
+    
 }

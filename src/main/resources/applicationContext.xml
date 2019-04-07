@@ -4,16 +4,34 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
                            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-4.0.xsd
                            http://www.springframework.org/schema/tx
                            http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
                            "
 >
 
     <tx:annotation-driven />
+
+    <!-- TransactionManager의 이름이 transactionManager라면 transaction-manager 속성 생략 가능 -->
+    <tx:advice id="txAdvice">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true" />
+            <tx:method name="count*" read-only="true" />
+            <tx:method name="select*" read-only="true" />
+            <tx:method name="*" />
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <!-- pointcut-ref인 경우 pointcut 객체(Customizing), ref가 안 붙으면 포인트컷 표현식 -->
+        <aop:advisor advice-ref="txAdvice" pointcut="bean(confirmService)" />
+    </aop:config>
 
     <context:component-scan base-package="com.tobsec">
         <context:exclude-filter type="annotation" expression="org.springframework.context.annotation.Configuration" />
