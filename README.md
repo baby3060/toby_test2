@@ -37,9 +37,12 @@
 - [X] UserService 인터페이스로 생성
 - [X] UserService 구현하는 클래스 생성
 - [X] 회원 등급 상승 적용(이벤트 대비 전략)
+>>> 모든 List를 다 가져오고 나서, 대상이라면 상승
 - [ ] UserService에서 동적 조회 쿼리 이용 구문 테스트
 - [X] UserService에서 유효성 검사(추가 시 카운트가 0인지? 유효한 데이터인지 등)
 - [X] 트랜잭션 적용(애노테이션)
+>>> @Transactionl 애노테이션의 경우 Dao에 적용할 수도 있고, Service에도 적용할 수 있는데 어지간하면 Service에 적용하는 편이 더 낫다.
+>>>> User의 경우 @Transactional 사용, Confirm은 AOP 사용
 - [ ] Confirm도 동일
 - [ ] Sql 가져올 방법 모색(Json : GENSON, XML : JAXB, CASTOR, 내장 DB : H2)
 - [ ] Logger 애노테이션 생성

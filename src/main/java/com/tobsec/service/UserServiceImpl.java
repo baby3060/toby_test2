@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
             if(user == null) {
                 result = 0;
             } else {
-                if( userDao.countUser(user.getId()) == 0 ) {
+                if( super.countUser(user.getId()) == 0 ) {
                     // Java 7 이상에서 지원 Null String을 ""로
                     user.setRecid(Objects.toString(user.getRecid(), "").trim());
                     result = userDao.addUser(user);
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         if(user == null) {
             result = 0;
         } else {
-            if( userDao.countUser(user.getId()) == 0 ) {
+            if( this.countUser(user.getId()) == 0 ) {
                 
                 // 등급은 BRONZE로
                 user.setLevel(Level.BRONZE);
@@ -78,9 +78,9 @@ public class UserServiceImpl implements UserService {
                 // Java 7 이상에서 지원 Null String을 ""로
                 user.setRecid(Objects.toString(user.getRecid(), "").trim());
 
-                if( ((!user.getRecid().equals("")) && (userDao.countUser(user.getRecid()) == 1)) ) {
+                if( ((!user.getRecid().equals("")) && (this.countUser(user.getRecid()) == 1)) ) {
                     // 추천 대상
-                    User target = userDao.getUser(user.getRecid());
+                    User target = this.getUser(user.getRecid());
 
                     userDao.plusRecommend(target, 1);
                 } else {
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
         if(user == null) {
             result = 0;
         } else {
-            if( userDao.countUser(user.getId()) == 1 ) {
+            if( this.countUser(user.getId()) == 1 ) {
                 result = userDao.updateUser(user);
             }
         }
@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
         if(user == null) {
             result = 0;
         } else {
-            if( userDao.countUser(user.getId()) == 1 ) {
+            if( this.countUser(user.getId()) == 1 ) {
                 result = userDao.deleteUser(user.getId());
             }
         }
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void upgradeLevels() throws LevelUpFailException {
-        List<User> users = userDao.selectUserAll();
+        List<User> users = this.selectUserAll();
         boolean changed = false;
         for( User user : users ) {
             try {
@@ -171,7 +171,7 @@ public class UserServiceImpl implements UserService {
     // Test를 위하여 protected로 지정
     protected void upgradeLevel(User user) {
         user.upgradeLevel();
-        userDao.updateUser(user);
+        this.updateUser(user);
     }
 
     /**
