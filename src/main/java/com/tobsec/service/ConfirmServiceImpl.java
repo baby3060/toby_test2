@@ -1,5 +1,6 @@
 package com.tobsec.service;
 
+import com.tobsec.common.Log;
 import com.tobsec.model.Confirm;
 import com.tobsec.dao.*;
 import com.tobsec.service.exception.*;
@@ -8,8 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import org.slf4j.Logger;
+
 @Service("confirmService")
 public class ConfirmServiceImpl implements ConfirmService {
+    @Log
+    private Logger confirmServiceLogger;
+
     @Autowired
     private ConfirmDao confirmDao;
 
@@ -17,6 +23,7 @@ public class ConfirmServiceImpl implements ConfirmService {
     private UserService userService;
 
     public void addConfirm(Confirm confirm) throws EmptyResultException {
+        confirmServiceLogger.info("ConfirmService.addConfirm Called");
         // 등록된 user인지?
         if( userService.countUser(confirm.getId()) == 1) {
             int confirm_seq = this.getMaxSeq(confirm.getId(), confirm.getConfirm_date()) + 1;
@@ -25,8 +32,12 @@ public class ConfirmServiceImpl implements ConfirmService {
 
             confirmDao.addConfirm(confirm);
         } else {
+            confirmServiceLogger.error("ConfirmService.addConfirm Error");
+
             throw new EmptyResultException("회원으로 등록되어 있는 유저가 아닙니다.(" + confirm.getId() + ")");
         }
+
+        confirmServiceLogger.info("ConfirmService.addConfirm End");
     }
 
     public void deleteConfirm(Confirm confirm) {

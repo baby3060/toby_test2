@@ -211,7 +211,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly=true)
     public int countUserLevel(Level level, String gubun, Level toLevel) {
         String option = "";
-
+        logger.info("UserService.countUserLevel Called");
         int levelValue = level.getValue();
 
         if( gubun.equals("EQ") ) {
@@ -223,6 +223,8 @@ public class UserServiceImpl implements UserService {
         } else {
             option = " And level Between " + levelValue + " And " + toLevel.getValue() + " ";
         }
+
+        logger.info("UserService.countUserLevel End option = " + option);
 
         return userDao.countUserCondition(option);
     }

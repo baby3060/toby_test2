@@ -54,5 +54,6 @@
 >>>> Around : 메소드 실행 전 후에 처리할 로직
 - [ ] Sql 가져올 방법 모색(Json : GENSON, XML : JAXB, CASTOR, 내장 DB : H2)
 - [X] Logging 프레임워크 사용(LogBack)
-- [ ] Logger 애노테이션 생성(후처리기 사용)
+>>> LogBack은 slf4j에 부가기능을 추가해주는 용도라고 생각하면 됨(실제 로깅은 slf4j것을 사용)
+- [X] Logger 애노테이션 생성(후처리기 사용)
 >>> ReflectionUtils 사용(java Reflect 사용하기 쉽게 해주는 스프링의 Util)
