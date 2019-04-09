@@ -53,6 +53,6 @@
 >>>>> After : 비즈니스 메소드의 수행 결과에 상관없이 무조건 동작
 >>>> Around : 메소드 실행 전 후에 처리할 로직
 - [ ] Sql 가져올 방법 모색(Json : GENSON, XML : JAXB, CASTOR, 내장 DB : H2)
-- [ ] Logging 프레임워크 사용(LogBack)
+- [X] Logging 프레임워크 사용(LogBack)
 - [ ] Logger 애노테이션 생성(후처리기 사용)
 >>> ReflectionUtils 사용(java Reflect 사용하기 쉽게 해주는 스프링의 Util)

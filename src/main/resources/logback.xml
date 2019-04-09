@@ -12,6 +12,19 @@
         </encoder>
     </appender>
 
+    <!-- 
+        DefaultListableBeanFactory : Bean 등록 관련
+        NameMatchTransactionAttributeSource : tx:advice를 통해 작성한 트랜잭션 관련 옵션 출력
+    -->
+
+    <logger name="org.springframework.test.context.support.DefaultTestContextBootstrapper" level="OFF"/>
+
+    <!-- 커넥션 정보가 로그에 출력됨 -->
+    <logger name="org.springframework.jdbc.datasource.DataSourceTransactionManager" level="OFF"/>
+
+    <!-- 커넥션 정보가 로그에 출력됨 -->
+    <logger name="org.springframework.jdbc.datasource.DataSourceUtils" level="OFF"/>
+
     <root level="DEBUG">
         <appender-ref ref="STDOUT" />
     </root>

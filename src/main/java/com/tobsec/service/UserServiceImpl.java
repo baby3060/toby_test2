@@ -14,9 +14,14 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Transactional
 @Service("userService")
 public class UserServiceImpl implements UserService {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Service("testService")
     public static class TestUserServiceImpl extends UserServiceImpl {
@@ -64,6 +69,8 @@ public class UserServiceImpl implements UserService {
     public void addUser(User user) throws EmptyResultException{
         int result = 0;
 
+        logger.info("UserService.addUser Called");
+
         if(user == null) {
             result = 0;
         } else {
@@ -91,6 +98,8 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+        logger.info("UserService.addUser End");
+
         if( result < 1 ) {
             throw new EmptyResultException("저장 중 에러가 발생하였습니다. 데이터가 저장되지 않았습니다.");
         }
@@ -100,6 +109,8 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) throws EmptyResultException{
         int result = 0;
 
+        logger.info("UserService.updateUser Called");
+
         if(user == null) {
             result = 0;
         } else {
@@ -107,6 +118,8 @@ public class UserServiceImpl implements UserService {
                 result = userDao.updateUser(user);
             }
         }
+
+        logger.info("UserService.updateUser End");
 
         if( result < 1 ) {
             throw new EmptyResultException("저장 중 에러가 발생하였습니다. 데이터가 저장되지 않았습니다.");
@@ -117,6 +130,8 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(User user) throws EmptyResultException{
         int result = 0;
 
+        logger.info("UserService.deleteUser Called");
+
         if(user == null) {
             result = 0;
         } else {
@@ -124,6 +139,8 @@ public class UserServiceImpl implements UserService {
                 result = userDao.deleteUser(user.getId());
             }
         }
+
+        logger.info("UserService.deleteUser End");
 
         if( result < 1 ) {
             throw new EmptyResultException("저장 중 에러가 발생하였습니다. 데이터가 저장되지 않았습니다.");

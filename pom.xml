@@ -158,16 +158,17 @@
         <scope>provided</scope>
     </dependency>
 
+    <!--
+      사용할만 한 곳에서 commons-logging을 막아버리는 것도 방법이기는 하지만, 필요할 수도 있으므로, 막는건 차차
+      예)
+         AbstractDirtiesContextTestExecutionListene : 테스트
+         JdbcTemplate : 쿼리문 실행
+    -->
+
     <dependency>
-    <groupId>ch.qos.logback</groupId>
-    <artifactId>logback-classic</artifactId>
-    <version>1.2.3</version>
-    <exclusions>
-            <exclusion>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-            </exclusion>
-        </exclusions>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.3</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
