@@ -20,7 +20,7 @@ public class LogApprovalProcessor implements BeanPostProcessor {
                 @Override
                 @SuppressWarnings("unchecked")
                 public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
-
+                    
                 }
             }
         );

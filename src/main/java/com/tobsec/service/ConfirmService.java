@@ -12,4 +12,5 @@ public interface ConfirmService {
     public int countConfirm(String id, int confirm_date, int confirm_seq);
     public int getMaxSeq(String id, int confirm_date);
     public void deleteAll();
+    public void deleteAllByUser(String id);
 }

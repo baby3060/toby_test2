@@ -30,6 +30,7 @@
 >>> MariaDB에서 Procedure 생성 시 BEGIN과 Declare 문 사이에 다른게 하나도 없어야 한다.
 >>> DONE을 이용하여 FETCH 관련 NO DATA ~ 해결
 - [X] 조회용 RowMapper를 제공하는 클래스 구현(User, Confirm 둘 다 사용) 및 사용.
+>>> 특별한 처리를 필요로 하지 않는다면(User의 Level과 같은), BeanPropertyRowMapper를 사용하는 것이 편할 것 같다.
 - [ ] MyBatis로 구현(UserDao, ConfirmDao 둘 다)
 
 3. 해당 Dao 사용하는 Service 객체 생성
@@ -38,7 +39,7 @@
 - [X] UserService 구현하는 클래스 생성
 - [X] 회원 등급 상승 적용(이벤트 대비 전략)
 >>> 모든 List를 다 가져오고 나서, 대상이라면 상승
-- [ ] UserService에서 동적 조회 쿼리 이용 구문 테스트
+- [X] UserService에서 동적 조회 쿼리 이용 구문 테스트
 - [X] UserService에서 유효성 검사(추가 시 카운트가 0인지? 유효한 데이터인지 등)
 - [X] 트랜잭션 적용(애노테이션)
 >>> @Transactionl 애노테이션의 경우 Dao에 적용할 수도 있고, Service에도 적용할 수 있는데 어지간하면 Service에 적용하는 편이 더 낫다.
@@ -51,7 +52,7 @@
 >>>>> After Throwing : 비즈니스 메소드가 수행 중 예외 발생후 동작
 >>>>> After : 비즈니스 메소드의 수행 결과에 상관없이 무조건 동작
 >>>> Around : 메소드 실행 전 후에 처리할 로직
-- [ ] Confirm도 동일
 - [ ] Sql 가져올 방법 모색(Json : GENSON, XML : JAXB, CASTOR, 내장 DB : H2)
-- [ ] Logger 애노테이션 생성
->>> 
+- [ ] Logging 프레임워크 사용(LogBack)
+- [ ] Logger 애노테이션 생성(후처리기 사용)
+>>> ReflectionUtils 사용(java Reflect 사용하기 쉽게 해주는 스프링의 Util)

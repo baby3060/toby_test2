@@ -70,4 +70,8 @@ public class ConfirmServiceImpl implements ConfirmService {
         confirmDao.deleteAll();
     }
 
+    public void deleteAllByUser(String id) {
+        confirmDao.deleteAllUser(id);
+    }
+
 }
