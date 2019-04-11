@@ -15,6 +15,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import javax.sql.DataSource;
 
+import com.tobsec.service.sql.SqlService;
+
 import java.sql.Connection;
 
 public class App {

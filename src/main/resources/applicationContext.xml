@@ -50,6 +50,14 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
+    <bean id="sqlService" class="com.tobsec.service.sql.SqlServiceImpl" />
+
+    <bean id="sqlReader" class="com.tobsec.service.sql.reader.GensonSqlReader">
+        <property name="configFile" value="sqlconfig/sqlMap.json" />
+    </bean>
+
+    <bean id="sqlRegistry" class="com.tobsec.service.sql.registry.HashMapSqlRegistry" />
+    
     <!-- ConnectionBeanFactory를 통해 생성된 Bean 바로 사용 -->
     <!-- SpEl : #{}, Properties 사용 : ${} -->
     <bean id="dataSource" 
