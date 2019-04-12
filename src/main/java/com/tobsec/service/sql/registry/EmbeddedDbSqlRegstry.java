@@ -18,10 +18,13 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
+import javax.annotation.Resource;
+
 public class EmbeddedDbSqlRegstry implements UpdateAbleRegistry {
     private JdbcTemplate jdbcTemplate;
     private TransactionTemplate transactionTemplate;
 
+    @Resource(name="embeddedDataSource")
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
 
@@ -29,7 +32,21 @@ public class EmbeddedDbSqlRegstry implements UpdateAbleRegistry {
     }
 
     public void registSql(String gubun, Map<String, String> sqlDtl) {
-        this.jdbcTemplate.update("Insert Into sqlmap(gubun_, key_, sql_) Values (?, ?, ?)", gubun, sqlDtl.get("key"), sqlDtl.get("sql"));
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
+                String key = "", sql = "";
+                for( Map.Entry<String, String> entryIn : sqlDtl.entrySet() ) {
+                    key = entryIn.getKey();
+                    sql = entryIn.getValue();
+
+                    registSql(gubun, key, sql);
+                }
+            }
+        });
+    }
+
+    private void registSql(String gubun, String key, String sql) {
+        this.jdbcTemplate.update("Insert Into sqlmap(gubun_, key_, sql_) Values (?, ?, ?)", new Object[]{gubun, key, sql});
     }
 
     public String getSql(String gubun, String key) throws SqlRetriveFailException {

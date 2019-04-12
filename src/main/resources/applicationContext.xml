@@ -65,7 +65,7 @@
         <property name="configFile" value="sqlconfig/sqlMap.json" />
     </bean>
 
-    <bean id="sqlRegistry" class="com.tobsec.service.sql.registry.HashMapSqlRegistry" />
+    <bean id="sqlRegistry" class="com.tobsec.service.sql.registry.EmbeddedDbSqlRegstry" />
     
     <!-- ConnectionBeanFactory를 통해 생성된 Bean 바로 사용 -->
     <!-- SpEl : #{}, Properties 사용 : ${} -->
