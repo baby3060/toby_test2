@@ -52,7 +52,7 @@
 >>>>> After Throwing : 비즈니스 메소드가 수행 중 예외 발생후 동작
 >>>>> After : 비즈니스 메소드의 수행 결과에 상관없이 무조건 동작
 >>>> Around : 메소드 실행 전 후에 처리할 로직
-- [ ] Sql 가져올 방법 모색(Json : GENSON, XML : JAXB, 내장 DB : H2) : JSON 완료
+- [ ] Sql 가져올 방법 모색(Json : GENSON, XML : JAXB, 내장 DB : H2) : JSON 완료, 내장 DB 완료
 - [X] Logging 프레임워크 사용(LogBack)
 >>> LogBack은 slf4j에 부가기능을 추가해주는 용도라고 생각하면 됨(실제 로깅은 slf4j것을 사용)
 - [X] Logger 애노테이션 생성(후처리기 사용)
