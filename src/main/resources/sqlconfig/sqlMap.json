@@ -4,16 +4,61 @@
         "sqlMap" : [
             {
                 "key" : "addUser",
-                "sql" : "Insert Into USER"
+                "sql" : "Insert Into User (id, name, password, level, login, recommend, email, recid) Values (:id, :name, :password, :level, :login, :recommend, :email, :recid)"
             },
             {
                 "key" : "updateUser",
-                "sql" : "Update USER"
+                "sql" : "Update User Set name = :name, password = :password, email = :email Where id = :id"
             },
             {
                 "key" : "deleteUser",
-                "sql" : "Delete From USER"
+                "sql" : "Delete From User Where id = :id"
+            },
+            {
+                "key" : "plusLogin",
+                "sql" : "Update User Set login = :login Where id = :id"
+            },
+            {
+                "key" : "plusRecommend",
+                "sql" : "Update User Set recommend = :recommend Where id = :id"
+            },
+            {
+                "key" : "checkedRecommend",
+                "sql" : "Update User Set recid = :recid Where id = :id"
+            },
+            {
+                "key" : "upgradeLevel",
+                "sql" : "Update User Set level = :level Where id = :id"
+            },
+            {
+                "key" : "deleteAll",
+                "sql" : "Delete From User"
+            },
+            {
+                "key" : "countUserAll",
+                "sql" : "Select Count(*) As allcnt From USER"
+            },
+            {
+                "key" : "countUser",
+                "sql" : "Select Count(*) As cnt From USER Where id = :id"
+            },
+            {
+                "key" : "countUserCondition",
+                "sql" : "Select Count(*) As wherecnt From USER Where 1 = 1 "
+            },
+            {
+                "key" : "getUser",
+                "sql" : "Select * From USER Where id = :id"
+            },
+            {
+                "key" : "selectUserAll",
+                "sql" : "Select * From USER Order By id"
+            },
+            {
+                "key" : "selectUserCondition",
+                "sql" : "Select * From USER Where 1 = 1 "
             }
+            
         ]
     },
     {
@@ -21,11 +66,75 @@
         "sqlMap" : [
             {
                 "key" : "addConfirm",
-                "sql" : "Insert Into CONFIRM"
+                "sql" : "Insert Into CONFIRM(id, confirm_date, confirm_seq, confirm_time, content) Values (:id, :confirm_date, :confirm_seq, (Select DATE_FORMAT(NOW(),'%H%i%s')), :content)"
             },
             {
                 "key" : "deleteConfirm",
+                "sql" : "Delete From CONFIRM Where id = :id And confirm_date = :confirm_date And confirm_seq = :confirm_seq"
+            },
+            {
+                "key" : "countAllUser",
+                "sql" : "Select Count(*) As cnt From CONFIRM Where id = :id"
+            },
+            {
+                "key" : "deleteAll",
                 "sql" : "Delete From CONFIRM"
+            },
+            {
+                "key" : "countUserDate",
+                "sql" : "Select Count(*) As cnt From CONFIRM Where id = :id And confirm_date = :confirm_date"
+            },
+            {
+                "key" : "countConfirm",
+                "sql" : "Select Count(*) As cnt From CONFIRM Where id = :id And confirm_date = :confirm_date And confirm_seq = :confirm_seq"
+            },
+            {
+                "key" : "deleteAllUser",
+                "sql" : "Delete From CONFIRM Where id = :id"
+            },
+            {
+                "key" : "getMaxSeq",
+                "sql" : "Select Max(confirm_seq) As confirm_seq From CONFIRM Where id = :id And confirm_date = :confirm_date"
+            },
+            {
+                "key" : "selectNoSolveByUser",
+                "sql" : "Select * From CONFIRM Where id = :id And Ifnull(checkflagad, 'N') = 'N'"
+            },
+            {
+                "key" : "selectNoSolveByUserBetDt",
+                "sql" : "Select * From CONFIRM Where id = :id And confirm_date Between :date_from And :date_to And Ifnull(checkflagad, 'N') = 'N'"
+            },
+            {
+                "key" : "selectNoSolveBetDt",
+                "sql" : "Select * From CONFIRM Where confirm_date Between :date_from And :date_to And Ifnull(checkflagad, 'N') = 'N'"
+            },
+            {
+                "key" : "selectSolveNoCheckUser",
+                "sql" : "Select * From CONFIRM Where id = :id And Ifnull(checkflagad, 'N') = 'Y' And Ifnull(checkflagus, 'N') = 'N'"
+            },
+            {
+                "key" : "selectSolveCheckUserSDt",
+                "sql" : "Select * From CONFIRM Where id = :id And DATE_FORMAT(solve_timestamp, '%Y%m%d') Between :date_from And :date_to And Ifnull(checkflagad, 'N') = 'Y' And Ifnull(checkflagus, 'N') = 'Y' Order By solve_timestamp"
+            },
+            {
+                "key" : "selectSolveCheckUser",
+                "sql" : "Select * From CONFIRM Where id = :id And Ifnull(checkflagad, 'N') = 'Y' And Ifnull(checkflagus, 'N') = 'Y' Order By solve_timestamp"
+            },
+            {
+                "key" : "updateConfirmSolve",
+                "sql" : "Update CONFIRM Set checkflagad = 'Y', solve_content = :solve_content Where id = :id And confirm_date = :confirm_date And confirm_seq = :confirm_seq"
+            },
+            {
+                "key" : "updateUserOk",
+                "sql" : "Update CONFIRM Set checkflagus = 'Y', solve_timestamp = CURRENT_TIMESTAMP() Where id = :id And confirm_date = :confirm_date And confirm_seq = :confirm_seq"
+            },
+            {
+                "key" : "filedSolveContent",
+                "sql" : "call sp_auto_solve_content_fill()"
+            },
+            {
+                "key" : "countEmptySolveContent",
+                "sql" : "Select Count(*) As empty_con From CONFIRM Where solve_content Is Null"
             }
         ]
     }

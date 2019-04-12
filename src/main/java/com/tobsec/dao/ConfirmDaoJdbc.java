@@ -41,13 +41,13 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
 
         param.addValue("id", id);
 
-        return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As cnt From CONFIRM Where id = :id", param, Integer.class );
+        return getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("confirm", "countAllUser"), param, Integer.class );
     }
 
     public void deleteAll() {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
-        getNamedParameterJdbcTemplate().update("Delete From CONFIRM", param);
+        getNamedParameterJdbcTemplate().update(sqlService.findSql("confirm", "deleteAll"), param);
     }
 
     // Max Seqno 구할 때에만 사용할 거임
@@ -57,7 +57,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
         param.addValue("id", id);
         param.addValue("confirm_date", confirm_date);
 
-        return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As cnt From CONFIRM Where id = :id And confirm_date = :confirm_date", param, Integer.class );
+        return getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("confirm", "countUserDate"), param, Integer.class );
     }
 
     public int countConfirm(String id, int confirm_date, int confirm_seq) {
@@ -67,7 +67,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
         param.addValue("confirm_date", confirm_date);
         param.addValue("confirm_seq", confirm_seq);
 
-        return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As cnt From CONFIRM Where id = :id And confirm_date = :confirm_date And confirm_seq = :confirm_seq", param, Integer.class );
+        return getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("confirm", "countConfirm"), param, Integer.class );
     }
 
     // 해당 ID로 등록된 모든 CONFIRM 삭제(회원탈퇴 시 쓰일 수 있음)
@@ -76,7 +76,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
 
         param.addValue("id", id);
 
-        getNamedParameterJdbcTemplate().update("Delete From CONFIRM Where id = :id", param);
+        getNamedParameterJdbcTemplate().update(sqlService.findSql("confirm", "deleteAllUser"), param);
     }
 
     // Add 시에만 사용(서비스 단에서 countUserDate가 0일 경우에만 호출)
@@ -86,13 +86,13 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
         param.addValue("id", id);
         param.addValue("confirm_date", confirm_date);
 
-        return getNamedParameterJdbcTemplate().queryForObject("Select Max(confirm_seq) As confirm_seq From CONFIRM Where id = :id And confirm_date = :confirm_date", param, Integer.class);
+        return getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("confirm", "getMaxSeq"), param, Integer.class);
     }
 
     // 원래는 무조건 오늘 일자를 넣는 것이 정상이지만 => (Select DATE_FORMAT(NOW(),'%Y%m%d'))
     // Seqno 가져오는 것과 맞추는 것이 옳아 보임
     public int addConfirm(Confirm confirm) {
-        return getNamedParameterJdbcTemplate().update("Insert Into CONFIRM(id, confirm_date, confirm_seq, confirm_time, content) Values (:id, :confirm_date, :confirm_seq, (Select DATE_FORMAT(NOW(),'%H%i%s')), :content) ", makeParam(confirm));
+        return getNamedParameterJdbcTemplate().update(sqlService.findSql("confirm", "addConfirm"), makeParam(confirm));
     }
 
     // 삭제 시 해당 일자의 가장 큰 순번일 경우에만 삭제 가능하게
@@ -103,7 +103,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
         param.addValue("confirm_date", confirm.getConfirm_date());
         param.addValue("confirm_seq", confirm.getConfirm_seq());
 
-        return getNamedParameterJdbcTemplate().update("Delete From CONFIRM Where id = :id And confirm_date = :confirm_date And confirm_seq = :confirm_seq", param );
+        return getNamedParameterJdbcTemplate().update(sqlService.findSql("confirm", "deleteConfirm"), param );
     }
     
     // 미해결 리스트(유저별) : checkflagad = 'N'
@@ -112,7 +112,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
 
         param.addValue("id", id);
 
-        return getNamedParameterJdbcTemplate().query("Select * From CONFIRM Where id = :id And Ifnull(checkflagad, 'N') = 'N' ", param, this.getConfirmMapper);
+        return getNamedParameterJdbcTemplate().query(sqlService.findSql("confirm", "selectNoSolveByUser"), param, this.getConfirmMapper);
     }
 
     // 주어진 일자 사이에 미해결 리스트(유저별)
@@ -123,7 +123,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
         param.addValue("date_from", date_from);
         param.addValue("date_to", date_to);
 
-        return getNamedParameterJdbcTemplate().query("Select * From CONFIRM Where id = :id And confirm_date Between :date_from And :date_to And Ifnull(checkflagad, 'N') = 'N' ", param, this.getConfirmMapper);
+        return getNamedParameterJdbcTemplate().query(sqlService.findSql("confirm", "selectNoSolveByUserBetDt"), param, this.getConfirmMapper);
     }
 
     // 주어진 일자 사이에 미해결 리스트
@@ -133,7 +133,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
         param.addValue("date_from", date_from);
         param.addValue("date_to", date_to);
 
-        return getNamedParameterJdbcTemplate().query("Select * From CONFIRM Where confirm_date Between :date_from And :date_to And Ifnull(checkflagad, 'N') = 'N' ", param, this.getConfirmMapper);
+        return getNamedParameterJdbcTemplate().query(sqlService.findSql("confirm", "selectNoSolveBetDt"), param, this.getConfirmMapper);
     }
 
     // 해결은 되었는데 해당 유저가 아직 확인해주지 않은 것.
@@ -143,7 +143,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
 
         param.addValue("id", id);
 
-        return getNamedParameterJdbcTemplate().query("Select * From CONFIRM Where id = :id And Ifnull(checkflagad, 'N') = 'Y' And Ifnull(checkflagus, 'N') = 'N' ", param, this.getConfirmMapper);
+        return getNamedParameterJdbcTemplate().query(sqlService.findSql("confirm", "selectSolveNoCheckUser"), param, this.getConfirmMapper);
     }
 
     // 해당 유저가 확인해준거, 해결일자 Between
@@ -154,7 +154,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
         param.addValue("date_from", date_from);
         param.addValue("date_to", date_to);
 
-        return getNamedParameterJdbcTemplate().query("Select * From CONFIRM Where id = :id And DATE_FORMAT(solve_timestamp, '%Y%m%d') Between :date_from And :date_to And Ifnull(checkflagad, 'N') = 'Y' And Ifnull(checkflagus, 'N') = 'Y' Order By solve_timestamp ", param, this.getConfirmMapper);
+        return getNamedParameterJdbcTemplate().query(sqlService.findSql("confirm", "selectSolveCheckUserSDt"), param, this.getConfirmMapper);
     }
 
     // 해당 유저가 확인해준거, 모든 내역
@@ -163,7 +163,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
 
         param.addValue("id", id);
 
-        return getNamedParameterJdbcTemplate().query("Select * From CONFIRM Where id = :id And Ifnull(checkflagad, 'N') = 'Y' And Ifnull(checkflagus, 'N') = 'Y' Order By solve_timestamp", param, this.getConfirmMapper);
+        return getNamedParameterJdbcTemplate().query(sqlService.findSql("confirm", "selectSolveCheckUser"), param, this.getConfirmMapper);
     }
 
     // 미해결 내역을 해결로
@@ -178,7 +178,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
 
         param.addValue("solve_content", confirm.getSolve_content());
 
-        getNamedParameterJdbcTemplate().update("Update CONFIRM Set checkflagad = 'Y', solve_content = :solve_content Where id = :id And confirm_date = :confirm_date And confirm_seq = :confirm_seq", param);   
+        getNamedParameterJdbcTemplate().update(sqlService.findSql("confirm", "updateConfirmSolve"), param);   
     }
 
     // 유저 확인 시 solve_timestamp은 현재 시간, checkflagus는 Y
@@ -190,7 +190,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
         param.addValue("confirm_date", confirm.getConfirm_date());
         param.addValue("confirm_seq", confirm.getConfirm_seq());
 
-        getNamedParameterJdbcTemplate().update("Update CONFIRM Set checkflagus = 'Y', solve_timestamp = CURRENT_TIMESTAMP() Where id = :id And confirm_date = :confirm_date And confirm_seq = :confirm_seq", param);   
+        getNamedParameterJdbcTemplate().update(sqlService.findSql("confirm", "updateUserOk"), param);   
     }
 
     // checkflagad가 Y인데 내용이 비어있을 경우 공통 해결
@@ -198,7 +198,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     public void filedSolveContent() {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
-        getNamedParameterJdbcTemplate().update("call sp_auto_solve_content_fill()", param);
+        getNamedParameterJdbcTemplate().update(sqlService.findSql("confirm", "filedSolveContent"), param);
     }
 
     /**
@@ -207,7 +207,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     public int countEmptySolveContent() {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
-        return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As empty_con From CONFIRM Where solve_content Is Null", param, Integer.class);
+        return getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("confirm", "countEmptySolveContent"), param, Integer.class);
     }
     
 }

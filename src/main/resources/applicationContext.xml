@@ -28,6 +28,8 @@
         </tx:attributes>
     </tx:advice>
 
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+
     <bean id="duringAdvice" class="com.tobsec.service.DuringTimeAdvice" />
 
     <aop:config>

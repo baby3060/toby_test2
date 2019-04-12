@@ -139,6 +139,14 @@ public class UserServiceTest {
         user.setLevel(Level.PLATINUM);
 
         userService.upgradeLevels();
+
+        userService.plusLogin(user);
+        userService.plusLogin(user);
+
+        user = userService.getUser("1");
+
+
+        assertThat(user.getLogin(), is(2));
     }
 
     @Test

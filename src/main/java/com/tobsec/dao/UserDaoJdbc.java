@@ -53,44 +53,46 @@ public class UserDaoJdbc extends DaoSupport implements UserDao {
     }
 
     public int addUser(User user)  {
-        return getNamedParameterJdbcTemplate().update("Insert Into User (id, name, password, level, login, recommend, email, recid) Values (:id, :name, :password, :level, :login, :recommend, :email, :recid) ", makeParam(user));
+        return getNamedParameterJdbcTemplate().update(sqlService.findSql("user", "addUser"), makeParam(user));
     }
 
     public int updateUser(User user) {
-        return getNamedParameterJdbcTemplate().update("Update User Set name = :name, password = :password, email = :email Where id = :id ", makeParam(user));
+        return getNamedParameterJdbcTemplate().update(sqlService.findSql("user", "updateUser"), makeParam(user));
     }
 
     public int deleteUser(String id) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
 
         paramSource.addValue("id", id);
-        return getNamedParameterJdbcTemplate().update("Delete From User Where id = :id ", paramSource);
+        return getNamedParameterJdbcTemplate().update(sqlService.findSql("user", "deleteUser"), paramSource);
     }
 
     // 임시 사용(원래는 무조건 하나씩만)
     public void plusLogin(User user, int login) throws RuntimeException {
-        getNamedParameterJdbcTemplate().update("Update User Set login = login + " + login + " Where id = :id ", makeParam(user));
+        user.setLogin(user.getLogin() + login);
+        getNamedParameterJdbcTemplate().update(sqlService.findSql("user", "plusLogin"), makeParam(user));
     }
 
     // 임시 사용(원래는 무조건 하나씩만)
     public void plusRecommend(User target, int recommend) throws RuntimeException {
-        getNamedParameterJdbcTemplate().update("Update User Set recommend = recommend + " + recommend + " Where id = :id ", makeParam(target));
+        target.setRecommend(target.getRecommend() + recommend);
+        getNamedParameterJdbcTemplate().update(sqlService.findSql("user", "plusRecommend"), makeParam(target));
     }
 
     public void checkedRecommend(User user) throws RuntimeException {
-        getNamedParameterJdbcTemplate().update("Update User Set recid = :recid Where id = :id ", makeParam(user));
+        getNamedParameterJdbcTemplate().update(sqlService.findSql("user", "checkedRecommend"), makeParam(user));
     }
 
     public void upgradeLevel(User user) {
-        getNamedParameterJdbcTemplate().update("Update User Set level = :level Where id = :id ", makeParam(user));
+        getNamedParameterJdbcTemplate().update(sqlService.findSql("user", "upgradeLevel"), makeParam(user));
     }
 
     public int deleteAll() {
-        return getNamedParameterJdbcTemplate().update("Delete From User ", nullParam());
+        return getNamedParameterJdbcTemplate().update(sqlService.findSql("user", "deleteAll"), nullParam());
     }
 
     public int countUserAll() {
-        return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As allcnt From USER ", nullParam(), Integer.class);
+        return getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("user", "countUserAll"), nullParam(), Integer.class);
     }
 
     public int countUser(String id) {
@@ -98,11 +100,11 @@ public class UserDaoJdbc extends DaoSupport implements UserDao {
 
         paramSource.addValue("id", id);
 
-        return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As cnt From USER Where id = :id ", paramSource, Integer.class);
+        return getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("user", "countUser"), paramSource, Integer.class);
     }
 
     public int countUserCondition(String option) {
-        return getNamedParameterJdbcTemplate().queryForObject("Select Count(*) As wherecnt From USER Where 1 = 1 " + option, nullParam(), Integer.class);
+        return getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("user", "countUserCondition") + option, nullParam(), Integer.class);
     }
 
     public User getUser(String id) {
@@ -110,17 +112,17 @@ public class UserDaoJdbc extends DaoSupport implements UserDao {
 
         paramSource.addValue("id", id);
 
-        return getNamedParameterJdbcTemplate().queryForObject("Select * From USER Where id = :id", paramSource, this.getUserMapper);
+        return getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("user", "getUser"), paramSource, this.getUserMapper);
     }
 
     public List<User> selectUserAll() {
-        return getNamedParameterJdbcTemplate().query("Select * From USER Order By id", nullParam(), this.getUserMapper);
+        return getNamedParameterJdbcTemplate().query(sqlService.findSql("user", "selectUserAll"), nullParam(), this.getUserMapper);
     }
 
     /**
      * 조건에 따른 조회 쿼리
      */
     public List<User> selectUserCondition(String option) {
-        return getNamedParameterJdbcTemplate().query("Select * From USER Where 1 = 1" + option, nullParam(), this.getUserMapper);
+        return getNamedParameterJdbcTemplate().query(sqlService.findSql("user", "selectUserCondition") + option + " Order By id", nullParam(), this.getUserMapper);
     }
 }
