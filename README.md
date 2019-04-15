@@ -19,6 +19,7 @@
 >>> 참조 URL : https://thoughts-on-java.org/generate-your-jaxb-classes-in-second/
 - [X] ConnectionBean의 설정 정보 Jaxb, Castor 사용해보기
 - [X] ConnectionBean의 설정 정보를 XML 뿐만 아니라, json에서 읽어보기
+- [ ] ConnectionBean으로 저장하는 것이 아닌 스프링의 Properties 활용 클래스 사용하여 Connection 생성해보기
 
 2. UserDao, ConfirmDao 생성(DataSource 넘겨받는)
 >> Todo List

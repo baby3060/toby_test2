@@ -27,8 +27,7 @@ import org.apache.ibatis.session.SqlSession;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
 public class MyBatisTest {
-    @Autowired
-    private UserDao userDao;
+    private List<User> list;
 
     private UserDaoMyBatis userDaoBatis = new UserDaoMyBatis();
 
@@ -38,28 +37,62 @@ public class MyBatisTest {
     @Before
     public void setUp() {
         userDaoBatis.setSqlSession(sqlSession);
+
+        list = new ArrayList<User>(Arrays.asList(
+            new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com"),
+            new User("2", "사용자2", "2", Level.BRONZE, 0, 0, "b@b.com"),
+            new User("3", "사용자3", "3", Level.BRONZE, 0, 0, "c@c.com"),
+            new User("4", "사용자4", "4", Level.BRONZE, 0, 0, "d@d.com"),
+            new User("5", "사용자5", "5", Level.BRONZE, 0, 0, "e@e.com"),
+            new User("6", "사용자6", "6", Level.BRONZE, 0, 0, "f@f.com")
+        ));
     }
 
     @Test
     public void addUserBatis() {
-        userDao.deleteAll();
+        userDaoBatis.deleteAll();
 
-        int count = userDao.countUserAll();
+        int count = userDaoBatis.countUserAll();
 
         assertThat(count, is(0));
 
-        User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
+        User user = new User("1", "사용자1", "1", Level.SILVER, 0, 0, "a@a.com");
 
         userDaoBatis.addUser(user);
 
-        count = userDao.countUserAll();
+        count = userDaoBatis.countUserAll();
 
         assertThat(count, is(1));
 
-        User userSave = userDao.getUser("1");
+        User userSave = userDaoBatis.getUser("1");
 
         assertThat(user.getLevel(), is(userSave.getLevel()));
+        assertThat(userSave.getLevel().getValue(), is(2));
     }
 
+    @Test
+    public void selectAllTest() {
+        userDaoBatis.deleteAll();
+
+        for( User user : list ) {
+            userDaoBatis.addUser(user);
+        }
+
+        List<User> getList = userDaoBatis.selectUserAll();
+
+        assertThat(getList.size(), is(6));
+        assertThat(getList.size(), is(getList.size()));
+
+        int idx = 0;
+
+        for(User user : list) {
+            checkUserSame(user, getList.get(idx));
+            idx++;
+        }
+    }
+
+    private void checkUserSame(User user1, User user2) {
+        assertTrue(user1.equals(user2));
+    }
 
 }

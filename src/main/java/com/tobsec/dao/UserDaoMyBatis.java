@@ -20,46 +20,48 @@ public class UserDaoMyBatis implements UserDao {
     }
 
     public int updateUser(User user) {
-        throw new UnsupportedOperationException();
+        return this.sqlSession.update("mapper.mybatis.UserMapper.updateUser", user);
     }
 
     public int deleteUser(String id) {
-        throw new UnsupportedOperationException();
+        return this.sqlSession.delete("mapper.mybatis.UserMapper.deleteUser", id);
     }
     public int deleteAll() {
-        throw new UnsupportedOperationException();
+        return this.sqlSession.delete("mapper.mybatis.UserMapper.deleteUserAll");
     }
     public int countUserAll() {
-        throw new UnsupportedOperationException();
+        return this.sqlSession.selectOne("mapper.mybatis.UserMapper.countAllUser");
     }
     public int countUser(String id) {
-        throw new UnsupportedOperationException();
+        return this.sqlSession.selectOne("mapper.mybatis.UserMapper.countUser", id);
     }
     public int countUserCondition(String option) {
         throw new UnsupportedOperationException();
     }
     public User getUser(String id) {
-        throw new UnsupportedOperationException();
+        return this.sqlSession.selectOne("mapper.mybatis.UserMapper.getUser", id);
     }
     public List<User> selectUserAll() {
-        throw new UnsupportedOperationException();
+        return this.sqlSession.selectList("mapper.mybatis.UserMapper.selectUserAll");
     }
     public List<User> selectUserCondition(String option) {
         throw new UnsupportedOperationException();
     }
     public void upgradeLevel(User user) {
-        throw new UnsupportedOperationException();
+        this.sqlSession.update("mapper.mybatis.UserMapper.upgradeLevel", user);
     }
 
     public void plusLogin(User user, int login) {
-        throw new UnsupportedOperationException();
+        user.setLogin(user.getLogin() + login);
+        this.sqlSession.update("mapper.mybatis.UserMapper.plusLogin", user);
     }
 
     public void plusRecommend(User target, int recommend) {
-        throw new UnsupportedOperationException();
+        target.setRecommend(target.getRecommend() + recommend);
+        this.sqlSession.update("mapper.mybatis.UserMapper.plusRecommend", target);
     }
 
     public void checkedRecommend(User user) {
-        throw new UnsupportedOperationException();
+        this.sqlSession.update("mapper.mybatis.UserMapper.checkedRecommend", user);
     }
 }

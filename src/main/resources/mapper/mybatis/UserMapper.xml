@@ -4,11 +4,88 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 
+<!-- User의 Level은 enum, User의 Level 필드의 명은 level이고, DB 저장 값은 Level.value이므로, level.value와 같이 저장 -->
 <mapper namespace="mapper.mybatis.UserMapper">
+
+    <resultMap id="resultUser" type="com.tobsec.model.User" >
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+        <!-- Enum 변환 -->
+        <result column="level" property="level" 
+            typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"
+        />
+        <result column="login" property="login" />
+        <result column="recommend" property="recommend" />
+        <result column="email" property="email" />
+        <result column="recid" property="recid" />
+    </resultMap>
+
     <insert id="addUser" parameterType="User" flushCache="true">
         Insert Into User 
         (id, name, password, level, login, recommend, email, recid) 
         Values 
         (#{id}, #{name}, #{password}, #{level.value}, #{login}, #{recommend}, #{email}, #{recid})
     </insert>
+
+    <update id="updateUser" parameterType="User">
+        
+        Update User 
+           Set name = #{name}
+             , password = #{password}
+             , email = #{email}
+        Where id = #{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="String">
+        Delete From USER Where id = #{id}
+    </delete>
+
+    <delete id="deleteUserAll">
+        Delete From USER
+    </delete>
+
+    <select id="countAllUser" resultType="int">
+        Select Count(*) As cnt From USER
+    </select>
+
+    <select id="countUser" resultType="int" parameterType="string">
+        Select Count(*) As cnt From USER Where id = #{id}
+    </select>
+
+    <select id="getUser" resultMap="resultUser" parameterType="string">
+        Select * 
+        From USER
+        Where id = #{id}
+    </select>
+
+    <select id="selectUserAll" resultMap="resultUser">
+        Select *
+        From USER
+        Order By id
+    </select>
+
+    <update id="upgradeLevel" parameterType="User">
+        Update User 
+        Set level = #{level.value} 
+        Where id = #{id}
+    </update>
+
+    <update id="plusLogin" parameterType="User">
+        Update User 
+        Set login = #{login}
+        Where id = #{id}
+    </update>
+
+    <update id="plusRecommend" parameterType="User">
+        Update User 
+        Set recommend = #{recommend}
+        Where id = #{id}
+    </update>
+    
+    <update id="checkedRecommend" parameterType="User">
+        Update User 
+        Set recid = #{recid}
+        Where id = #{id}
+    </update>
 </mapper>
