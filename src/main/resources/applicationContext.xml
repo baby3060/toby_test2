@@ -6,6 +6,7 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
        xsi:schemaLocation="http://www.springframework.org/schema/beans 
                            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
                            http://www.springframework.org/schema/context
@@ -16,6 +17,8 @@
                            http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
                            http://www.springframework.org/schema/jdbc
                            http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+                           http://mybatis.org/schema/mybatis-spring
+                           http://mybatis.org/schema/mybatis-spring.xsd
                            "
 >
 
@@ -78,7 +81,25 @@
         p:password="#{connBeanFactory.getUserPass()}"
         p:maxIdle="10"
     />
+
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
     
+    <!-- MyBatis 연동용 Bean -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!-- Alias -->
+        <property name="typeAliasesPackage" value="com.tobsec.model" />
+        <!-- Mapper 경로 지정 mapper/mybatis 패키지 및 모든 서브 패키지의 xml 파일 탐색 -->
+        <property name="mapperLocations" value="classpath*:mapper/mybatis/**/*.xml" />
+    </bean>
+
+    <!-- 
+    <mybatis:scan base-package="com.tobsec.dao.mapper.mybatis" />
+    -->    
+
+    <!-- User Level UP 전략 -->
     <bean id="levelUpStrategy" class="com.tobsec.service.StrategyFactory"
         factory-method="defaultStrategy"
     />
