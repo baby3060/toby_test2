@@ -3,6 +3,7 @@ package com.tobsec.dao;
 import com.tobsec.model.User;
 
 import java.util.List;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,10 @@ public class UserDaoMyBatis implements UserDao {
         return this.sqlSession.selectOne("mapper.mybatis.UserMapper.countUser", id);
     }
     public int countUserCondition(String option) {
-        throw new UnsupportedOperationException();
+        HashMap<String, Object> param = new HashMap<String, Object>();
+        param.put("option", option);
+
+        return this.sqlSession.selectOne("mapper.mybatis.UserMapper.countUserOption", param);
     }
     public User getUser(String id) {
         return this.sqlSession.selectOne("mapper.mybatis.UserMapper.getUser", id);
@@ -45,7 +49,10 @@ public class UserDaoMyBatis implements UserDao {
         return this.sqlSession.selectList("mapper.mybatis.UserMapper.selectUserAll");
     }
     public List<User> selectUserCondition(String option) {
-        throw new UnsupportedOperationException();
+        HashMap<String, Object> param = new HashMap<String, Object>();
+        param.put("option", option);
+
+        return this.sqlSession.selectList("mapper.mybatis.UserMapper.selectUserOption", param);
     }
     public void upgradeLevel(User user) {
         this.sqlSession.update("mapper.mybatis.UserMapper.upgradeLevel", user);

@@ -89,6 +89,21 @@ public class MyBatisTest {
             checkUserSame(user, getList.get(idx));
             idx++;
         }
+
+        int count = userDaoBatis.countUserCondition(" And id Like \'%1%\' ");
+
+        assertThat(count, is(1));
+
+        List<User> optionList = userDaoBatis.selectUserCondition(" And id Like \'%3%\' ");
+
+        assertThat(optionList.size(), is(1));
+
+        User getUser = optionList.get(0);
+
+        assertThat(getUser.getId(), is("3"));
+        assertThat(getUser.getName(), is("사용자3"));
+        assertThat(getUser.getPassword(), is("3"));
+        assertThat(getUser.getEmail(), is("c@c.com"));
     }
 
     private void checkUserSame(User user1, User user2) {

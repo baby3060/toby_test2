@@ -32,7 +32,9 @@
 >>> DONE을 이용하여 FETCH 관련 NO DATA ~ 해결
 - [X] 조회용 RowMapper를 제공하는 클래스 구현(User, Confirm 둘 다 사용) 및 사용.
 >>> 특별한 처리를 필요로 하지 않는다면(User의 Level과 같은), BeanPropertyRowMapper를 사용하는 것이 편할 것 같다.
-- [ ] MyBatis로 구현(UserDao, ConfirmDao 둘 다)
+- [ ] MyBatis로 구현(UserDao, ConfirmDao 둘 다) : UserDao 완료
+>>> Option(Service에서 받아온 조건문 그대로 사용)을 그대로 사용하려면 Map으로 매핑한 후 $를 사용하여 적용할 수 있었다.
+
 
 3. 해당 Dao 사용하는 Service 객체 생성
 >> Todo List

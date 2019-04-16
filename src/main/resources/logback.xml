@@ -14,11 +14,16 @@
 
     <appender name="TemplateLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/jdbcTemplate.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/old/jdbcTemplate.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <maxFileSize>50MB</maxFileSize>
+            <!-- TimeBasedRollingPolicy로 설정하였을 경우 아래 주석 해제 시 Max 크기 설정할 수 있음 -->
+            <!-- 
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-            <maxFileSize>100mb</maxFileSize>
+                <maxFileSize>50MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
+            -->
+            <fileNamePattern>logs/old/jdbcTemplate.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>30</maxHistory> 
         </rollingPolicy>
 

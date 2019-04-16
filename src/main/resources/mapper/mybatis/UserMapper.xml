@@ -29,7 +29,6 @@
     </insert>
 
     <update id="updateUser" parameterType="User">
-        
         Update User 
            Set name = #{name}
              , password = #{password}
@@ -44,6 +43,18 @@
     <delete id="deleteUserAll">
         Delete From USER
     </delete>
+
+    <select id="countUserOption" resultType="int">
+        Select Count(*) As cnt From USER Where 1 = 1  
+        ${option}
+    </select>
+
+    <select id="selectUserOption" resultMap="resultUser" >
+        Select * 
+        From USER 
+        Where 1 = 1  
+        ${option}
+    </select>
 
     <select id="countAllUser" resultType="int">
         Select Count(*) As cnt From USER
