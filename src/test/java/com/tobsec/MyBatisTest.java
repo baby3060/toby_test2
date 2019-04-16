@@ -29,15 +29,14 @@ import org.apache.ibatis.session.SqlSession;
 public class MyBatisTest {
     private List<User> list;
 
-    private UserDaoMyBatis userDaoBatis = new UserDaoMyBatis();
+    @Autowired
+    private UserDao userDaoBatis;
 
     @Autowired
     private SqlSession sqlSession;
 
     @Before
     public void setUp() {
-        userDaoBatis.setSqlSession(sqlSession);
-
         list = new ArrayList<User>(Arrays.asList(
             new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com"),
             new User("2", "사용자2", "2", Level.BRONZE, 0, 0, "b@b.com"),
