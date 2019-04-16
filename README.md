@@ -34,6 +34,9 @@
 >>> 특별한 처리를 필요로 하지 않는다면(User의 Level과 같은), BeanPropertyRowMapper를 사용하는 것이 편할 것 같다.
 - [ ] MyBatis로 구현(UserDao, ConfirmDao 둘 다) : UserDao 완료
 >>> Option(Service에서 받아온 조건문 그대로 사용)을 그대로 사용하려면 Map으로 매핑한 후 $를 사용하여 적용할 수 있었다.
+>>> Enum형을 저장하거나, 변환할 때 숫자형일 경우 org.apache.ibatis.type.EnumOrdinalTypeHandler를 사용함(String은 또 다른 핸들러). 
+>>> 이 핸들러는 ENUM에 저장된 순서가 중요함(User의 Level과 같은 형태는 맞지 않음).
+>>>> 따라서, EnumOrdinalTypeHandler가 상속받는 BaseTypeHandler<E>용으로 하나 만들어야 함(LevelOnlyHandler).
 
 
 3. 해당 Dao 사용하는 Service 객체 생성

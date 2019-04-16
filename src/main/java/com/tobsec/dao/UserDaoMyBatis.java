@@ -8,6 +8,9 @@ import java.util.HashMap;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.stereotype.Repository;
+
+@Repository("userDao")
 public class UserDaoMyBatis implements UserDao {
     private SqlSession sqlSession;
 
@@ -27,33 +30,40 @@ public class UserDaoMyBatis implements UserDao {
     public int deleteUser(String id) {
         return this.sqlSession.delete("mapper.mybatis.UserMapper.deleteUser", id);
     }
+
     public int deleteAll() {
         return this.sqlSession.delete("mapper.mybatis.UserMapper.deleteUserAll");
     }
+
     public int countUserAll() {
         return this.sqlSession.selectOne("mapper.mybatis.UserMapper.countAllUser");
     }
+
     public int countUser(String id) {
         return this.sqlSession.selectOne("mapper.mybatis.UserMapper.countUser", id);
     }
+
     public int countUserCondition(String option) {
         HashMap<String, Object> param = new HashMap<String, Object>();
         param.put("option", option);
 
         return this.sqlSession.selectOne("mapper.mybatis.UserMapper.countUserOption", param);
     }
+
     public User getUser(String id) {
         return this.sqlSession.selectOne("mapper.mybatis.UserMapper.getUser", id);
     }
     public List<User> selectUserAll() {
         return this.sqlSession.selectList("mapper.mybatis.UserMapper.selectUserAll");
     }
+
     public List<User> selectUserCondition(String option) {
         HashMap<String, Object> param = new HashMap<String, Object>();
         param.put("option", option);
 
         return this.sqlSession.selectList("mapper.mybatis.UserMapper.selectUserOption", param);
     }
+    
     public void upgradeLevel(User user) {
         this.sqlSession.update("mapper.mybatis.UserMapper.upgradeLevel", user);
     }

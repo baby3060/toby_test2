@@ -14,8 +14,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
-
-@Repository("userDao")
 public class UserDaoJdbc extends DaoSupport implements UserDao {
     @Resource(name="getUserMapper")
     private RowMapper<User> getUserMapper;

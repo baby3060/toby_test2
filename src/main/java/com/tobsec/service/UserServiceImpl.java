@@ -27,6 +27,8 @@ public class UserServiceImpl implements UserService {
     public static class TestUserServiceImpl extends UserServiceImpl {
         private String id = "5";
 
+        private final Logger logger = LoggerFactory.getLogger(getClass());
+
         protected void upgradeLevel(User user) {
             
             if(user.getId().equals(this.id)) {

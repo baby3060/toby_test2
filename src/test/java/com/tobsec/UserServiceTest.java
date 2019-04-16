@@ -184,10 +184,15 @@ public class UserServiceTest {
             userServiceTest.addUser(user);
         }
 
+        count = userServiceTest.countAll();
+
+        assertThat(count, is(7));
+
         User infoUser = null;
         for( User user : testList ) {
             infoUser = userServiceTest.getUser(user.getId());
 
+            assertThat(infoUser.getId(), is(user.getId()));
             assertThat(infoUser.getLevel(), is(user.getLevel()));
         }
     }

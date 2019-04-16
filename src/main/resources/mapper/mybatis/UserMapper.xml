@@ -13,7 +13,7 @@
         <result column="password" property="password" />
         <!-- Enum 변환 -->
         <result column="level" property="level" 
-            typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"
+            typeHandler="com.tobsec.model.handler.LevelOnlyHandler"
         />
         <result column="login" property="login" />
         <result column="recommend" property="recommend" />
@@ -21,7 +21,7 @@
         <result column="recid" property="recid" />
     </resultMap>
 
-    <insert id="addUser" parameterType="User" flushCache="true">
+    <insert id="addUser" parameterType="User" >
         Insert Into User 
         (id, name, password, level, login, recommend, email, recid) 
         Values 
@@ -78,7 +78,7 @@
 
     <update id="upgradeLevel" parameterType="User">
         Update User 
-        Set level = #{level.value} 
+        Set level = #{level, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler} 
         Where id = #{id}
     </update>
 
@@ -99,4 +99,9 @@
         Set recid = #{recid}
         Where id = #{id}
     </update>
+    <!--
+        순서가 유지되어 있다면, 이걸로 가능함. 순서가 반대로 되어 있을 경우 맞지 않음
+        하나 만드는게 옳을 것 같음.
+        #{level, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler} 
+    -->
 </mapper>

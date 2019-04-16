@@ -3,7 +3,7 @@ package com.tobsec.model;
 public enum Level {
     PLATINUM(4, null), GOLD(3, PLATINUM), SILVER(2, GOLD), BRONZE(1, SILVER);
 
-    private int value;
+    public final int value;
     private Level next;
 
     Level(int value, Level next) {
