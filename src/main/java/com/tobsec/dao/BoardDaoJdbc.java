@@ -24,6 +24,7 @@ public class BoardDaoJdbc implements BoardDao {
     @Resource(name="getBoardMapper")
     private RowMapper<Board> boardMapper;
 
+    // 자동 sequence 반환을 쉽게 하기 위한 jdbcInsert
     private SimpleJdbcInsert jdbcInsert;
 
     private NamedParameterJdbcTemplate jdbcTemplate;
