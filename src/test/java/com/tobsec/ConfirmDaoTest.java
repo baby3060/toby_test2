@@ -108,6 +108,16 @@ public class ConfirmDaoTest {
 
         int count_2 = confirmDao.countAllUser("2");
         assertThat(list.size(), is(count + count_2));
+    }
+
+    @Test
+    public void solveDetail2() {
+        confirmDao.deleteAllUser("1");
+        confirmDao.deleteAllUser("2");
+
+        for( Confirm confirm : list ) {
+            confirmDao.addConfirm(confirm);
+        }
 
         List<Confirm> noSolveListDt = confirmDao.selectNoSolveBetDt(20190101, 20190601);
 
@@ -117,11 +127,24 @@ public class ConfirmDaoTest {
         List<Confirm> noSolveUser_2 = confirmDao.selectNoSolveByUser("2");
 
         assertThat(noSolveListDt.size(), is(noSolveUser_1.size() + noSolveUser_2.size()));
+    }
+
+    @Test
+    public void solveTest3() {
+        confirmDao.deleteAllUser("1");
+        confirmDao.deleteAllUser("2");
+
+        for( Confirm confirm : list ) {
+            confirmDao.addConfirm(confirm);
+        }
+
+        List<Confirm> noSolveUser_1 = confirmDao.selectNoSolveByUser("1");
+        List<Confirm> noSolveUser_2 = confirmDao.selectNoSolveByUser("2");
 
         confirmDao.updateConfirmSolve(noSolveUser_1.get(0));
         confirmDao.updateConfirmSolve(noSolveUser_1.get(1));
 
-        noSolveListDt = confirmDao.selectNoSolveBetDt(20190101, 20190601);
+        List<Confirm> noSolveListDt = confirmDao.selectNoSolveBetDt(20190101, 20190601);
 
         assertThat(noSolveListDt.size(), is(not(noSolveUser_1.size() + noSolveUser_2.size())));
 

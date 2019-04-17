@@ -56,6 +56,7 @@ public class LevelOnlyHandler<E extends Enum<E>> extends BaseTypeHandler<E> {
     return toOrdinalEnum(ordinal);
   }
 
+  @SuppressWarnings("unchecked")
   private E toOrdinalEnum(int ordinal) {
     try {
       return (E)Level.valueOf(ordinal);

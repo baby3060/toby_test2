@@ -32,7 +32,7 @@
 >>> DONE을 이용하여 FETCH 관련 NO DATA ~ 해결
 - [X] 조회용 RowMapper를 제공하는 클래스 구현(User, Confirm 둘 다 사용) 및 사용.
 >>> 특별한 처리를 필요로 하지 않는다면(User의 Level과 같은), BeanPropertyRowMapper를 사용하는 것이 편할 것 같다.
-- [ ] MyBatis로 구현(UserDao, ConfirmDao 둘 다) : UserDao 완료
+- [X] MyBatis로 구현(UserDao, ConfirmDao 둘 다) : UserDao 완료
 >>> Option(Service에서 받아온 조건문 그대로 사용)을 그대로 사용하려면 Map으로 매핑한 후 $를 사용하여 적용할 수 있었다.
 >>> Enum형을 저장하거나, 변환할 때 숫자형일 경우 org.apache.ibatis.type.EnumOrdinalTypeHandler를 사용함(String은 또 다른 핸들러). 
 >>> 이 핸들러는 ENUM에 저장된 순서가 중요함(User의 Level과 같은 형태는 맞지 않음).
@@ -67,3 +67,10 @@
 - [ ] 테이블 하나 더 만들어서 트랜잭션 어드바이스 적용(@Aspect 애노테이션 사용) : BOARD 테이블(키 값은 자동 생성)
 - [ ] BoardDao의 InsertBoard에는 SimpleJdbcInsert 사용(Dao Support) : 생성된 Key 값을 반환
 - [ ] BOARDDao의 UpdateBoard에서는 PreparedStatementCreator 사용
+- [ ] BOARDDao MyBatis로도 생성
+
+4. 코드 품질 개선
+- [ ] Findbugs 사용
+- [ ] PMD 사용
+
+5. JavaDoc 생성

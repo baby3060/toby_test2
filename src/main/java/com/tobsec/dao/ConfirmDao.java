@@ -8,8 +8,8 @@ import java.util.List;
  * 붋만 사항의 경우 수정 없음
  */
 public interface ConfirmDao {
-    public int addConfirm(Confirm confirm) throws RuntimeException;
-    public int deleteConfirm(Confirm confirm) throws RuntimeException;
+    public int addConfirm(Confirm confirm);
+    public int deleteConfirm(Confirm confirm);
     // 테스트용 전체 삭제
     public void deleteAll();
 

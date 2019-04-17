@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
-@Repository("confirmDao")
 public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     @Resource(name="getConfirmMapper")
     private RowMapper<Confirm> getConfirmMapper;

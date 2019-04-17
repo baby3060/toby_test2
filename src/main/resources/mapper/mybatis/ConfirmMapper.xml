@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<mapper namespace="mapper.mybatis.ConfirmMapper">
+    <resultMap id="confirmMap" type="com.tobsec.model.Confirm">
+        <id column="id" property="id" />
+        <id column="confirm_date" property="confirm_date" />
+        <id column="confirm_seq" property="confirm_seq" />
+        <result column="confirm_time" property="confirm_time" />
+        <result column="content" property="content" />
+        <result column="solve_content" property="solve_content" />
+        <result column="checkflagad" property="checkflagad" />
+        <result column="checkflagus" property="checkflagus" />
+        <result column="solve_timestamp" property="solve_timestamp" javaType="java.sql.Timestamp" />
+    </resultMap>
+
+    <insert id="addConfirm" parameterType="Confirm">
+        Insert Into CONFIRM(id, confirm_date, confirm_seq, confirm_time, content) 
+        Values (#{id}, #{confirm_date}, #{confirm_seq}, (Select DATE_FORMAT(NOW(),'%H%i%s')), #{content})
+    </insert>
+
+    <delete id="deleteConfirm" parameterType="Confirm">
+        Delete From CONFIRM 
+        Where id = #{id}
+        And confirm_date = #{confirm_date}
+        And confirm_seq = #{confirm_seq}
+    </delete>
+
+    <delete id="deleteAllUser">
+        Delete From CONFIRM Where id = #{id}
+    </delete>
+
+    <delete id="deleteAllConfirm">
+        Delete From CONFIRM
+    </delete>
+
+    <update id="updateConfirmSolve" parameterType="Confirm">
+        Update CONFIRM 
+        Set checkflagad = 'Y', solve_content = #{solve_content}
+        Where id = #{id}
+        And confirm_date = #{confirm_date}
+        And confirm_seq = #{confirm_seq}
+    </update>
+
+    <update id="updateUserOk" parameterType="Confirm">
+        Update CONFIRM 
+        Set checkflagus = 'Y', solve_timestamp = CURRENT_TIMESTAMP() 
+        Where id = #{id}
+        And confirm_date = #{confirm_date}
+        And confirm_seq = #{confirm_seq}
+    </update>
+
+    <select id="getMaxSeq" resultType="int">
+        Select Max(confirm_seq) As confirm_seq 
+        From CONFIRM 
+        Where id = #{id}
+        And confirm_date = #{confirm_date}
+    </select>
+
+    <select id="countEmptySolveContent" resultType="int">
+        Select Count(*) As empty_con 
+        From CONFIRM 
+        Where solve_content Is Null
+    </select>
+
+    <select id="countAllUser" resultType="int">
+        Select Count(*) As cnt 
+        From CONFIRM
+        Where id = #{id}
+    </select>
+
+    <select id="countUserDate" resultType="int">
+        Select Count(*) As cnt 
+        From CONFIRM 
+        Where id = #{id}
+        And confirm_date = #{confirm_date}
+    </select>
+
+    <select id="countConfirm" resultType="int">
+        Select Count(*) As cnt 
+        From CONFIRM 
+        Where id = #{id}
+        And confirm_date = #{confirm_date}
+        And confirm_seq = #{confirm_seq}
+    </select>
+
+    <select id="selectNoSolveByUser" resultMap="confirmMap">
+        Select * 
+        From CONFIRM 
+        Where id = #{id}
+        And Ifnull(checkflagad, 'N') = 'N'
+        Order By confirm_date
+    </select>
+
+    <select id="selectNoSolveByUserBetDt" resultMap="confirmMap">
+        Select * 
+        From CONFIRM 
+        
+        <where>
+            <if test="id != null">
+                Where id = #{id}
+            </if>
+
+            <if test="date_from != null and date_from > 0 and date_to != null and date_to >= date_from ">
+            And confirm_date Between #{date_from} And #{date_to}
+            </if>
+        </where>
+        And Ifnull(checkflagad, 'N') = 'N'
+        Order By confirm_seq
+    </select>
+
+    <select id="selectSolveNoCheckUser" resultMap="confirmMap">
+        Select * 
+        From CONFIRM 
+        <if test="id != null">
+            Where id = #{id}
+        </if>
+        And Ifnull(checkflagad, 'N') = 'Y'
+        And Ifnull(checkflagus, 'N') = 'N'
+        Order By confirm_date
+    </select>
+
+    <select id="selectSolveCheckUser" resultMap="confirmMap">
+        Select * 
+        From CONFIRM 
+        Where id = #{id}
+        And Ifnull(checkflagad, 'N') = 'Y' 
+        And Ifnull(checkflagus, 'N') = 'Y' 
+        Order By solve_timestamp
+    </select>
+
+    <select id="selectSolveCheckUserSDt" resultMap="confirmMap">
+        Select * 
+        From CONFIRM 
+        Where id = #{id}
+        And DATE_FORMAT(solve_timestamp, '%Y%m%d') Between #{date_from} And #{date_to}
+        And Ifnull(checkflagad, 'N') = 'Y' 
+        And Ifnull(checkflagus, 'N') = 'Y' 
+        Order By solve_timestamp
+    </select>
+
+    <select id="selectNoSolveBetDt" resultMap="confirmMap">
+        Select * 
+        From CONFIRM 
+        Where confirm_date Between #{date_from} And #{date_to}
+        And Ifnull(checkflagad, 'N') = 'N'
+        Order By id, confirm_date, confirm_seq
+    </select>
+
+    <!-- 프로시저 호출 -->
+    <update id="filedSolveContent" statementType="CALLABLE">
+        { call sp_auto_solve_content_fill() }
+    </update>
+
+
+
+</mapper>
