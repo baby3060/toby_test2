@@ -65,7 +65,8 @@
 - [X] Logger 애노테이션 생성(후처리기 사용)
 >>> ReflectionUtils 사용(java Reflect 사용하기 쉽게 해주는 스프링의 Util)
 - [X] 경과 시간을 구할 Aspect 적용(ProceddingJoinPoint 사용) : 무조건 들어가야함.
-- [X] 테이블 하나 더 만들어서 트랜잭션 어드바이스 적용: BOARD 테이블(키 값은 자동 생성)
+- [X] BOARD 테이블(키 값은 자동 생성) 생성 
+- [ ] 트랜잭션 어드바이스 적용 및 REQUIRED 속성의 트랜잭션 메소드에서 자신의 REQUIRES_NEW 속성 메소드 호출해보기(프록시 트랜잭션의 한계 체험 및 보완해보기)
 >>>> ~~(@Aspect 애노테이션 사용)~~ @Aspect 애노테이션 사용해서 트랜잭션을 적용하는 것은 무리 : 이유는 트랜잭션 속성때문
 - [ ] BoardDao의 InsertBoard에는 SimpleJdbcInsert 사용(Dao Support) : 생성된 Key 값을 반환
 - [ ] BOARDDao의 UpdateBoard에서는 PreparedStatementCreator 사용
