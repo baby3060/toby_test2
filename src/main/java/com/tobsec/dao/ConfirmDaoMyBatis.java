@@ -13,20 +13,27 @@ import org.springframework.stereotype.Repository;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 @Repository("confirmDao")
-public class ConfirmDaoMyBatis implements ConfirmDao {
+public class ConfirmDaoMyBatis extends SqlSessionDaoSupport implements ConfirmDao {
+    /*
     @Autowired
     private SqlSession sqlSession;
+    */
+
+    @Autowired 
+    public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) { 
+        super.setSqlSessionFactory(sqlSessionFactory); 
+    }
 
     public int addConfirm(Confirm confirm) {
-        return this.sqlSession.insert("mapper.mybatis.ConfirmMapper.addConfirm", confirm);
+        return this.getSqlSession().insert("mapper.mybatis.ConfirmMapper.addConfirm", confirm);
     }
 
     public int deleteConfirm(Confirm confirm) {
-        return this.sqlSession.delete("mapper.mybatis.ConfirmMapper.deleteConfirm", confirm);
+        return this.getSqlSession().delete("mapper.mybatis.ConfirmMapper.deleteConfirm", confirm);
     }
     // 테스트용 전체 삭제
     public void deleteAll() {
-        this.sqlSession.delete("mapper.mybatis.ConfirmMapper.deleteAllConfirm");
+        this.getSqlSession().delete("mapper.mybatis.ConfirmMapper.deleteAllConfirm");
     }
 
     public int getMaxSeq(String id, int confirm_date) {
@@ -35,7 +42,7 @@ public class ConfirmDaoMyBatis implements ConfirmDao {
         param.put("id", id);
         param.put("confirm_date", confirm_date);
 
-        return this.sqlSession.selectOne("mapper.mybatis.ConfirmMapper.getMaxSeq", param);
+        return this.getSqlSession().selectOne("mapper.mybatis.ConfirmMapper.getMaxSeq", param);
     }
 
     public int countAllUser(String id) {
@@ -43,7 +50,7 @@ public class ConfirmDaoMyBatis implements ConfirmDao {
 
         param.put("id", id);
 
-        return this.sqlSession.selectOne("mapper.mybatis.ConfirmMapper.countAllUser", param);
+        return this.getSqlSession().selectOne("mapper.mybatis.ConfirmMapper.countAllUser", param);
     }
     
     public int countUserDate(String id, int confirm_date) {
@@ -52,7 +59,7 @@ public class ConfirmDaoMyBatis implements ConfirmDao {
         param.put("id", id);
         param.put("confirm_date", confirm_date);
 
-        return this.sqlSession.selectOne("mapper.mybatis.ConfirmMapper.countUserDate", param);
+        return this.getSqlSession().selectOne("mapper.mybatis.ConfirmMapper.countUserDate", param);
     }
 
     public int countConfirm(String id, int confirm_date, int confirm_seq) {
@@ -62,7 +69,7 @@ public class ConfirmDaoMyBatis implements ConfirmDao {
         param.put("confirm_date", confirm_date);
         param.put("confirm_seq", confirm_seq);
 
-        return this.sqlSession.selectOne("mapper.mybatis.ConfirmMapper.countConfirm", param);
+        return this.getSqlSession().selectOne("mapper.mybatis.ConfirmMapper.countConfirm", param);
     }
 
     public void deleteAllUser(String id) {
@@ -70,7 +77,7 @@ public class ConfirmDaoMyBatis implements ConfirmDao {
 
         param.put("id", id);
 
-        this.sqlSession.delete("mapper.mybatis.ConfirmMapper.deleteAllUser", param);
+        this.getSqlSession().delete("mapper.mybatis.ConfirmMapper.deleteAllUser", param);
     }
 
     // 미해결 리스트(유저별)
@@ -79,7 +86,7 @@ public class ConfirmDaoMyBatis implements ConfirmDao {
 
         param.put("id", id);
 
-        return this.sqlSession.selectList("mapper.mybatis.ConfirmMapper.selectNoSolveByUser", param);
+        return this.getSqlSession().selectList("mapper.mybatis.ConfirmMapper.selectNoSolveByUser", param);
     }
 
     // 주어진 일자 사이에 미해결 리스트(유저별)
@@ -90,7 +97,7 @@ public class ConfirmDaoMyBatis implements ConfirmDao {
         param.put("date_from", date_from);
         param.put("date_to", date_to);
 
-        return this.sqlSession.selectList("mapper.mybatis.ConfirmMapper.selectNoSolveByUserBetDt", param);
+        return this.getSqlSession().selectList("mapper.mybatis.ConfirmMapper.selectNoSolveByUserBetDt", param);
     }
 
     // 주어진 일자 사이에 미해결 리스트
@@ -100,7 +107,7 @@ public class ConfirmDaoMyBatis implements ConfirmDao {
         param.put("date_from", date_from);
         param.put("date_to", date_to);
 
-        return this.sqlSession.selectList("mapper.mybatis.ConfirmMapper.selectNoSolveBetDt", param);
+        return this.getSqlSession().selectList("mapper.mybatis.ConfirmMapper.selectNoSolveBetDt", param);
     }
 
     // 해결은 되었는데 해당 유저가 아직 확인해주지 않은 것.
@@ -110,7 +117,7 @@ public class ConfirmDaoMyBatis implements ConfirmDao {
 
         param.put("id", id);
 
-        return this.sqlSession.selectList("mapper.mybatis.ConfirmMapper.selectSolveNoCheckUser", param);
+        return this.getSqlSession().selectList("mapper.mybatis.ConfirmMapper.selectSolveNoCheckUser", param);
     }
 
     // 해당 유저가 확인해준거, 해결일자 Between
@@ -121,7 +128,7 @@ public class ConfirmDaoMyBatis implements ConfirmDao {
         param.put("date_from", date_from);
         param.put("date_to", date_to);
 
-        return this.sqlSession.selectList("mapper.mybatis.ConfirmMapper.selectSolveCheckUserSDt", param);
+        return this.getSqlSession().selectList("mapper.mybatis.ConfirmMapper.selectSolveCheckUserSDt", param);
     }
 
     // 해당 유저가 확인해준거, 모든 내역
@@ -130,28 +137,28 @@ public class ConfirmDaoMyBatis implements ConfirmDao {
 
         param.put("id", id);
 
-        return this.sqlSession.selectList("mapper.mybatis.ConfirmMapper.selectSolveCheckUser", param);
+        return this.getSqlSession().selectList("mapper.mybatis.ConfirmMapper.selectSolveCheckUser", param);
     }
 
     // 운영자가 불만사항 해결
     public void updateConfirmSolve(Confirm confirm) {
-        this.sqlSession.update("mapper.mybatis.ConfirmMapper.updateConfirmSolve", confirm);
+        this.getSqlSession().update("mapper.mybatis.ConfirmMapper.updateConfirmSolve", confirm);
     }
 
     // 유저가 확인
     public void updateUserOk(Confirm confirm) {
-        this.sqlSession.update("mapper.mybatis.ConfirmMapper.updateUserOk", confirm);
+        this.getSqlSession().update("mapper.mybatis.ConfirmMapper.updateUserOk", confirm);
     }
 
     /**
      * 프로시저 확인용
      */
     public void filedSolveContent() {
-        this.sqlSession.update("mapper.mybatis.ConfirmMapper.filedSolveContent");
+        this.getSqlSession().update("mapper.mybatis.ConfirmMapper.filedSolveContent");
     }
 
     // 프로시저 작동 확인 용 테스트
     public int countEmptySolveContent() {
-        return this.sqlSession.selectOne("mapper.mybatis.ConfirmMapper.countEmptySolveContent");
+        return this.getSqlSession().selectOne("mapper.mybatis.ConfirmMapper.countEmptySolveContent");
     }
 }

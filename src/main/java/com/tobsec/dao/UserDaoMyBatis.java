@@ -17,6 +17,7 @@ public class UserDaoMyBatis extends SqlSessionDaoSupport implements UserDao {
     // SqlSessionDaoSupport 사용하지 않을 때 주석 해제
     private SqlSession sqlSession;
 
+    // 단위 테스트 대비 설정자 메소드 DI
     @Autowired
     public void setSqlSession(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
