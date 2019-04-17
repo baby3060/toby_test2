@@ -22,3 +22,11 @@ CREATE TABLE `confirm` (
   `solve_timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`,`confirm_date`,`confirm_seq`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `board` (
+  `board_no` int(8) not null auto_increment PRIMARY KEY,
+  `writer_id` varchar(10) NOT NULL,  
+  `content` longtext DEFAULT NULL,
+  `board_gubun` int(1) Default 1 NOT NULL ,  
+  `write_time` timestamp ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

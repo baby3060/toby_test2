@@ -5,6 +5,8 @@ import com.tobsec.model.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import java.sql.Timestamp;
+
 import org.springframework.context.annotation.Bean;
 
 import org.springframework.context.annotation.Configuration;
@@ -51,4 +53,21 @@ public class RowMapperConfig {
             }
         };
     } 
+
+    @Bean
+    public RowMapper<Board> getBoardMapper() {
+        return new RowMapper<Board>() {
+            public Board mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Board board = new Board();
+                
+                board.setBoardNo(rs.getInt("board_no"));
+                board.setWriterId(rs.getString("writer_id"));
+                board.setContent(rs.getString("content"));
+                board.setBoardGubun(rs.getInt("board_gubun"));
+                board.setWriteTime(rs.getTimestamp("write_time"));
+
+                return board;
+            }
+        };
+    }
 }
