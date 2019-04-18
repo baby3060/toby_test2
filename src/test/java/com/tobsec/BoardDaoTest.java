@@ -33,13 +33,14 @@ public class BoardDaoTest {
 
     @Test
     public void boardInsertTest() {
-        boardDao.deleteAll();
-
         // 모두 삭제 한 다음에는 auto_increment의 값은 항상 1로 초기화시킴
+        boardDao.deleteAll();
 
         String dbUrl = dataSource.getUrl();
 
         String dbName = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?")).toUpperCase();
+
+        // AUTO_INCREMENT의 현재값 조회
         int incrementVal = boardDao.getAutoValue(dbName);
 
         assertThat(incrementVal, is(1));
@@ -61,5 +62,32 @@ public class BoardDaoTest {
         incrementVal = boardDao.getAutoValue(dbName);
 
         assertThat(incrementVal, is(2));
+    }
+
+    @Test
+    public void updateBoard() {
+        // 모두 삭제 한 다음에는 auto_increment의 값은 항상 1로 초기화시킴
+        boardDao.deleteAll();
+
+        Board board = new Board();
+        board.setContent("Test");
+        board.setWriterId("1");
+
+        int insertNo = boardDao.insertBoard(board);
+
+        assertThat(insertNo, is(1));
+
+        Board boardGet = boardDao.getBoard(insertNo);
+
+        assertThat(boardGet.getContent(), is(board.getContent()));
+        assertThat(boardGet.getWriterId(), is(board.getWriterId()));
+
+        boardGet.setContent("테스트 수정하였음");
+
+        boardDao.updateBoard(boardGet);
+
+        boardGet = boardDao.getBoard(insertNo);
+
+        assertThat(boardGet.getContent(), is("테스트 수정하였음"));
     }
 }

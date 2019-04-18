@@ -68,8 +68,7 @@
 - [X] BOARD 테이블(키 값은 자동 생성) 생성 
 - [ ] 트랜잭션 어드바이스 적용 및 REQUIRED 속성의 트랜잭션 메소드에서 자신의 REQUIRES_NEW 속성 메소드 호출해보기(프록시 트랜잭션의 한계 체험 및 보완해보기)
 >>>> ~~(@Aspect 애노테이션 사용)~~ @Aspect 애노테이션 사용해서 트랜잭션을 적용하는 것은 무리 : 이유는 트랜잭션 속성때문
-- [ ] BoardDao의 InsertBoard에는 SimpleJdbcInsert 사용(Dao Support) : 생성된 Key 값을 반환
-- [ ] BOARDDao의 UpdateBoard에서는 PreparedStatementCreator 사용
+- [X] BoardDao의 InsertBoard에는 SimpleJdbcInsert 사용(Dao Support) : 생성된 Key 값을 반환
 - [ ] BOARDDao MyBatis로도 생성
 - [ ] Service Logging에 Before, After, AfterThrowing, AfterReturning 적용해보기
 

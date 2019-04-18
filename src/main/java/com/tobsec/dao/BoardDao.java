@@ -11,4 +11,8 @@ public interface BoardDao {
     public void deleteAll();
     public int getAutoValue(String databaseName);
     public int countAll();
+    public int getMaxBoardNo();
+    public Board getBoard(int boardNo);
+    public List<Board> getAllBoardList();
+    public List<Board> getAllBoardListByUserId(String writerId);
 }

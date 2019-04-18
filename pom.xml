@@ -239,6 +239,7 @@
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
           <arguments>
             <argument>-Xmx1000m</argument>
+            <argument>-Xlint:unchecked</argument>
             <!-- <argument></argument> -->
           </arguments>
         </configuration>
@@ -255,6 +256,17 @@
                 </goals>
             </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.0</version>
+        <configuration>
+          <verbose>false</verbose>
+          <fork>true</fork>
+          <compilerVersion>11</compilerVersion>
+        </configuration>
       </plugin>
 
     </plugins>
