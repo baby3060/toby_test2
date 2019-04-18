@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
-public class ConfirmDaoTest {
+public class ConfirmDaoTest  implements ParentTest  {
     private List<Confirm> list;
 
     @Autowired

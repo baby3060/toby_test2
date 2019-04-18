@@ -26,7 +26,7 @@ import org.apache.ibatis.session.SqlSession;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
-public class MyBatisTest {
+public class MyBatisTest implements ParentTest  {
     private List<User> list;
 
     @Autowired

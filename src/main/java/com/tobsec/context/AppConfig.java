@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ImportResource;
 
 @Configuration
 @Import(RowMapperConfig.class)
-@ImportResource({"classpath:applicationContext.xml"})
+@ImportResource({"classpath:applicationContext.xml", "classpath:applicationContext1.xml", "classpath:applicationContext2.xml", "classpath:applicationContext3.xml"})
 public class AppConfig {
 
     @Bean(name="connBeanFactory")

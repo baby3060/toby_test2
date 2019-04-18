@@ -61,6 +61,7 @@ public class BoardDaoJdbc implements BoardDao {
         */
     }
 
+    
     public int getMaxBoardNo() {
         MapSqlParameterSource param = new MapSqlParameterSource();
 

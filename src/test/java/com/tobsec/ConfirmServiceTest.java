@@ -26,7 +26,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
-public class ConfirmServiceTest {
+public class ConfirmServiceTest  implements ParentTest  {
     @Autowired
     @Qualifier("userService")
     private UserService userService;

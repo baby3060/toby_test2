@@ -240,7 +240,6 @@
           <arguments>
             <argument>-Xmx1000m</argument>
             <argument>-Xlint:unchecked</argument>
-            <!-- <argument></argument> -->
           </arguments>
         </configuration>
       </plugin>
@@ -266,10 +265,13 @@
           <verbose>false</verbose>
           <fork>true</fork>
           <compilerVersion>11</compilerVersion>
+          
+          <!--
+          mvn clean compile exec:java "-Dspring.profiles.active=first"
+          -->
         </configuration>
       </plugin>
 
     </plugins>
   </build>
-
 </project>

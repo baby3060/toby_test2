@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           "
+    profile="first"                           
+>
+    <bean id="dataSource" 
+            class="org.apache.commons.dbcp2.BasicDataSource"
+            destroy-method="close"
+            p:url="#{connBeanFactory.getConnStr()}"
+            p:driverClassName="#{connBeanFactory.getClassName()}"
+            p:username="#{connBeanFactory.getUserName()}"
+            p:password="#{connBeanFactory.getUserPass()}"
+            p:maxIdle="10"
+        />
+</beans>

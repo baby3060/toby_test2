@@ -98,44 +98,4 @@
 
     <bean class="com.tobsec.common.LogApprovalProcessor" />
 
-    <!-- 수동 변환 : PropertyPlaceHolderConfigurer -->
-    <context:property-placeholder location="classpath:dbconfig.properties" />
-
-    <!-- 수동변환 -->
-    <!-- 
-    <bean id="dataSource" 
-            class="org.apache.commons.dbcp2.BasicDataSource"
-            destroy-method="close"
-            p:url="${db.url}"
-            p:driverClassName="${db.className}"
-            p:username="${db.userName}"
-            p:password="${db.userPass}"
-            p:maxIdle="10"
-        />
-    -->
-
-    <!-- ConnectionBeanFactory를 통해 생성된 Bean 바로 사용 -->
-    <!-- 
-        <bean id="dataSource" 
-            class="org.apache.commons.dbcp2.BasicDataSource"
-            destroy-method="close"
-            p:url="#{connBeanFactory.getConnStr()}"
-            p:driverClassName="#{connBeanFactory.getClassName()}"
-            p:username="#{connBeanFactory.getUserName()}"
-            p:password="#{connBeanFactory.getUserPass()}"
-            p:maxIdle="10"
-        />
-    -->
-
-    <!-- SpEL -->
-    <util:properties id="dbprops" location="classpath:dbconfig.properties" />
-    <bean id="dataSource" 
-            class="org.apache.commons.dbcp2.BasicDataSource"
-            destroy-method="close"
-            p:url="#{dbprops['db.url']}"
-            p:driverClassName="#{dbprops['db.className']}"
-            p:username="#{dbprops['db.userName']}"
-            p:password="#{dbprops['db.userPass']}"
-            p:maxIdle="10"
-        />
 </beans>
