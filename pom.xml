@@ -234,11 +234,29 @@
         </executions>
 
         <configuration>
-          <executable>maven</executable>
+          <executable>java</executable>
           <mainClass>com.tobsec.App</mainClass>
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
+          <arguments>
+            <argument>-Xmx1000m</argument>
+            <!-- <argument></argument> -->
+          </arguments>
         </configuration>
       </plugin>
+
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+            <execution>
+                <id>getClasspathFilenames</id>
+                <goals>
+                    <goal>properties</goal>
+                </goals>
+            </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 

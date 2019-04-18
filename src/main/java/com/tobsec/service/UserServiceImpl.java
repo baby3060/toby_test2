@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.transaction.annotation.Propagation;
+
 @Transactional
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -236,5 +238,4 @@ public class UserServiceImpl implements UserService {
     public List<User> selectUserAll() {
         return userDao.selectUserAll();
     }
-
 }

@@ -11,7 +11,7 @@ import lombok.*;
 @RequiredArgsConstructor
 @EqualsAndHashCode(exclude = {"writerId", "content", "boardGubun", "writeTime"})
 public class Board {
-    @NonNull private int boardNo;
+    private int boardNo;
     @NonNull private String writerId;
     private String content;
     @NonNull private int boardGubun;

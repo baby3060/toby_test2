@@ -1,0 +1,65 @@
+package com.tobsec;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import com.tobsec.context.AppConfig;
+import com.tobsec.dao.BoardDao;
+import com.tobsec.model.Board;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.Before;
+
+import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.*;
+
+import org.apache.commons.dbcp2.BasicDataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=AppConfig.class)
+public class BoardDaoTest {
+    @Autowired
+    private BoardDao boardDao;
+    
+    @Autowired
+    private BasicDataSource dataSource;
+
+    @Test
+    public void boardInsertTest() {
+        boardDao.deleteAll();
+
+        // 모두 삭제 한 다음에는 auto_increment의 값은 항상 1로 초기화시킴
+
+        String dbUrl = dataSource.getUrl();
+
+        String dbName = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?")).toUpperCase();
+        int incrementVal = boardDao.getAutoValue(dbName);
+
+        assertThat(incrementVal, is(1));
+
+        int count = boardDao.countAll();
+
+        assertThat(count, is(0));
+
+        Board board = new Board();
+        board.setContent("Test");
+        board.setWriterId("1");
+
+        boardDao.insertBoard(board);
+
+        count = boardDao.countAll();
+
+        assertThat(count, is(1));
+
+        incrementVal = boardDao.getAutoValue(dbName);
+
+        assertThat(incrementVal, is(2));
+    }
+}

@@ -8,4 +8,7 @@ public interface BoardDao {
     public int insertBoard(Board board);
     public void updateBoard(Board board);
     public void deleteBoard(int boardNo);
+    public void deleteAll();
+    public int getAutoValue(String databaseName);
+    public int countAll();
 }
