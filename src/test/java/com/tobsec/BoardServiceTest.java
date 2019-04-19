@@ -40,6 +40,8 @@ public class BoardServiceTest implements ParentTest  {
 
     @Before
     public void setUp() {
+        boardService.deleteAll();
+
         userService.deleteAll();
 
         User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
@@ -49,7 +51,6 @@ public class BoardServiceTest implements ParentTest  {
 
     @After
     public void tearDown() {
-        boardService.deleteAll();
         userService.deleteAll();
     }
 
@@ -99,5 +100,112 @@ public class BoardServiceTest implements ParentTest  {
 
         assertThat(increVal, is(2));
         assertThat(countAll, is(1));
+    }
+
+    @Test
+    public void updateBoardTest() {
+        Board board = new Board();
+        board.setWriterId("1");
+        board.setContent("테스트");
+
+        boardService.addBoard(board);
+
+        int maxSeqno = boardService.getMaxBoardNo();
+
+        Board getBoard = boardService.getBoard(maxSeqno);
+
+        assertThat(board, equalTo(getBoard));
+
+        getBoard.setContent("수정(테스트)");
+
+        boardService.updateContent(getBoard);
+
+        Board getBoardAfter = boardService.getBoard(maxSeqno);
+
+        assertThat(getBoard, equalTo(getBoardAfter));
+    }
+
+    @Test
+    public void deleteBoardTest() {
+
+        String dbUrl = dataSource.getUrl();
+        dbUrl = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?")).toUpperCase();
+
+        int increVal = boardService.getIncreValue(dbUrl);
+        assertThat(increVal, is(1));
+
+        Board board = new Board();
+        board.setWriterId("1");
+        board.setContent("테스트");
+
+        boardService.addBoard(board);
+
+        board = new Board();
+        board.setWriterId("1");
+        board.setContent("테스트1");
+
+        boardService.addBoard(board);
+
+        board = new Board();
+        board.setWriterId("1");
+        board.setContent("테스트2");
+
+        boardService.addBoard(board);
+
+        board = new Board();
+        board.setWriterId("1");
+        board.setContent("테스트3");
+
+        boardService.addBoard(board);
+
+        increVal = boardService.getIncreValue(dbUrl);
+        assertThat(increVal, is(5));
+
+        int maxSeqno = boardService.getMaxBoardNo();
+        assertThat(maxSeqno, is((increVal - 1)));
+
+        Board deleteBoard = boardService.getBoard(3);
+
+        boardService.deleteBoard(deleteBoard);
+
+        int countAll = boardService.countAll();
+
+        increVal = boardService.getIncreValue(dbUrl);
+        assertThat(increVal, is(5));
+        assertThat(countAll, is(3));
+    }
+
+    @Test
+    public void deleteAndInsertTest() {
+        Board board = new Board();
+        board.setWriterId("1");
+        board.setContent("테스트");
+
+        boardService.addBoard(board);
+
+        board = new Board();
+        board.setWriterId("1");
+        board.setContent("테스트1");
+
+        boardService.addBoard(board);
+
+        String dbUrl = dataSource.getUrl();
+        dbUrl = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?")).toUpperCase();
+
+        Board deleteBoard = boardService.getBoard(1);
+
+        boardService.deleteBoard(deleteBoard);
+
+        int increVal = boardService.getIncreValue(dbUrl);
+
+        assertThat(increVal, is(3));
+
+        deleteBoard = boardService.getBoard(2);
+
+        boardService.deleteBoard(deleteBoard);
+
+        increVal = boardService.getIncreValue(dbUrl);
+
+        assertThat(increVal, is(1));
     }
 }

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service("boardService")
 public class BoardServiceImpl implements BoardService {
     @Log
-    private Logger boardLogger;
+    public Logger boardLogger;
 
     @Autowired
     private BoardDao boardDao;
@@ -31,6 +31,8 @@ public class BoardServiceImpl implements BoardService {
         } else {
             if( userService.countUser(board.getWriterId()) == 1 ) {
                 int newBoardNo = boardDao.insertBoard(board);
+
+                board.setBoardNo(newBoardNo);
 
                 boardLogger.info("새로 생성된 Board의 번호 : " + newBoardNo);
             } else {

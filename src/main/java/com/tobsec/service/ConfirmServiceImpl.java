@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 @Service("confirmService")
 public class ConfirmServiceImpl implements ConfirmService {
     @Log
-    private Logger confirmServiceLogger;
+    public Logger confirmServiceLogger;
 
     @Autowired
     private ConfirmDao confirmDao;
