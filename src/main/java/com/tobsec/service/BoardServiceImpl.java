@@ -85,6 +85,8 @@ public class BoardServiceImpl implements BoardService {
 
     public void deleteAll() {
         boardDao.deleteAll();
+
+        boardDao.alterBoardNo(1);
     }
 
     public int countAll() {

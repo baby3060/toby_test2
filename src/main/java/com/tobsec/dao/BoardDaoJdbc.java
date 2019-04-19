@@ -29,7 +29,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
-@Repository("boardDao")
 public class BoardDaoJdbc implements BoardDao {
     @Resource(name="getBoardMapper")
     private RowMapper<Board> boardMapper;

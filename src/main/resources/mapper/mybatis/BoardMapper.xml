@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<mapper namespace="mapper.mybatis.BoardMapper">
+    <resultMap id="boardMap" type="com.tobsec.model.Board">
+        <id column="board_no" property="boardNo" />
+        <result column="writer_id" property="writerId" />
+        <result column="content" property="content" />
+        <result column="board_gubun" property="boardGubun" />
+        <result column="write_time" property="writeTime" javaType="java.sql.Timestamp" />
+    </resultMap>
+
+    <!-- MySql은  useGeneratedKeys -->
+    <insert id="insertBoard" useGeneratedKeys="true" keyProperty="boardNo" parameterType="Board">
+        Insert Into BOARD (writer_id, content) Values (#{writerId}, #{content})
+    </insert>
+
+    <update id="updateBoard" parameterType="Board">
+        Update Board
+        Set content = #{content}
+        Where board_no = #{boardNo}
+    </update>
+
+    <update id="alterIncre">
+        ALTER TABLE BOARD AUTO_INCREMENT = #{autoInit}
+    </update>
+
+    <delete id="deleteBoard" parameterType="int">
+        Delete From BOARD Where board_no = #{boardNo}
+    </delete>
+
+    <delete id="deleteBoardAll">
+        Delete From BOARD
+    </delete>
+
+    <select id="selectAllByWriter" resultMap="boardMap">
+        Select * 
+        From BOARD
+        Where writer_id = #{writerId}
+        Order By board_no
+    </select>
+
+    <select id="selectAll" resultMap="boardMap">
+        Select * 
+        From BOARD
+        Order By board_no
+    </select>
+
+    <select id="selectAutoBoard" resultType="int" parameterType="java.lang.String">
+        SELECT AUTO_INCREMENT 
+        From INFORMATION_SCHEMA.TABLES 
+        Where TABLE_SCHEMA = #{databaseName}
+        And TABLE_NAME = 'BOARD'
+    </select>
+
+    <select id="countAll" resultType="int">
+        Select Count(*) As cnt
+        From BOARD
+    </select>
+
+    <select id="getBoard" resultMap="boardMap" parameterType="int">
+        Select *
+        From BOARD
+        Where board_no = #{boardNo}
+    </select>
+
+    <select id="countBoard" resultType="int" parameterType="int">
+        Select Count(*) As cnt
+        From BOARD
+        Where board_no = #{boardNo}
+    </select>
+
+    <select id="getMaxNo" resultType="int">
+        Select Max(board_no) As max_boardno 
+        From BOARD
+    </select>
+    
+
+</mapper>

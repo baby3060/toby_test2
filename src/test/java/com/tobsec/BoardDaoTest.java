@@ -36,6 +36,8 @@ public class BoardDaoTest implements ParentTest {
         // 모두 삭제 한 다음에는 auto_increment의 값은 항상 1로 초기화시킴
         boardDao.deleteAll();
 
+        boardDao.alterBoardNo(1);
+
         String dbUrl = dataSource.getUrl();
 
         String dbName = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?")).toUpperCase();
@@ -68,6 +70,8 @@ public class BoardDaoTest implements ParentTest {
     public void updateBoard() {
         // 모두 삭제 한 다음에는 auto_increment의 값은 항상 1로 초기화시킴
         boardDao.deleteAll();
+
+        boardDao.alterBoardNo(1);
 
         Board board = new Board();
         board.setContent("Test");
