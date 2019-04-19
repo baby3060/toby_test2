@@ -9,6 +9,8 @@ import com.tobsec.service.UserServiceImpl;
 
 import com.tobsec.service.exception.*;
 
+import java.sql.SQLException;
+
 import java.util.*;
 
 import org.junit.Test;
@@ -176,7 +178,7 @@ public class UserServiceTest implements ParentTest  {
     public void customTest() {
         userServiceTest.deleteAll();
 
-        int count = userServiceTest.countAll();
+        int count = userService.countAll();
 
         assertThat(count, is(0));
 
@@ -184,13 +186,13 @@ public class UserServiceTest implements ParentTest  {
             userServiceTest.addUser(user);
         }
 
-        count = userServiceTest.countAll();
+        count = userService.countAll();
 
         assertThat(count, is(7));
 
         User infoUser = null;
         for( User user : testList ) {
-            infoUser = userServiceTest.getUser(user.getId());
+            infoUser = userService.getUser(user.getId());
 
             assertThat(infoUser.getId(), is(user.getId()));
             assertThat(infoUser.getLevel(), is(user.getLevel()));
@@ -199,26 +201,58 @@ public class UserServiceTest implements ParentTest  {
 
     @Test
     public void countConditionTest() {
-        userServiceTest.deleteAll();
+        userService.deleteAll();
 
         for( User user : testList ) {
             userServiceTest.addUser(user);
         }
 
-        int count = userServiceTest.countUserLevel(Level.BRONZE, "EQ", null);
+        int count = userService.countUserLevel(Level.BRONZE, "EQ", null);
 
         assertThat(count, is(3));
 
-        count = userServiceTest.countUserLevel(Level.BRONZE, "OV", null);
+        count = userService.countUserLevel(Level.BRONZE, "OV", null);
 
         assertThat(count, is(4));
 
-        count = userServiceTest.countUserLevel(Level.GOLD, "UN", null);
+        count = userService.countUserLevel(Level.GOLD, "UN", null);
         
         assertThat(count, is(5));
 
-        count = userServiceTest.countUserLevel(Level.SILVER, "BT", Level.GOLD);
+        count = userService.countUserLevel(Level.SILVER, "BT", Level.GOLD);
 
         assertThat(count, is(4));
+    }
+
+    @Test(expected=RuntimeException.class)
+    public void complexTest() {
+        userService.deleteAll();
+
+        int count = userService.countAll();
+
+        assertThat(count, is(0));
+
+        for( User user : testList ) {
+            userServiceTest.addUser(user);
+        }
+
+        count = userService.countAll();
+
+        assertThat(count, is(7));
+
+        User exceptionUser = new User("8", "사용자8", "8", Level.BRONZE, 0, 0, "jj@jj.com");
+
+        // readOnly로 설정한 메소드에서 삭제를 진행하였는데도 예외 발생 안함
+        userService.complexOperation(exceptionUser);
+
+        count = userService.countAll();
+
+        // 전혀 다른 트랜잭션에서 예외가 발생하였으니 0이 되어야 함
+        // Delete는 정상 작동
+        assertThat(count, is(0));
+        
+
+        // 예외 발생(단독으로 이 메소드를 사용할 시 readOnly 예외 발생, target 메소드에서 호출 시에는 예외가 발생하지 않음 => 정상 deleteAll 발생)
+        userService.readOnlyUpdate();
     }
 }

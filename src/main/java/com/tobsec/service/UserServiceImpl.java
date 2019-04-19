@@ -23,13 +23,11 @@ import org.springframework.transaction.annotation.Propagation;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Service("testService")
     public static class TestUserServiceImpl extends UserServiceImpl {
         private String id = "5";
-
-        private final Logger logger = LoggerFactory.getLogger(getClass());
 
         protected void upgradeLevel(User user) {
             
@@ -237,5 +235,42 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly=true)
     public List<User> selectUserAll() {
         return userDao.selectUserAll();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    private void addUser2(User user) {
+        int result = 0;
+
+        if(user == null) {
+            result = 0;
+        } else {
+            if( this.countUser(user.getId()) == 0 ) {
+                // Java 7 이상에서 지원 Null String을 ""로
+                user.setRecid(Objects.toString(user.getRecid(), "").trim());
+
+                result = userDao.addUser(user);
+            }
+        }
+
+        // 억지로 Runtime 예외 반환 => 이 트랜잭션 고의로 실패시키기
+        throw new EmptyResultException("저장 중 에러가 발생하였습니다. 데이터가 저장되지 않았습니다.");
+    }
+
+    @Transactional(readOnly=true)
+    public void readOnlyUpdate() {
+        userDao.deleteAll();
+    }
+
+    public void complexOperation(User user)  {
+        userDao.deleteAll();
+
+        try {
+            this.addUser2(user);
+        } catch(EmptyResultException e) {
+            e.printStackTrace();
+        } finally {
+            // ReadOnly에서 Delete 문을 호출하였다.
+            readOnlyUpdate();
+        }
     }
 }

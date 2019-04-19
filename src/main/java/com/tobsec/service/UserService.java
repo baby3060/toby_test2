@@ -28,4 +28,8 @@ public interface UserService {
     public int countUserLevel(Level level, String gubun, Level toLevel);
 
     public List<User> selectUserAll();
+    
+    public void complexOperation(User user);
+
+    public void readOnlyUpdate();
 }
