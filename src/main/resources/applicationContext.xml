@@ -46,7 +46,7 @@
     <bean id="duringAdvice" class="com.tobsec.service.DuringTimeAdvice" />
 
     <aop:config>
-        <aop:pointcut id="servicePoint" expression="execution(* com.tobsec.service..*ServiceImpl.*(..))" />
+        <aop:pointcut id="servicePoint" expression="execution(* com.tobsec.service.*ServiceImpl.*(..))" />
 
         <!-- pointcut-ref인 경우 pointcut 객체(Customizing), ref가 안 붙으면 포인트컷 표현식 -->
         <aop:advisor advice-ref="txAdvice" pointcut="bean(confirmService)" />
