@@ -54,7 +54,7 @@ public class BoardServiceTest implements ParentTest  {
     }
 
     @Test(expected=EmptyResultException.class)
-    public void insertTest() {
+    public void insertTestException() {
         String dbUrl = dataSource.getUrl();
         dbUrl = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?")).toUpperCase();
 
@@ -72,12 +72,32 @@ public class BoardServiceTest implements ParentTest  {
 
         boardService.addBoard(board);
 
+        fail("No User Board Insert");
+    }
+
+    @Test
+    public void insertTestNormal() {
+        String dbUrl = dataSource.getUrl();
+        dbUrl = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?")).toUpperCase();
+
+        boardService.deleteAll();
+
+        int increVal = boardService.getIncreValue(dbUrl);
+        int countAll = boardService.countAll();
+
+        assertThat(increVal, is(1));
+        assertThat(countAll, is(0));
+
+        Board board = new Board();
+        board.setWriterId("1");
+        board.setContent("테스트");
+
+        boardService.addBoard(board);
+
         increVal = boardService.getIncreValue(dbUrl);
-
-        assertThat(increVal, is(2));
-
         countAll = boardService.countAll();
 
+        assertThat(increVal, is(2));
         assertThat(countAll, is(1));
     }
 }
