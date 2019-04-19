@@ -15,4 +15,6 @@ public interface BoardDao {
     public Board getBoard(int boardNo);
     public List<Board> getAllBoardList();
     public List<Board> getAllBoardListByUserId(String writerId);
+    public int countBoard(int boardNo);
+    public void alterBoardNo(int autoInit);
 }

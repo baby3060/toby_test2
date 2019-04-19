@@ -2,7 +2,7 @@ package com.tobsec.dao;
 
 import com.tobsec.model.Board;
 
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -90,12 +90,7 @@ public class BoardDaoJdbc implements BoardDao {
     }
 
     private void initAuto() {
-        this.nameJdbcTemplate.execute("ALTER TABLE BOARD AUTO_INCREMENT = 1", new PreparedStatementCallback() {
-            @Override
-            public Object doInPreparedStatement(PreparedStatement pstmt) throws SQLException {
-                return pstmt.executeUpdate();  
-            }
-        });
+        alterBoardNo(1);
     }
 
     /**
@@ -115,6 +110,14 @@ public class BoardDaoJdbc implements BoardDao {
         return this.nameJdbcTemplate.queryForObject("Select Count(*) As cnt From BOARD", param, Integer.class);
     }
 
+    public int countBoard(int boardNo) {
+        MapSqlParameterSource param = new MapSqlParameterSource();
+
+        param.addValue("boardNo", boardNo);
+
+        return this.nameJdbcTemplate.queryForObject("Select Count(*) As cnt From BOARD Where board_no = :boardNo", param, Integer.class);
+    }
+
     public Board getBoard(int boardNo) {
 
         MapSqlParameterSource param = new MapSqlParameterSource();
@@ -130,6 +133,18 @@ public class BoardDaoJdbc implements BoardDao {
         return this.nameJdbcTemplate.query("Select * From BOARD Where board_no", param, this.boardMapper);
     }
 
+    public void alterBoardNo(final int autoInit) {
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("init", autoInit);
+
+        this.nameJdbcTemplate.execute("ALTER TABLE BOARD AUTO_INCREMENT = :init", paramMap, new PreparedStatementCallback() {
+            @Override
+            public Object doInPreparedStatement(PreparedStatement pstmt) throws SQLException {
+                return pstmt.executeUpdate();  
+            }
+        });
+    }
+
     /**
      * 작성자의 모든 리스트
      */
@@ -138,6 +153,6 @@ public class BoardDaoJdbc implements BoardDao {
 
         param.addValue("writerId", writerId);
 
-        return this.nameJdbcTemplate.query("Select * From BOARD Where writer_id = :writerId Where board_no", param, this.boardMapper);
+        return this.nameJdbcTemplate.query("Select * From BOARD Where writer_id = :writerId Order By board_no", param, this.boardMapper);
     }
 }
