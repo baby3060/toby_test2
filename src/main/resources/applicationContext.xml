@@ -24,6 +24,10 @@
                            http://mybatis.org/schema/mybatis-spring.xsd
                            "
 >
+    <!-- @Aspect어노테이션이 있는 클래스를 자동으로 찾아서 설정해줌 -->
+    <aop:aspectj-autoproxy/>
+
+    <bean id="logAop" class="com.tobsec.common.LoggingAspect" />
 
     <tx:annotation-driven />
 

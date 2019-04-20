@@ -20,7 +20,6 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCallback;  
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -29,20 +28,11 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
-public class BoardDaoJdbc implements BoardDao {
+public class BoardDaoJdbc extends DaoSupport implements BoardDao {
     @Resource(name="getBoardMapper")
     private RowMapper<Board> boardMapper;
 
-    // 자동 sequence 반환을 쉽게 하기 위한 jdbcInsert
-    private SimpleJdbcInsert jdbcInsert;
-
-    private NamedParameterJdbcTemplate nameJdbcTemplate;
-
-    @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.nameJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        this.jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("BOARD").usingGeneratedKeyColumns("board_no");
-    }
+    
 
     public int insertBoard(Board board) {
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(board);
@@ -54,7 +44,7 @@ public class BoardDaoJdbc implements BoardDao {
         /*
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        nameJdbcTemplate.update("Insert Into BOARD (writer_id, content, board_gubun) Values (:writerId, :content, 1)", param, keyHolder);
+        getNamedParameterJdbcTemplate().update("Insert Into BOARD (writer_id, content, board_gubun) Values (:writerId, :content, 1)", param, keyHolder);
         
         return keyHolder.getKey().intValue();
         */
@@ -64,26 +54,26 @@ public class BoardDaoJdbc implements BoardDao {
     public int getMaxBoardNo() {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
-        return this.nameJdbcTemplate.queryForObject("Select Max(board_no) As max_boardno From BOARD", param, Integer.class);
+        return this.getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("board", "getMaxBoardNo"), param, Integer.class);
     }
 
     public void updateBoard(Board board) {
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(board);
 
-        this.nameJdbcTemplate.update("Update BOARD Set content = :content Where board_no = :boardNo ", param);
+        this.getNamedParameterJdbcTemplate().update(sqlService.findSql("board", "updateBoard"), param);
     }
 
     public void deleteBoard(int boardNo) {
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("boardNo", boardNo);
 
-        this.nameJdbcTemplate.update("Delete From BOARD Where board_no = :boardNo", param);
+        this.getNamedParameterJdbcTemplate().update(sqlService.findSql("board", "deleteBoard"), param);
     }
 
     public void deleteAll() {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
-        this.nameJdbcTemplate.update("Delete From BOARD", param);
+        this.getNamedParameterJdbcTemplate().update(sqlService.findSql("board", "deleteAll"), param);
 
         initAuto();
     }
@@ -100,13 +90,13 @@ public class BoardDaoJdbc implements BoardDao {
 
         param.addValue("databaseName", databaseName);
 
-        return this.nameJdbcTemplate.queryForObject("SELECT AUTO_INCREMENT From INFORMATION_SCHEMA.TABLES Where TABLE_SCHEMA = :databaseName And TABLE_NAME = 'BOARD'", param, Integer.class);
+        return this.getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("board", "getAutoValue"), param, Integer.class);
     }
 
     public int countAll() {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
-        return this.nameJdbcTemplate.queryForObject("Select Count(*) As cnt From BOARD", param, Integer.class);
+        return this.getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("board", "countAll"), param, Integer.class);
     }
 
     public int countBoard(int boardNo) {
@@ -114,7 +104,7 @@ public class BoardDaoJdbc implements BoardDao {
 
         param.addValue("boardNo", boardNo);
 
-        return this.nameJdbcTemplate.queryForObject("Select Count(*) As cnt From BOARD Where board_no = :boardNo", param, Integer.class);
+        return this.getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("board", "countBoard"), param, Integer.class);
     }
 
     public Board getBoard(int boardNo) {
@@ -123,20 +113,20 @@ public class BoardDaoJdbc implements BoardDao {
 
         param.addValue("boardNo", boardNo);
 
-        return this.nameJdbcTemplate.queryForObject("Select * From BOARD Where board_no = :boardNo", param, this.boardMapper);
+        return this.getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("board", "getBoard"), param, this.boardMapper);
     }
 
     public List<Board> getAllBoardList() {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
-        return this.nameJdbcTemplate.query("Select * From BOARD Where board_no", param, this.boardMapper);
+        return this.getNamedParameterJdbcTemplate().query(sqlService.findSql("board", "getAllBoardList"), param, this.boardMapper);
     }
 
     public void alterBoardNo(final int autoInit) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("init", autoInit);
 
-        this.nameJdbcTemplate.execute("ALTER TABLE BOARD AUTO_INCREMENT = :init", paramMap, new PreparedStatementCallback() {
+        this.getNamedParameterJdbcTemplate().execute(sqlService.findSql("board", "alterBoardNo"), paramMap, new PreparedStatementCallback() {
             @Override
             public Object doInPreparedStatement(PreparedStatement pstmt) throws SQLException {
                 return pstmt.executeUpdate();  
@@ -152,6 +142,6 @@ public class BoardDaoJdbc implements BoardDao {
 
         param.addValue("writerId", writerId);
 
-        return this.nameJdbcTemplate.query("Select * From BOARD Where writer_id = :writerId Order By board_no", param, this.boardMapper);
+        return this.getNamedParameterJdbcTemplate().query(sqlService.findSql("board", "getAllBoardListByUserId"), param, this.boardMapper);
     }
 }

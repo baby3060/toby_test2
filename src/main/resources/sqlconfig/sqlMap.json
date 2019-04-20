@@ -137,5 +137,54 @@
                 "sql" : "Select Count(*) As empty_con From CONFIRM Where solve_content Is Null"
             }
         ]
+    },
+    {
+        "gubun" : "board",
+        "sqlMap" : [
+            {
+                "key" : "getMaxBoardNo",
+                "sql" : "Select Max(board_no) As max_boardno From BOARD"
+            },
+            {
+                "key" : "updateBoard",
+                "sql" : "Update BOARD Set content = :content Where board_no = :boardNo"
+            },
+            {
+                "key" : "deleteBoard",
+                "sql" : "Delete From BOARD Where board_no = :boardNo"
+            },
+            {
+                "key" : "deleteAll",
+                "sql" : "Delete From BOARD"
+            },
+            {
+                "key" : "getAutoValue",
+                "sql" : "SELECT AUTO_INCREMENT From INFORMATION_SCHEMA.TABLES Where TABLE_SCHEMA = :databaseName And TABLE_NAME = 'BOARD'"
+            },
+            {
+                "key" : "countAll",
+                "sql" : "Select Count(*) As cnt From BOARD"
+            },
+            {
+                "key" : "countBoard",
+                "sql" : "Select Count(*) As cnt From BOARD Where board_no = :boardNo"
+            },
+            {
+                "key" : "getBoard",
+                "sql" : "Select * From BOARD Where board_no = :boardNo"
+            },
+            {
+                "key" : "getAllBoardList",
+                "sql" : "Select * From BOARD Order By board_no"
+            },
+            {
+                "key" : "alterBoardNo",
+                "sql" : "ALTER TABLE BOARD AUTO_INCREMENT = :init"
+            },
+            {
+                "key" : "getAllBoardListByUserId",
+                "sql" : "Select * From BOARD Where writer_id = :writerId Order By board_no"
+            }
+        ]
     }
 ]
