@@ -1,6 +1,7 @@
 package com.tobsec.common;
 
 import org.slf4j.Logger;
+import java.util.Arrays;
 
 import com.tobsec.service.exception.*;
 
@@ -14,6 +15,8 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.ProceedingJoinPoint;
 
 @Aspect
 public class LoggingAspect {
@@ -22,7 +25,7 @@ public class LoggingAspect {
 
     @Pointcut("bean(*Service)")
     private void buisinessService(){}
-
+    
     @Before("buisinessService()")
     public void startServiceLog(JoinPoint joinPoint) {
         Signature sig = joinPoint.getSignature();
@@ -51,7 +54,7 @@ public class LoggingAspect {
 
         String methodName = sig.getDeclaringTypeName() + ". " + sig.getName();
 
-        aspectLogger.error(methodName + " 실행 완료");
+        aspectLogger.info(methodName + " 실행 완료");
     }
     
 }

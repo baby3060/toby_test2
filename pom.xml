@@ -88,12 +88,28 @@
         <version>${spring.version}</version>
     </dependency>
 
+
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-aspects -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-aspects</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-tx</artifactId>
         <version>${spring.version}</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-instrument -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-instrument</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+
 
 
       <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
@@ -289,14 +305,6 @@
             </reports>
           </reportSet>
         </reportSets>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-              <goal>cpd-check</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <linkXref>true</linkXref>
           <sourceEncoding>utf-8</sourceEncoding>
@@ -304,6 +312,43 @@
           <targetJdk>11</targetJdk>
 
         </configuration>
+      </plugin>
+
+      <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/findbugs-maven-plugin -->
+      <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>findbugs-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+
+      <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>aspectj-maven-plugin</artifactId>
+          <version>1.11</version>
+          
+
+          <configuration>
+              <complianceLevel>11</complianceLevel>
+              <forceAjcCompile>true</forceAjcCompile>
+              <weaveDirectories>
+                  <weaveDirectory>${project.build.outputDirectory}</weaveDirectory>
+              </weaveDirectories>
+              <aspectLibraries>
+                  <aspectLibrary>
+                      <groupId>org.springframework</groupId>
+                      <artifactId>spring-aspects</artifactId>
+                  </aspectLibrary>
+              </aspectLibraries>
+          </configuration>
       </plugin>
     </plugins>
   </reporting>

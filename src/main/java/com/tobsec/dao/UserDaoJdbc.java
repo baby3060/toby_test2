@@ -4,7 +4,7 @@ import java.util.*;
 import com.tobsec.model.*;
 
 import javax.annotation.Resource;
-
+import com.tobsec.service.exception.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,6 +28,7 @@ public class UserDaoJdbc extends DaoSupport implements UserDao {
         getNamedParameterJdbcTemplate() = new NamedParameterJdbcTemplate(dataSource);
     }
     */
+
 
     private SqlParameterSource makeParam(User user) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();

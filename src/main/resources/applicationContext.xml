@@ -29,7 +29,7 @@
 
     <bean id="logAop" class="com.tobsec.common.LoggingAspect" />
 
-    <tx:annotation-driven />
+    <tx:annotation-driven mode="aspectj" />
 
     <jdbc:embedded-database id="embeddedDataSource" type="H2">
 		<jdbc:script location="classpath:sqlconfig/create-db.sql" />

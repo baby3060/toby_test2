@@ -68,8 +68,8 @@
 - [X] 경과 시간을 구할 Aspect 적용(ProceddingJoinPoint 사용) : 무조건 들어가야함.
 - [X] BOARD 테이블(키 값은 자동 생성) 생성 
 - [X] 트랜잭션 어드바이스 적용 및 REQUIRED 속성의 트랜잭션 메소드에서 자신의 REQUIRES_NEW 속성 메소드 호출해보기(프록시 트랜잭션의 한계 체험 및 보완해보기) : 한계 확인
->>>> Test를 이상하게 진행했는지는 모르겠지만, 기본 default(REQUIRED) 속성인 메소드(root)에서 userDao.deleteAll을 호출하고, Insert 후 고의로 예외를 발생시키는 REQUIRES_NEW로 설정된 또다른 메소드(add2)를 생성하여, 호출하였다. 이 결과 add2에서 Insert 한 내용은 저장은 되지 않았고, deleteAll은 정상 작동하였다.
->>>> 모두 진행 한 후 finally 문에서 readOnly 속성으로 설정한 메소드에서 delete 문을 실행하였음에도 불구하고, 예외가 발생하지 않았다.
+>>>> 동일한 트랜잭션인지의 여부는 트랜잭션 id를 통해 확인 가능 
+>>>> RuntimeException을 통해 롤백이 안 될 경우 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly() 메소드로 현재 트랜잭션 롤백(하나의 트랜잭션에서 폴더 몇 개 호출 시)
 >>>> ~~(@Aspect 애노테이션 사용)~~ @Aspect 애노테이션 사용해서 트랜잭션을 적용하는 것은 무리 : 이유는 트랜잭션 속성때문
 - [X] BoardDao의 InsertBoard에는 SimpleJdbcInsert 사용(Dao Support) : 생성된 Key 값을 반환
 - [X] Board Service 생성(전체 삭제 시 AUTO_INCRENMENT 1로 초기화, 부분 삭제 시 한 건 도 없으면 1, 아니면 Max + 1)
@@ -78,6 +78,6 @@
 
 4. 코드 품질 개선
 - [ ] Findbugs 사용
-- [ ] PMD 사용
+- [X] PMD 사용
 
 5. JavaDoc 생성

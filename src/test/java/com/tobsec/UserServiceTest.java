@@ -224,7 +224,7 @@ public class UserServiceTest implements ParentTest  {
         assertThat(count, is(4));
     }
 
-    @Test(expected=RuntimeException.class)
+    @Test
     public void complexTest() {
         userService.deleteAll();
 
@@ -240,7 +240,7 @@ public class UserServiceTest implements ParentTest  {
 
         assertThat(count, is(7));
 
-        User exceptionUser = new User("8", "사용자8", "8", Level.BRONZE, 0, 0, "jj@jj.com");
+        User exceptionUser = new User("811111111111111111111111111", "사용자8", "8", Level.BRONZE, 0, 0, "jj@jj.com");
 
         // readOnly로 설정한 메소드에서 삭제를 진행하였는데도 예외 발생 안함
         userService.complexOperation(exceptionUser);
@@ -250,9 +250,6 @@ public class UserServiceTest implements ParentTest  {
         // 전혀 다른 트랜잭션에서 예외가 발생하였으니 0이 되어야 함
         // Delete는 정상 작동
         assertThat(count, is(0));
-        
-
-        // 예외 발생(단독으로 이 메소드를 사용할 시 readOnly 예외 발생, target 메소드에서 호출 시에는 예외가 발생하지 않음 => 정상 deleteAll 발생)
-        userService.readOnlyUpdate();
     }
+
 }

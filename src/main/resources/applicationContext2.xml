@@ -22,5 +22,6 @@
             p:username="${db.userName}"
             p:password="${db.userPass}"
             p:maxIdle="10"
+            p:defaultAutoCommit="false"
         />
 </beans>

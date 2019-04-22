@@ -16,5 +16,6 @@
             p:username="#{connBeanFactory.getUserName()}"
             p:password="#{connBeanFactory.getUserPass()}"
             p:maxIdle="10"
+            p:defaultAutoCommit="false"
         />
 </beans>

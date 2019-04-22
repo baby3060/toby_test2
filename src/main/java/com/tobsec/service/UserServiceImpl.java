@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.transaction.annotation.Propagation;
 
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+
 @Transactional
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -59,7 +61,6 @@ public class UserServiceImpl implements UserService {
     }
 
     public static class TestUserServiceException extends RuntimeException { }
-
 
     @Autowired
     UserDao userDao;
@@ -238,39 +239,50 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    private void addUser2(User user) {
-        int result = 0;
-
+    public void addUser2(User user) {
         if(user == null) {
-            result = 0;
+            
         } else {
             if( this.countUser(user.getId()) == 0 ) {
                 // Java 7 이상에서 지원 Null String을 ""로
                 user.setRecid(Objects.toString(user.getRecid(), "").trim());
-
-                result = userDao.addUser(user);
+                userDao.addUser(user);
+                
             }
         }
-
-        // 억지로 Runtime 예외 반환 => 이 트랜잭션 고의로 실패시키기
-        throw new EmptyResultException("저장 중 에러가 발생하였습니다. 데이터가 저장되지 않았습니다.");
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly=true, propagation = Propagation.REQUIRES_NEW)
     public void readOnlyUpdate() {
+        logger.info("User Service.Called readOnlyUpdate");
         userDao.deleteAll();
     }
-
-    public void complexOperation(User user)  {
-        userDao.deleteAll();
+    
+    public void complexOperation(User user) {
+        this.deleteAll();
 
         try {
-            this.addUser2(user);
-        } catch(EmptyResultException e) {
-            e.printStackTrace();
+            this.addUser2(user);    
+        } catch(RuntimeException e) {
+            logger.error("ComplexOperation Exception After Count : " + this.countAll());
         } finally {
             // ReadOnly에서 Delete 문을 호출하였다.
             readOnlyUpdate();
+        }
+    }
+
+    // 동일한 트랜잭션에 태운다고 가정
+    public void complexOperation2(User user) {
+        this.deleteAll();
+
+        try {
+            this.addUser2(user);    
+        } catch(RuntimeException e) {
+            logger.error("ComplexOperation Exception After Count : " + this.countAll());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        } finally {
+            // ReadOnly에서 Delete 문을 호출하였다.
+            // readOnlyUpdate();
         }
     }
 }

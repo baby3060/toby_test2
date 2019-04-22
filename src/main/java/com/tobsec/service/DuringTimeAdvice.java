@@ -21,19 +21,26 @@ public class DuringTimeAdvice {
     public Object measure(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
         Object result = null;
+
+        Signature sig = joinPoint.getSignature();
+
+        StringBuilder loggingStr = new StringBuilder();
+
+        loggingStr.append(String.format("실행 대상 : %s.%s(%s), 실행 시간 : ", joinPoint.getTarget().getClass().getSimpleName(), sig.getName(), Arrays.toString(joinPoint.getArgs())));
+
         try {
             result = joinPoint.proceed();
             return result;
         } finally {
             long finishTime = System.currentTimeMillis();
-            Signature sig = joinPoint.getSignature();
-            String format = String.format("%s.%s(%s) 실행 시간 : %d ms\n", 
-                joinPoint.getTarget().getClass().getSimpleName()
-                , sig.getName()
-                , Arrays.toString(joinPoint.getArgs())
-                , (finishTime - startTime)
+            
+            String format = String.format("%d ms\n", 
+                (finishTime - startTime)
             );
-            logger.info(format);
+
+            loggingStr.append(format);
+
+            logger.info(loggingStr.toString());
         }
     }
 }
