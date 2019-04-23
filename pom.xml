@@ -11,6 +11,7 @@
   <url>http://maven.apache.org</url>
 
   <properties>
+    <aspectj.version>1.9.3</aspectj.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.target>11</maven.compiler.target>
@@ -37,21 +38,21 @@
     <dependency>
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjweaver</artifactId>
-        <version>1.9.3</version>
+        <version>${aspectj.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt -->
     <dependency>
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjrt</artifactId>
-        <version>1.9.3</version>
+        <version>${aspectj.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjtools -->
     <dependency>
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjtools</artifactId>
-        <version>1.9.3</version>
+        <version>${aspectj.version}</version>
     </dependency>
 
 
@@ -229,7 +230,7 @@
         <artifactId>mybatis-spring</artifactId>
         <version>2.0.1</version>
     </dependency>
-
+    
   </dependencies>
 
   <build>
@@ -261,19 +262,6 @@
       </plugin>
 
       <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.1.1</version>
-        <executions>
-            <execution>
-                <id>getClasspathFilenames</id>
-                <goals>
-                    <goal>properties</goal>
-                </goals>
-            </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
@@ -287,7 +275,41 @@
           -->
         </configuration>
       </plugin>
+      
 
+      <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>aspectj-maven-plugin</artifactId>
+          <version>1.11</version>
+          <dependencies>
+					<dependency>
+						<groupId>org.aspectj</groupId>
+						<artifactId>aspectjrt</artifactId>
+						<version>${aspectj.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.aspectj</groupId>
+						<artifactId>aspectjtools</artifactId>
+						<version>${aspectj.version}</version>
+					</dependency>
+				</dependencies>
+          
+          <configuration>
+              <complianceLevel>11</complianceLevel>
+              <source>11</source>
+					    <target>11</target>
+              <forceAjcCompile>true</forceAjcCompile>
+              <weaveDirectories>
+                  <weaveDirectory>${project.build.outputDirectory}</weaveDirectory>
+              </weaveDirectories>
+              <aspectLibraries>
+                  <aspectLibrary>
+                      <groupId>org.springframework</groupId>
+                      <artifactId>spring-aspects</artifactId>
+                  </aspectLibrary>
+              </aspectLibraries>
+          </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -330,26 +352,6 @@
                 <artifactId>maven-project-info-reports-plugin</artifactId>
             </plugin>
 
-      <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>aspectj-maven-plugin</artifactId>
-          <version>1.11</version>
-          
-
-          <configuration>
-              <complianceLevel>11</complianceLevel>
-              <forceAjcCompile>true</forceAjcCompile>
-              <weaveDirectories>
-                  <weaveDirectory>${project.build.outputDirectory}</weaveDirectory>
-              </weaveDirectories>
-              <aspectLibraries>
-                  <aspectLibrary>
-                      <groupId>org.springframework</groupId>
-                      <artifactId>spring-aspects</artifactId>
-                  </aspectLibrary>
-              </aspectLibraries>
-          </configuration>
-      </plugin>
     </plugins>
   </reporting>
 </project>

@@ -252,37 +252,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional(readOnly=true, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(readOnly=true)
     public void readOnlyUpdate() {
         logger.info("User Service.Called readOnlyUpdate");
-        userDao.deleteAll();
+        deleteAll();
     }
-    
+        
+    @Transactional
     public void complexOperation(User user) {
         this.deleteAll();
-
-        try {
-            this.addUser2(user);    
-        } catch(RuntimeException e) {
-            logger.error("ComplexOperation Exception After Count : " + this.countAll());
-        } finally {
-            // ReadOnly에서 Delete 문을 호출하였다.
-            readOnlyUpdate();
-        }
+        this.addUser2(user);    
     }
 
-    // 동일한 트랜잭션에 태운다고 가정
-    public void complexOperation2(User user) {
-        this.deleteAll();
-
-        try {
-            this.addUser2(user);    
-        } catch(RuntimeException e) {
-            logger.error("ComplexOperation Exception After Count : " + this.countAll());
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        } finally {
-            // ReadOnly에서 Delete 문을 호출하였다.
-            // readOnlyUpdate();
-        }
-    }
 }
