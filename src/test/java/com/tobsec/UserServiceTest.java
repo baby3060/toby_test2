@@ -242,14 +242,25 @@ public class UserServiceTest implements ParentTest  {
 
         User exceptionUser = new User("811111111111111111111111111", "사용자8", "8", Level.BRONZE, 0, 0, "jj@jj.com");
 
-        // readOnly로 설정한 메소드에서 삭제를 진행하였는데도 예외 발생 안함
-        userService.complexOperation(exceptionUser);
+        // 예외 발생 후에도 계속 진행하기 위한 try catch
+        try {
+            // readOnly로 설정한 메소드에서 삭제를 진행하였는데도 예외 발생 안함
+            userService.complexOperation(exceptionUser);
+        } catch(Exception e) {
 
+        }
+        
         count = userService.countAll();
 
-        // 전혀 다른 트랜잭션에서 예외가 발생하였으니 0이 되어야 함
-        // Delete는 정상 작동
+        // 트랜잭션이 쪼개 지지 않을 경우 tx의 모드가 proxy일 경우 7이어야 함. => DeleteAll까지 모두 롤백
+        // 따로 나눠질 경우 0이어야 함(deleteAll은 정상 작동)
         assertThat(count, is(0));
+    }
+
+    @Test
+    public void aspectReadOnlyTest() {
+        // aspectj 모드에서 readonly로 된 메소드에서 삭제 시 에러 발생 안 한 문제 발생
+        userService.readOnlyUpdate();
     }
 
 }

@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Propagation;
 
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
 @Transactional
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -254,10 +256,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly=true)
     public void readOnlyUpdate() {
-        logger.info("User Service.Called readOnlyUpdate");
-        deleteAll();
+        logger.info("User Service.Called readOnlyUpdate : " + TransactionSynchronizationManager.isCurrentTransactionReadOnly());
+        this.deleteAll();
     }
-        
+
     @Transactional
     public void complexOperation(User user) {
         this.deleteAll();

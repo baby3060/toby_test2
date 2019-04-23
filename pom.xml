@@ -238,6 +238,19 @@
 
     <plugins>
       <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.5.1</version>
+        <executions>
+            <execution>
+                <id>getClasspathFilenames</id>
+                <goals>
+                    <goal>properties</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.6.0</version>
@@ -257,6 +270,7 @@
           <arguments>
             <argument>-Xmx1000m</argument>
             <argument>-Xlint:unchecked</argument>
+            <argument>-javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar</argument>
           </arguments>
         </configuration>
       </plugin>
@@ -276,6 +290,19 @@
         </configuration>
       </plugin>
       
+      <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <forkMode>once</forkMode>
+          <argLine>
+            -javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar
+          </argLine>
+          <useSystemClassloader>true</useSystemClassloader>
+        </configuration>
+    </plugin>
+
 
       <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -352,6 +379,7 @@
                 <artifactId>maven-project-info-reports-plugin</artifactId>
             </plugin>
 
+      
     </plugins>
   </reporting>
 </project>

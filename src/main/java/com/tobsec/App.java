@@ -24,10 +24,6 @@ import java.sql.Connection;
 public class App {
 
     public static void main( String[] args ) {
-        System.setProperty("spring.profiles.active", "first");
-
-        EnvironmentCapable ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-
-        Environment env = ctx.getEnvironment();
+        
     }
 }
