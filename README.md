@@ -51,6 +51,7 @@
 - [X] UserService에서 유효성 검사(추가 시 카운트가 0인지? 유효한 데이터인지 등)
 - [X] 트랜잭션 적용(애노테이션)
 >>> @Transactionl 애노테이션의 경우 Dao에 적용할 수도 있고, Service에도 적용할 수 있는데 어지간하면 Service에 적용하는 편이 더 낫다.
+>>>> Transaction의 모드를 aspectj로 바꾸고, UserService의 readOnly에서 데이터 삭제 시 정상 작동, Test 메소드에 @Transactional(readOnly=true) 속성을 부여할 시 테스트에서 에러 발생
 >>>> User의 경우 @Transactional 사용, Confirm은 aop 네임스페이스의 전용태그 사용
 >>>> @Transactional은 메소드별로 좀 더 세부적인 설정 가능, 다만 자바 코드에 작성해야 함(소스 라인 증가).
 >>>> aop 네임스페이스의 전용태그는 반대 : 소스코드는 증가하지 않고 트랜잭션 가능하지만, 메소드별로 세부적인 사항은 적용하기 힘듦
@@ -71,6 +72,8 @@
 >>>> 동일한 트랜잭션인지의 여부는 트랜잭션 id를 통해 확인 가능 
 >>>> RuntimeException을 통해 롤백이 안 될 경우 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly() 메소드로 현재 트랜잭션 롤백(하나의 트랜잭션에서 폴더 몇 개 호출 시)
 >>>> ~~(@Aspect 애노테이션 사용)~~ @Aspect 애노테이션 사용해서 트랜잭션을 적용하는 것은 무리 : 이유는 트랜잭션 속성때문
+>>>> AspectJ에 적용되는 포인트컷과 스프링의 포인트컷이 동일한 대상을 가리키지 않도록 하는 것이 중요
+>>>> 자바 11버전으로 했었는데 어떻게 해도 안 되어서 자바 8 버전으로 실행
 - [X] BoardDao의 InsertBoard에는 SimpleJdbcInsert 사용(Dao Support) : 생성된 Key 값을 반환
 - [X] Board Service 생성(전체 삭제 시 AUTO_INCRENMENT 1로 초기화, 부분 삭제 시 한 건 도 없으면 1, 아니면 Max + 1)
 - [X] BOARDDao MyBatis로도 생성

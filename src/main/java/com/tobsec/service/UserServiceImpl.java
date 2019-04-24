@@ -237,10 +237,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly=true)
     public List<User> selectUserAll() {
+        logger.info("User Service.Called selectUserAll : " + TransactionSynchronizationManager.isCurrentTransactionReadOnly());
         return userDao.selectUserAll();
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void addUser2(User user) {
         if(user == null) {
             
@@ -249,7 +250,6 @@ public class UserServiceImpl implements UserService {
                 // Java 7 이상에서 지원 Null String을 ""로
                 user.setRecid(Objects.toString(user.getRecid(), "").trim());
                 userDao.addUser(user);
-                
             }
         }
     }

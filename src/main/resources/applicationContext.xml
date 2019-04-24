@@ -27,11 +27,11 @@
     <!-- @Aspect어노테이션이 있는 클래스를 자동으로 찾아서 설정해줌 -->
     <aop:aspectj-autoproxy/>
     
-    <context:load-time-weaver aspectj-weaving="on" />
+    <bean class="org.springframework.transaction.aspectj.AnnotationTransactionAspect" factory-method="aspectOf">
+        <property name="transactionManager" ref="transactionManager"/>
+    </bean>
 
-    <bean id="logAop" class="com.tobsec.common.LoggingAspect" />
-
-    <tx:annotation-driven mode="aspectj" />
+    <tx:annotation-driven transaction-manager="transactionManager" mode="aspectj" />
 
     <jdbc:embedded-database id="embeddedDataSource" type="H2">
 		<jdbc:script location="classpath:sqlconfig/create-db.sql" />

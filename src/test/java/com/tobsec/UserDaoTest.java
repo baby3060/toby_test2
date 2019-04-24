@@ -20,9 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.dao.TransientDataAccessResourceException;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
+@Transactional
 public class UserDaoTest  implements ParentTest {
     private List<User> list;
 
@@ -43,8 +47,6 @@ public class UserDaoTest  implements ParentTest {
 
     @Test
     public void count() {
-        userDao.deleteAll();
-
         int count = userDao.countUserAll();
 
         assertThat(count, is(0));
@@ -52,8 +54,6 @@ public class UserDaoTest  implements ParentTest {
 
     @Test
     public void insertTest() {
-        userDao.deleteAll();
-
         int count = userDao.countUserAll();
 
         assertThat(count, is(0));
@@ -69,8 +69,6 @@ public class UserDaoTest  implements ParentTest {
 
     @Test
     public void updateTest() {
-        userDao.deleteAll();
-
         int count = userDao.countUserAll();
 
         assertThat(count, is(0));
@@ -106,7 +104,6 @@ public class UserDaoTest  implements ParentTest {
 
     @Test
     public void deleteTest() {
-        userDao.deleteAll();
 
         int count = userDao.countUserAll();
 
@@ -139,7 +136,6 @@ public class UserDaoTest  implements ParentTest {
 
     @Test
     public void getUserTest() {
-        userDao.deleteAll();
 
         for( User user : list ) {
             userDao.addUser(user);
@@ -166,6 +162,13 @@ public class UserDaoTest  implements ParentTest {
         assertThat(user4, equalTo(anotherUser4));
         assertThat(user5, equalTo(anotherUser5));
         assertThat(user6, equalTo(anotherUser6));
+    }
+
+    @Test(expected=TransientDataAccessResourceException.class)
+    @Transactional(readOnly=true)
+    public void readOnlyTest() {
+        assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly(), is(true));
+        userDao.deleteAll();
     }
 
 }
