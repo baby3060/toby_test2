@@ -73,7 +73,7 @@
 >>>> RuntimeException을 통해 롤백이 안 될 경우 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly() 메소드로 현재 트랜잭션 롤백(하나의 트랜잭션에서 폴더 몇 개 호출 시)
 >>>> ~~(@Aspect 애노테이션 사용)~~ @Aspect 애노테이션 사용해서 트랜잭션을 적용하는 것은 무리 : 이유는 트랜잭션 속성때문
 >>>> AspectJ에 적용되는 포인트컷과 스프링의 포인트컷이 동일한 대상을 가리키지 않도록 하는 것이 중요
->>>> 자바 11버전으로 했었는데 어떻게 해도 안 되어서 자바 8 버전으로 실행
+>>>> 자바 11버전으로 했었는데 자바 8 버전으로 실행(aspectj-maven-plugin의 excutions가 tools.jar을 필요로 함 : 9부터 tools.jar 없어짐)
 - [X] BoardDao의 InsertBoard에는 SimpleJdbcInsert 사용(Dao Support) : 생성된 Key 값을 반환
 - [X] Board Service 생성(전체 삭제 시 AUTO_INCRENMENT 1로 초기화, 부분 삭제 시 한 건 도 없으면 1, 아니면 Max + 1)
 - [X] BOARDDao MyBatis로도 생성
@@ -84,3 +84,9 @@
 - [X] PMD 사용
 
 5. JavaDoc 생성
+
+6. AOP 연습 심화(둘 다 Around 어드바이스 사용하면 될 듯)
+- [ ] 데이터베이스 Insert 시 중요 데이터 암호화
+>>>> MyBatis의 TypeHandler를 사용한 암호화를 생각할 수도 있었으나, 서비스로 옮기는 게 옳을 듯
+>>>> 특정 필드에 커스텀 애노테이션을 달 예정(@Encrypt)
+- [ ] User의 Level에 따라 접근할 메소드 UserService에 적용
