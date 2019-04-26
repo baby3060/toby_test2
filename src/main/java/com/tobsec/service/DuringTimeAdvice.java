@@ -9,9 +9,12 @@ import java.util.Arrays;
 
 import com.tobsec.common.Log;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.slf4j.Logger;
+
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 public class DuringTimeAdvice {
 
@@ -39,8 +42,12 @@ public class DuringTimeAdvice {
             );
 
             loggingStr.append(format);
-
             logger.info(loggingStr.toString());
         }
     }
+
+    public void afterThrowing(JoinPoint joinPoint, Throwable excep) {
+        logger.error("예외 발생 메소드 : "  + joinPoint.getSignature() + ", 발생 예외 : " + excep.toString());  
+    }
+
 }

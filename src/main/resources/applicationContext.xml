@@ -27,16 +27,22 @@
     <!-- @Aspect어노테이션이 있는 클래스를 자동으로 찾아서 설정해줌 -->
     <aop:aspectj-autoproxy/>
     
+    <!-- 
     <bean class="org.springframework.transaction.aspectj.AnnotationTransactionAspect" factory-method="aspectOf">
         <property name="transactionManager" ref="transactionManager"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager" mode="aspectj" />
+    <context:load-time-weaver aspectj-weaving="on" />
 
+    <tx:annotation-driven transaction-manager="transactionManager" mode="aspectj" proxy-target-class="true"  />
+    -->
+
+    <tx:annotation-driven  />
+    
     <jdbc:embedded-database id="embeddedDataSource" type="H2">
 		<jdbc:script location="classpath:sqlconfig/create-db.sql" />
 	</jdbc:embedded-database>
-
+    
     <!-- TransactionManager의 이름이 transactionManager라면 transaction-manager 속성 생략 가능 -->
     <tx:advice id="txAdvice">
         <tx:attributes>
@@ -61,6 +67,9 @@
             <aop:around pointcut-ref="servicePoint" method="measure" />
         </aop:aspect>
 
+        <aop:aspect id="throwingAspect" ref="duringAdvice" order="39">
+            <aop:after-throwing pointcut-ref="servicePoint" method="afterThrowing" throwing="excep" />
+        </aop:aspect>
     </aop:config>
 
     <context:component-scan base-package="com.tobsec">

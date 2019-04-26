@@ -69,11 +69,36 @@
 - [X] 경과 시간을 구할 Aspect 적용(ProceddingJoinPoint 사용) : 무조건 들어가야함.
 - [X] BOARD 테이블(키 값은 자동 생성) 생성 
 - [X] 트랜잭션 어드바이스 적용 및 REQUIRED 속성의 트랜잭션 메소드에서 자신의 REQUIRES_NEW 속성 메소드 호출해보기(프록시 트랜잭션의 한계 체험 및 보완해보기) : 한계 확인
->>>> 동일한 트랜잭션인지의 여부는 트랜잭션 id를 통해 확인 가능 
->>>> RuntimeException을 통해 롤백이 안 될 경우 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly() 메소드로 현재 트랜잭션 롤백(하나의 트랜잭션에서 폴더 몇 개 호출 시)
->>>> ~~(@Aspect 애노테이션 사용)~~ @Aspect 애노테이션 사용해서 트랜잭션을 적용하는 것은 무리 : 이유는 트랜잭션 속성때문
->>>> AspectJ에 적용되는 포인트컷과 스프링의 포인트컷이 동일한 대상을 가리키지 않도록 하는 것이 중요
->>>> 자바 11버전으로 했었는데 자바 8 버전으로 실행(aspectj-maven-plugin의 excutions가 tools.jar을 필요로 함 : 9부터 tools.jar 없어짐)
+>>>> 복합적인 트랜잭션이 필요할 경우 
+>>>> AspectJ @Transactional 사용하면 "항상" 새로운 트랜잭션이 발생함(REQUIRED가 무의미하고(새로운 트랜잭션에 탑재가 안 됨), readOnly가 먹히지 않음).
+>>>>> 프록시 모드의 @Transactional의 경우 별도의 트랜잭션 시작 메소드가 있어야 한다(서비스 클래스의 메소드를 사용하더라도 테스트에 @Transactional 애노테이션을 달아주던가, 서비스 클래스를 DI 받고, 해당 클래스의 메소드로 로직이 이뤄지는 메소드(Invocation 메소드)에 @Transactional 달아줄 것).
+
+<pre>
+    <code>
+        // UserServiceImpl.java
+        
+        @Transactional(REQUIRES_NEW)
+        public void addUserNew() {
+
+        }
+
+        @Transactional
+        public void deleteAll() {
+
+        }
+
+        // UserInvocation.java
+
+        @Transactional
+        // 트랜잭션 수행
+        public void complex() {
+            userService.deleteAll();
+
+            // 새로운 트랜잭션에서 수행
+            userService.addUserNew();
+        }
+    </code>
+</pre>
 - [X] BoardDao의 InsertBoard에는 SimpleJdbcInsert 사용(Dao Support) : 생성된 Key 값을 반환
 - [X] Board Service 생성(전체 삭제 시 AUTO_INCRENMENT 1로 초기화, 부분 삭제 시 한 건 도 없으면 1, 아니면 Max + 1)
 - [X] BOARDDao MyBatis로도 생성

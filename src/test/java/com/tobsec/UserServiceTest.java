@@ -7,6 +7,7 @@ import com.tobsec.context.AppConfig;
 import com.tobsec.service.UserService;
 import com.tobsec.service.UserServiceImpl;
 
+import com.tobsec.common.Log;
 import com.tobsec.service.exception.*;
 
 import java.sql.SQLException;
@@ -20,6 +21,8 @@ import org.junit.Before;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
+import org.slf4j.Logger;
+
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,9 +31,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
 public class UserServiceTest implements ParentTest  {
+
+    @Log
+    protected Logger serviceLogger;
+
     @Autowired
     @Qualifier("userService")
     private UserService userService;
@@ -226,43 +235,32 @@ public class UserServiceTest implements ParentTest  {
         assertThat(count, is(4));
     }
 
-    @Test
-    public void complexTest() {
+    @Test    
+    @Transactional
+    public void compositeTest() {
+        serviceLogger.info("Start compositeTest");
+
         userService.deleteAll();
-
-        int count = userService.countAll();
-
-        assertThat(count, is(0));
 
         for( User user : testList ) {
             userServiceTest.addUser(user);
         }
 
-        count = userService.countAll();
+        User user = new User("100301030103103", "테스트", "121231", Level.BRONZE, 0, 0, "");
 
-        assertThat(count, is(7));
+        int count = userService.countAll();
 
-        User exceptionUser = new User("811111111111111111111111111", "사용자8", "8", Level.BRONZE, 0, 0, "jj@jj.com");
+        assertThat(count, is(testList.size()));
 
-        // 예외 발생 후에도 계속 진행하기 위한 try catch
         try {
-            // readOnly로 설정한 메소드에서 삭제를 진행하였는데도 예외 발생 안함
-            userService.complexOperation(exceptionUser);
-        } catch(Exception e) {
-
-        }
+            userService.addUserNew(user);
+        } catch(Exception e) {}
         
         count = userService.countAll();
 
-        // 트랜잭션이 쪼개 지지 않을 경우 tx의 모드가 proxy일 경우 7이어야 함. => DeleteAll까지 모두 롤백
-        // 따로 나눠질 경우 0이어야 함(deleteAll은 정상 작동)
-        assertThat(count, is(0));
-    }
+        assertThat(count, is(testList.size()));
 
-    @Test
-    public void aspectReadOnlyTest() {
-        // aspectj 모드에서 readonly로 된 메소드에서 삭제 시 에러 발생 안 한 문제 발생
-        userService.readOnlyUpdate();
+        serviceLogger.info("End compositeTest");
     }
 
 }

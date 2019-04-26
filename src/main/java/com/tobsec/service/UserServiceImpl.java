@@ -12,16 +12,11 @@ import com.tobsec.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
-
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
-
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Transactional
 @Service("userService")
@@ -237,12 +232,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly=true)
     public List<User> selectUserAll() {
-        logger.info("User Service.Called selectUserAll : " + TransactionSynchronizationManager.isCurrentTransactionReadOnly());
         return userDao.selectUserAll();
     }
 
-    @Transactional
-    public void addUser2(User user) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void addUserNew(User user) {
+        logger.info("UserService.addUserNew Called");
         if(user == null) {
             
         } else {
@@ -253,17 +248,4 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
-
-    @Transactional(readOnly=true)
-    public void readOnlyUpdate() {
-        logger.info("User Service.Called readOnlyUpdate : " + TransactionSynchronizationManager.isCurrentTransactionReadOnly());
-        this.deleteAll();
-    }
-
-    @Transactional
-    public void complexOperation(User user) {
-        this.deleteAll();
-        this.addUser2(user);    
-    }
-
 }
