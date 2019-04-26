@@ -281,7 +281,27 @@
           <useSystemClassloader>true</useSystemClassloader>
         </configuration>
     </plugin>
+    
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.7.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.0.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <show>private</show>
+          <nohelp>true</nohelp>
+        </configuration>
+      </plugin>
     <!-- 
     <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -330,6 +350,13 @@
 
   <reporting>
     <plugins>
+    
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jxr-plugin</artifactId>
+            <version>2.3</version>
+        </plugin>
+    
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
@@ -355,19 +382,18 @@
       <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>findbugs-maven-plugin</artifactId>
+          <version>3.0.5</version>
       </plugin>
 
       <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-            </plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <show>public</show>
+        </configuration>
+      </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-            </plugin>
-
-      
     </plugins>
   </reporting>
 </project>

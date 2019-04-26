@@ -105,8 +105,28 @@
 - [X] Service Logging에 Before, After, AfterThrowing, AfterReturning 적용해보기
 
 4. 코드 품질 개선
-- [ ] Findbugs 사용
+- [X] Findbugs 사용
 - [X] PMD 사용
+
+>>>> mvn site 시 Exception 발생 시 build 부분에 해당 플러그인 추가
+<pre>
+    <code>
+        &lt;build&gt;
+            &lt;plugins&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-site-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.7.1&lt;/version&gt;
+                &lt;/plugin&gt;
+                &lt;plugin&gt;
+                    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                    &lt;artifactId&gt;maven-project-info-reports-plugin&lt;/artifactId&gt;
+                    &lt;version&gt;3.0.0&lt;/version&gt;
+                &lt;/plugin&gt;
+            &lt;/plugins&gt;
+        &lt;/build&gt;
+    </code>
+</pre>
 
 5. JavaDoc 생성
 
