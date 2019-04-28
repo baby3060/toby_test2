@@ -37,6 +37,8 @@
     <tx:annotation-driven transaction-manager="transactionManager" mode="aspectj" proxy-target-class="true"  />
     -->
 
+    <bean class="com.tobsec.common.AccessAdvice" />
+
     <tx:annotation-driven  />
     
     <jdbc:embedded-database id="embeddedDataSource" type="H2">

@@ -131,7 +131,7 @@
 5. JavaDoc 생성
 
 6. AOP 연습 심화(둘 다 Around 어드바이스 사용하면 될 듯)
+- [X] User의 Level에 따라 접근할 메소드 UserService에 적용
 - [ ] 데이터베이스 Insert 시 중요 데이터 암호화
 >>>> MyBatis의 TypeHandler를 사용한 암호화를 생각할 수도 있었으나, 서비스로 옮기는 게 옳을 듯
 >>>> 특정 필드에 커스텀 애노테이션을 달 예정(@Encrypt)
-- [ ] User의 Level에 따라 접근할 메소드 UserService에 적용

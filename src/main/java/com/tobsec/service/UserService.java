@@ -2,6 +2,8 @@ package com.tobsec.service;
 
 import java.util.List;
 
+import com.tobsec.common.*;
+
 import com.tobsec.model.User;
 import com.tobsec.model.Level;
 
@@ -34,5 +36,6 @@ public interface UserService {
     // 해당 Level 값 기준 수량
     public int countUserLevel(Level level, String gubun, Level toLevel);
     public List<User> selectUserAll();
-    
+
+    public void goldOverAcceable(User user);
 }

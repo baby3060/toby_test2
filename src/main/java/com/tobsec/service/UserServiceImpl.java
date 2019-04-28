@@ -3,6 +3,8 @@ package com.tobsec.service;
 import java.util.List;
 import java.util.Objects;
 
+import com.tobsec.common.*;
+
 import com.tobsec.model.User;
 import com.tobsec.model.Level;
 import com.tobsec.dao.UserDao;
@@ -247,5 +249,11 @@ public class UserServiceImpl implements UserService {
                 userDao.addUser(user);
             }
         }
+    }
+
+    @Override
+    @SecureAccess("level.getValue() >= T(com.tobsec.model.Level).GOLD.getValue()")
+    public void goldOverAcceable(User user) {
+        logger.info(user.getId() + "회원의 레벨은 GOLD 레벨이상입니다. 해당 메소드 수행 가능");
     }
 }

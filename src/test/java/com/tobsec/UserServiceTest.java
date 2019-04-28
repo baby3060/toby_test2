@@ -263,4 +263,19 @@ public class UserServiceTest implements ParentTest  {
         serviceLogger.info("End compositeTest");
     }
 
+    @Test
+    public void accessTest() {
+        try {
+            User user = new User("5", "사용자5", "5", Level.GOLD, 51, 36, "e@e.com");
+
+            userService.goldOverAcceable(user);
+
+            user = new User("5", "사용자5", "5", Level.SILVER, 51, 36, "e@e.com");
+
+            userService.goldOverAcceable(user);
+        } catch(RuntimeException e) {
+            serviceLogger.error("accessTest Exception : " + e.getMessage());
+        }
+    }
+
 }
