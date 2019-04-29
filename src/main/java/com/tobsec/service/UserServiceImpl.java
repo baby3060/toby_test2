@@ -96,6 +96,8 @@ public class UserServiceImpl implements UserService {
                     user.setRecid("");
                 }
 
+                logger.info("Arguments User : " + user);
+
                 result = userDao.addUser(user);
             }
         }

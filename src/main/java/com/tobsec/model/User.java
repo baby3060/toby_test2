@@ -2,6 +2,7 @@ package com.tobsec.model;
 
 // import lombok.*;
 
+import com.tobsec.common.Password;
 import com.tobsec.service.LevelUpStrategy;
 
 /*
@@ -44,6 +45,7 @@ public class User {
 
     private String id;
     private String name;
+    @Password
     private String password;
     private Level level;
     private int login;
@@ -90,7 +92,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "Id : " + this.id + ", Name : " + this.name + ", Level : " + this.level.toString() + ", (" + login + ", " + recommend + ")" + ", Email : " + this.email + ", Recid : " + this.recid;
+        return "Id : " + this.id + ", Name : " + this.name + ", Password : " + this.password + ", Level : " + this.level.toString() + ", (" + login + ", " + recommend + ")" + ", Email : " + this.email + ", Recid : " + this.recid;
     }
 
     @Override

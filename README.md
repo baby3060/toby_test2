@@ -20,7 +20,7 @@
 - [X] ConnectionBean의 설정 정보 Jaxb, Castor 사용해보기
 - [X] ConnectionBean의 설정 정보를 XML 뿐만 아니라, json에서 읽어보기
 - [X] ConnectionBean으로 저장하는 것이 아닌 스프링의 Properties 활용 클래스 사용하여 Connection 생성해보기
-- [ ] DataSource 생성 시 Profile 사용해보기(일단 파일을 쪼개서, 그리고 나서 하나의 파일에 : xml, Java 파일에도 저장[Configuration으로 만들어서]) : 파일분리 완료
+- [X] DataSource 생성 시 Profile 사용해보기
 
 
 2. UserDao, ConfirmDao 생성(DataSource 넘겨받는)
@@ -129,9 +129,15 @@
 </pre>
 
 5. JavaDoc 생성
+- [X] JavaDoc까지 생성 완료
 
 6. AOP 연습 심화(둘 다 Around 어드바이스 사용하면 될 듯)
 - [X] User의 Level에 따라 접근할 메소드 UserService에 적용
 - [ ] 데이터베이스 Insert 시 중요 데이터 암호화
 >>>> MyBatis의 TypeHandler를 사용한 암호화를 생각할 수도 있었으나, 서비스로 옮기는 게 옳을 듯
->>>> 특정 필드에 커스텀 애노테이션을 달 예정(@Encrypt)
+>>>> 특정 필드에 커스텀 애노테이션을 달 예정(@Password)
+>>>>> 원래는 "서비스" 단에서 DB에 저장 시 데이터를 암호화 하는 게 정석임(Spring Security 사용)
+- [ ] Spring Security 사용 하여 암호화 및 복호화 해보기
+
+7. RESTFul Template 사용해보기
+- [ ] 공공 데이터 포털 현재 내가 서비스 이용 신청한 내역 불러와서 파싱해보기
