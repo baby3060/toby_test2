@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
@@ -101,8 +104,6 @@ public class EncrypAdvice {
                         if( field.getAnnotation(Password.class) != null ) {
                             String encrypValue = "";
 
-                            encrypLogger.info("@Password 달려 있는 필드 : " + field.getName());
-                            
                             encrypLogger.info("암호화 전 값 : " + field.get(obj));
 
                             // 암호화 로직
@@ -118,8 +119,63 @@ public class EncrypAdvice {
 
     @Around("passwordDecodeService()")
     public Object passwordDecode(ProceedingJoinPoint joinPoint) throws Throwable {
-        Object ret = joinPoint.proceed();
-        encrypLogger.info("암호화 내역 Get 호출 : " + ret);
+        final Object ret = joinPoint.proceed();
+
+        encrypLogger.info("복호화 전 값 : " + ret);
+
+        if( ret instanceof Collection ) {
+            encrypLogger.info("해당 값은 Collection 이다.");
+            Collection col = (Collection)ret;
+            Iterator it = col.iterator();
+            
+            while(it.hasNext()) {
+                final Object itObj = it.next();
+                Class itClsx = itObj.getClass();
+                
+                ReflectionUtils.doWithLocalFields(itClsx, new ReflectionUtils.FieldCallback() {
+                    @Override
+                    @SuppressWarnings("unchecked")
+                    public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
+                        // 주어진 필드에 접근 가능하게 만듦
+                        ReflectionUtils.makeAccessible(field);
+    
+                        // 필드가 @Log 애노테이션을 가지고 있다면
+                        if( field.getAnnotation(Password.class) != null ) {
+                            String decodeValue = "";
+    
+                            // 복호화 로직
+    
+                            decodeValue = field.get(itObj).toString();
+                            decodeValue = decodeValue.substring(decodeValue.indexOf("암호화(") + 4, decodeValue.lastIndexOf(")"));
+                            field.set(itObj, decodeValue);
+                        }
+                    }
+                });
+            }
+        } else {
+            ReflectionUtils.doWithLocalFields(ret.getClass(), new ReflectionUtils.FieldCallback() {
+                @Override
+                @SuppressWarnings("unchecked")
+                public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
+                    // 주어진 필드에 접근 가능하게 만듦
+                    ReflectionUtils.makeAccessible(field);
+
+                    // 필드가 @Log 애노테이션을 가지고 있다면
+                    if( field.getAnnotation(Password.class) != null ) {
+                        String decodeValue = "";
+
+                        // 복호화 로직
+
+                        decodeValue = field.get(ret).toString();
+                        decodeValue = decodeValue.substring(decodeValue.indexOf("암호화(") + 4, decodeValue.lastIndexOf(")"));
+                        field.set(ret, decodeValue);
+                    }
+                }
+            });
+        }
+
+        encrypLogger.info("복호화 후 값 : " + ret);
+
         return ret;
     }
 }

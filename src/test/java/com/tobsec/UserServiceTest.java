@@ -211,6 +211,23 @@ public class UserServiceTest implements ParentTest  {
     }
 
     @Test
+    public void selectUserAllTest() {
+        userServiceTest.deleteAll();
+
+        int count = userService.countAll();
+
+        assertThat(count, is(0));
+
+        for( User user : testList ) {
+            userServiceTest.addUser(user);
+        }
+
+        List<User> innerResult = userService.selectUserAll();
+
+        assertThat(innerResult.size(), is(testList.size()));
+    }
+
+    @Test
     public void countConditionTest() {
         userService.deleteAll();
 
