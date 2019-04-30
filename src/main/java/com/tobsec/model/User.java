@@ -85,6 +85,8 @@ public class User {
     /**
      * 해당 User의 등급이 상승 대상인지?
      * 전략에 따른 구현
+     * @param upStrategy : 넘겨받는 전략
+     * @return 레벨업 대상인가?
      */
     public boolean isLvlUpTarget(LevelUpStrategy upStrategy) {
         return upStrategy.checkLevelUp(this);

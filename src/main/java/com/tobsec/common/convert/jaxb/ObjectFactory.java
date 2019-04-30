@@ -38,7 +38,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Config }
-     * 
+     * @return OXM Generate
      */
     public Config createConfig() {
         return new Config();

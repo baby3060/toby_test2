@@ -23,7 +23,7 @@ import org.springframework.util.ReflectionUtils;
 /**
  * SequreField(비밀번호) 애노테이션이 달려있는 필드 암호화
  * 필드의 애노테이션을 검색하는 조인포인트가 스프링에서는 없어서, 사용할 법한 메소드를 가져오는 포인트컷으로 수정
- * @Component와 @Aspect를 메타애노테이션으로 가지는 애노테이션을 정의하여 사용하려고 했으나, @AspectJ 애노테이션이 안 붙어있다는 에러가 발생함
+ * {@literal @}Component와 {@literal @}Aspect를 메타애노테이션으로 가지는 애노테이션을 정의하여 사용하려고 했으나, {@literal @}AspectJ 애노테이션이 안 붙어있다는 에러가 발생함
  * 우선 사용하기 편한 Around로 만들었다가, 그 다음에 알맞은 어드바이스로 수정해보기
  */
 @Aspect

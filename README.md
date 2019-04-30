@@ -130,6 +130,7 @@
 
 5. JavaDoc 생성
 - [X] JavaDoc까지 생성 완료
+>>>> JavaDoc에 @Component를 입력하고자 할 경우 {@literal @}Component 와 같이 입력
 
 6. AOP 연습 심화(둘 다 Around 어드바이스 사용하면 될 듯)
 - [X] User의 Level에 따라 접근할 메소드 UserService에 적용

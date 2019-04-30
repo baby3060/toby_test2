@@ -7,10 +7,10 @@ import java.io.*;
 
 import com.owlike.genson.Genson;
 
-
 /**
  * genson으로 파싱. 
- * 작은 크기의 역직렬화(JSON => Object) 속도가 두 번째로 빠름
+ * 작은 크기의 역직렬화(JSON =&gt; Object) 속도가 두 번째로 빠름
+
  */
 public class JsonConvert implements Converter {
     

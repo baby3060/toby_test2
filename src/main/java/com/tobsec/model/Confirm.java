@@ -54,9 +54,6 @@ public class Confirm {
         this.content = content;
     }
 
-    /**
-     * 테스트 용
-     */
     public Confirm(String id, int confirm_date, int confirm_seq, String content) {
         this.id = id;
         this.confirm_date = confirm_date;

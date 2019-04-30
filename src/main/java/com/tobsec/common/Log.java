@@ -7,9 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @Retention : 애노테이션 범위
- * @Documented : 자바 문서에도 애노테이션 보임
- * @Target : 애노테이션이 적용될 위치
+ * {@literal @}Retention : 애노테이션 범위
+ * {@literal @}Documented : 자바 문서에도 애노테이션 보임
+ * {@literal @}Target : 애노테이션이 적용될 위치
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
