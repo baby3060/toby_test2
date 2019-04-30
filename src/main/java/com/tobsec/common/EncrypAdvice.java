@@ -1,7 +1,5 @@
 package com.tobsec.common;
 
-import com.tobsec.model.User;
-
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.annotation.Around;

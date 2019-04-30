@@ -1,7 +1,6 @@
 package com.tobsec.common.convert;
 
 import com.tobsec.common.ConnectionBean;
-import com.tobsec.common.convert.*;
 
 import java.io.*;
 

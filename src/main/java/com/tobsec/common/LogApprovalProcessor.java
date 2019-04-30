@@ -28,9 +28,6 @@ public class LogApprovalProcessor implements BeanPostProcessor {
 
                     // 필드가 @Log 애노테이션을 가지고 있다면
                     if( field.getAnnotation(Log.class) != null ) {
-                        // Log 애노테이션
-                        Log logAnnotation = field.getAnnotation(Log.class);
-
                         // 대상 클래스의 Logger 생성
                         Logger logger = LoggerFactory.getLogger(target.getClass());
 

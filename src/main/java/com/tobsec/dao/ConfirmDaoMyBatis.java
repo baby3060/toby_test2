@@ -3,10 +3,7 @@ package com.tobsec.dao;
 import java.util.*;
 import com.tobsec.model.*;
 
-import java.util.List;
-import java.util.HashMap;
-
-import org.apache.ibatis.session.SqlSession;
+// import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;

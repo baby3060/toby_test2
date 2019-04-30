@@ -5,8 +5,6 @@ import com.tobsec.model.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import java.sql.Timestamp;
-
 import org.springframework.context.annotation.Bean;
 
 import org.springframework.context.annotation.Configuration;

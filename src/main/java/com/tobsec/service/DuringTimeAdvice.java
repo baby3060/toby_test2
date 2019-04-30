@@ -14,8 +14,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.slf4j.Logger;
 
-import org.springframework.transaction.support.TransactionSynchronizationManager;
-
 public class DuringTimeAdvice {
 
     @Log
@@ -37,9 +35,7 @@ public class DuringTimeAdvice {
         } finally {
             long finishTime = System.currentTimeMillis();
             
-            String format = String.format("%d ms\n", 
-                (finishTime - startTime)
-            );
+            String format = String.format("%d ms\n", (finishTime - startTime));
 
             loggingStr.append(format);
             logger.info(loggingStr.toString());

@@ -1,5 +1,5 @@
 package com.tobsec;
-
+/*
 import java.util.*;
 
 import com.tobsec.context.*;
@@ -20,7 +20,7 @@ import com.tobsec.service.UserService;
 import com.tobsec.service.sql.SqlService;
 
 import java.sql.Connection;
-
+*/
 public class App {
 
     public static void main( String[] args ) {

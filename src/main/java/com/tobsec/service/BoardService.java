@@ -5,17 +5,17 @@ import java.util.List;
 import com.tobsec.model.Board;
 
 public interface BoardService {
-    public void addBoard(Board board);
-    public void updateContent(Board board);
-    public void deleteBoard(Board board);
-    public void deleteAll();
-    public int countAll();
-    public int countBoard(Board board);
-    public void deleteByWriter(String writerId);
-    public int countByWriter(String writerId);
-    public Board getBoard(int boardNo);
-    public int getMaxBoardNo();
-    public int getIncreValue(String dbName);
-    public List<Board> selectAll();
-    public List<Board> selectAllByWriter(String writerId);
+    void addBoard(Board board);
+    void updateContent(Board board);
+    void deleteBoard(Board board);
+    void deleteAll();
+    int countAll();
+    int countBoard(Board board);
+    void deleteByWriter(String writerId);
+    int countByWriter(String writerId);
+    Board getBoard(int boardNo);
+    int getMaxBoardNo();
+    int getIncreValue(String dbName);
+    List<Board> selectAll();
+    List<Board> selectAllByWriter(String writerId);
 }

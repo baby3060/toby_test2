@@ -2,10 +2,8 @@ package com.tobsec.common.convert;
 
 import com.tobsec.common.ConnectionBean;
 
-import com.tobsec.common.convert.*;
 import com.tobsec.common.convert.jaxb.Config;
 
-import org.exolab.castor.xml.XMLContext; 
 import org.exolab.castor.mapping.Mapping; 
 import org.exolab.castor.xml.Unmarshaller;
 
@@ -26,7 +24,6 @@ public class CastorConvert implements Converter {
         ClassLoader classLoader = getClass().getClassLoader();
 
         Reader reader = null;
-        XMLContext context = new XMLContext();
         Mapping mapping = new Mapping();
         try {
             File file = new File(classLoader.getResource(this.configFile).getFile());

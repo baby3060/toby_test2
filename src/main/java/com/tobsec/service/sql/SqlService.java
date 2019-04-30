@@ -7,5 +7,5 @@ public interface SqlService {
      * @param key Gubun의 Key
      * @return 저장된 SQL
      */
-    public String findSql(String gubun, String key);
+    String findSql(String gubun, String key);
 }

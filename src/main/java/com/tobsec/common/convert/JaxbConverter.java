@@ -2,10 +2,8 @@ package com.tobsec.common.convert;
 
 import com.tobsec.common.ConnectionBean;
 
-import com.tobsec.common.convert.*;
 import com.tobsec.common.convert.jaxb.Config;
 
-import java.io.IOException;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;

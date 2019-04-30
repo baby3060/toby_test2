@@ -4,30 +4,21 @@ import com.tobsec.model.Board;
 
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.annotation.Resource;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.sql.DataSource;
-
-import org.springframework.stereotype.Repository;
-
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCallback;  
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
+/*
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-
+*/
 public class BoardDaoJdbc extends DaoSupport implements BoardDao {
     @Resource(name="getBoardMapper")
     private RowMapper<Board> boardMapper;

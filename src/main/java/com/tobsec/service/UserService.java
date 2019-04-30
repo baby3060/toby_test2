@@ -2,40 +2,31 @@ package com.tobsec.service;
 
 import java.util.List;
 
-import com.tobsec.common.*;
-
 import com.tobsec.model.User;
 import com.tobsec.model.Level;
 
 import com.tobsec.service.exception.*;
 
-import org.springframework.transaction.annotation.Transactional;
-
-import org.springframework.transaction.annotation.Propagation;
-
-
 public interface UserService {
-    public void addUser(User user) throws EmptyResultException;
-    public void addUserNew(User user) throws EmptyResultException;
-    public void updateUser(User user) throws EmptyResultException;
-    public void deleteUser(User user) throws EmptyResultException;
-    public void deleteAll();
+    void addUser(User user) throws EmptyResultException;
+    void addUserNew(User user) throws EmptyResultException;
+    void updateUser(User user) throws EmptyResultException;
+    void deleteUser(User user) throws EmptyResultException;
+    void deleteAll();
     
-    public User getUser(String id);
-    
-    public int countUser(String id);
-    
-    public int countAll();
+    User getUser(String id);
+    int countUser(String id);
+    int countAll();
 
-    public void upgradeLevels() throws RuntimeException;
+    void upgradeLevels() throws RuntimeException;
 
-    public void plusLogin(User user) throws RuntimeException;
-    public void plusRecommend(User target, User recoUser) throws RuntimeException;
+    void plusLogin(User user) throws RuntimeException;
+    void plusRecommend(User target, User recoUser) throws RuntimeException;
 
     // gubun = EQ(동일), OV(초과), UN(미만), BT(사이)
     // 해당 Level 값 기준 수량
-    public int countUserLevel(Level level, String gubun, Level toLevel);
-    public List<User> selectUserAll();
+    int countUserLevel(Level level, String gubun, Level toLevel);
+    List<User> selectUserAll();
 
-    public void goldOverAcceable(User user);
+    void goldOverAcceable(User user);
 }

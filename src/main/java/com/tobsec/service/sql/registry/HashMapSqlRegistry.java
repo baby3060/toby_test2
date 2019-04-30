@@ -1,6 +1,5 @@
 package com.tobsec.service.sql.registry;
 
-import com.tobsec.service.sql.SqlReader;
 import com.tobsec.service.sql.SqlRegistry;
 
 import java.util.Map;

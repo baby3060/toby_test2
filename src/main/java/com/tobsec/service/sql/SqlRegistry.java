@@ -8,6 +8,6 @@ import com.tobsec.service.sql.exception.*;
  * SqlService에서 이 인터페이스의 메소드를 호출하여 가져감
  */
 public interface SqlRegistry {
-    public void registSql(String gubun, Map<String, String> sqlDtl);
-    public String getSql(String gubun, String key) throws SqlRetriveFailException;
+    void registSql(String gubun, Map<String, String> sqlDtl);
+    String getSql(String gubun, String key) throws SqlRetriveFailException;
 }

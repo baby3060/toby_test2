@@ -5,16 +5,16 @@ import com.tobsec.model.Board;
 import java.util.List;
 
 public interface BoardDao {
-    public int insertBoard(Board board);
-    public void updateBoard(Board board);
-    public void deleteBoard(int boardNo);
-    public void deleteAll();
-    public int getAutoValue(String databaseName);
-    public int countAll();
-    public int getMaxBoardNo();
-    public Board getBoard(int boardNo);
-    public List<Board> getAllBoardList();
-    public List<Board> getAllBoardListByUserId(String writerId);
-    public int countBoard(int boardNo);
-    public void alterBoardNo(int autoInit);
+    int insertBoard(Board board);
+    void updateBoard(Board board);
+    void deleteBoard(int boardNo);
+    void deleteAll();
+    int getAutoValue(String databaseName);
+    int countAll();
+    int getMaxBoardNo();
+    Board getBoard(int boardNo);
+    List<Board> getAllBoardList();
+    List<Board> getAllBoardListByUserId(String writerId);
+    int countBoard(int boardNo);
+    void alterBoardNo(int autoInit);
 }

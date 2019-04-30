@@ -5,7 +5,7 @@ import com.tobsec.model.User;
 import java.util.List;
 import java.util.HashMap;
 
-import org.apache.ibatis.session.SqlSession;
+// import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;

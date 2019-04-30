@@ -2,8 +2,6 @@ package com.tobsec.common.convert;
 
 import com.tobsec.common.ConnectionBean;
 
-import com.tobsec.common.convert.*;
-
 import java.io.IOException;
 import java.io.File;
 
@@ -15,8 +13,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathExpressionException;
-
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

@@ -7,10 +7,6 @@ import javax.annotation.Resource;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.stereotype.Repository;
-
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 

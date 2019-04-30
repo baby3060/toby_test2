@@ -177,7 +177,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void upgradeLevels() throws LevelUpFailException {
         List<User> users = this.selectUserAll();
-        boolean changed = false;
         for( User user : users ) {
             try {
                 if( user.isLvlUpTarget(levelUpStrategy) ) {
@@ -242,15 +241,13 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void addUserNew(User user) {
         logger.info("UserService.addUserNew Called");
-        if(user == null) {
-            
-        } else {
+        if(user != null) {
             if( this.countUser(user.getId()) == 0 ) {
                 // Java 7 이상에서 지원 Null String을 ""로
                 user.setRecid(Objects.toString(user.getRecid(), "").trim());
                 userDao.addUser(user);
             }
-        }
+        } 
     }
 
     @Override

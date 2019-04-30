@@ -2,9 +2,7 @@ package com.tobsec.dao;
 
 import com.tobsec.model.Board;
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.mybatis.spring.support.SqlSessionDaoSupport;

@@ -1,7 +1,6 @@
 package com.tobsec.service;
 
 import com.tobsec.model.User;
-import com.tobsec.model.Level;
 
 /**
  * 사용자 등급 정책 모아놓은 팩토리
@@ -15,7 +14,7 @@ public class StrategyFactory {
         return new LevelUpStrategy() {
             public boolean checkLevelUp(User user) throws IllegalStateException {
                 boolean isSilver = user.getLogin() >= LOGIN_MIN_SILVER;
-                boolean isGold = (isSilver && (user.getRecommend() >= RECOMMEND_MIN_GOLD));
+                boolean isGold = ((isSilver && (user.getRecommend() >= RECOMMEND_MIN_GOLD)));
 
                 switch(user.getLevel()) {
                     case BRONZE : 

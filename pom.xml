@@ -159,14 +159,14 @@
         <version>8.0.15</version>
     </dependency>
 
-    <!-- 
+    <!-- Load Time Weaver 안 쓸 것이므로, Lombok 사용 -->
     <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>1.18.6</version>
         <scope>provided</scope>
     </dependency>
-    -->
+    
     
     <!--
       사용할만 한 곳에서 commons-logging을 막아버리는 것도 방법이기는 하지만, 필요할 수도 있으므로, 막는건 차차
