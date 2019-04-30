@@ -8,7 +8,7 @@
                            "
     profile="first"                           
 >
-    <bean id="dataSource" 
+    <bean id="targetDataSource" 
             class="org.apache.commons.dbcp2.BasicDataSource"
             destroy-method="close"
             p:url="#{connBeanFactory.getConnStr()}"

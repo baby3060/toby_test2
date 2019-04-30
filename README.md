@@ -133,7 +133,7 @@
 
 6. AOP 연습 심화(둘 다 Around 어드바이스 사용하면 될 듯)
 - [X] User의 Level에 따라 접근할 메소드 UserService에 적용
-- [ ] 데이터베이스 Insert 시 중요 데이터 암호화
+- [X] 데이터베이스 Insert 시 중요 데이터 암호화
 >>>> MyBatis의 TypeHandler를 사용한 암호화를 생각할 수도 있었으나, 서비스로 옮기는 게 옳을 듯
 >>>> 특정 필드에 커스텀 애노테이션을 달 예정(@Password)
 >>>>> 원래는 "서비스" 단에서 DB에 저장 시 데이터를 암호화 하는 게 정석임(Spring Security 사용)
@@ -142,3 +142,6 @@
 
 7. RESTFul Template 사용해보기
 - [ ] 공공 데이터 포털 현재 내가 서비스 이용 신청한 내역 불러와서 파싱해보기
+
+8. 스프링에서 제공하는 기능 중 DB 커넥션 생성 최대한 지연시켜주는 확장포인트 사용해보기 : DelegatingDataSource를 상속받아서 Connection 시 카운팅 증가 시킬 수도 있다.
+- [X] DelegatingDataSource를 상속받은 LazyConnectionDataSourceProxy 사용해보기

@@ -12,7 +12,7 @@
     profile="third"                           
 >
     <util:properties id="dbprops" location="classpath:dbconfig.properties" />
-    <bean id="dataSource" 
+    <bean id="targetDataSource" 
             class="org.apache.commons.dbcp2.BasicDataSource"
             destroy-method="close"
             p:url="#{dbprops['db.url']}"
