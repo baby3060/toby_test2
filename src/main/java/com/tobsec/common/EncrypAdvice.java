@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -17,6 +19,8 @@ import org.slf4j.Logger;
 import java.lang.reflect.Field;
 
 import org.springframework.util.ReflectionUtils;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * SequreField(비밀번호) 애노테이션이 달려있는 필드 암호화
@@ -28,6 +32,9 @@ import org.springframework.util.ReflectionUtils;
 @Component
 public class EncrypAdvice {
     
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Log
     public Logger encrypLogger;
 
@@ -100,14 +107,14 @@ public class EncrypAdvice {
 
                         // 필드가 @Log 애노테이션을 가지고 있다면
                         if( field.getAnnotation(Password.class) != null ) {
-                            String encrypValue = "";
 
                             encrypLogger.info("암호화 전 값 : " + field.get(obj));
 
                             // 암호화 로직
+                            String encrypValue = passwordEncoder.encode(field.get(obj).toString());
 
-                            encrypValue = "암호화(" + field.get(obj) + ")";
                             field.set(obj, encrypValue);
+                            encrypLogger.info("암호화 후 값 : " + encrypValue);
                         }
                     }
                 });
@@ -115,7 +122,6 @@ public class EncrypAdvice {
         }
     }
 
-    @Around("passwordDecodeService()")
     public Object passwordDecode(ProceedingJoinPoint joinPoint) throws Throwable {
         final Object ret = joinPoint.proceed();
 
