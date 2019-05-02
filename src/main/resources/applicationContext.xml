@@ -116,7 +116,4 @@
     <bean id="levelUpStrategy" class="com.tobsec.service.StrategyFactory"
         factory-method="defaultStrategy"
     />
-
-    <bean class="com.tobsec.common.LogApprovalProcessor" />
-
 </beans>

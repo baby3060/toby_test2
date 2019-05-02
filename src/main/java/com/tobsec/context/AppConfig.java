@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 
 @Configuration
-@Import(RowMapperConfig.class)
+@Import({RowMapperConfig.class, SecurityConfig.class})
 @ImportResource({"classpath:applicationContext.xml", "classpath:applicationContext1.xml", "classpath:applicationContext2.xml", "classpath:applicationContext3.xml"})
 public class AppConfig {
 
