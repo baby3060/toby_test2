@@ -1,7 +1,7 @@
 CREATE TABLE `user` (
   `id` varchar(10) NOT NULL,
   `name` varchar(20) NOT NULL,
-  `password` varchar(20) NOT NULL,
+  `password` varchar(1000) NOT NULL,
   `level` tinyint(2) DEFAULT NULL,
   `login` int(8) DEFAULT NULL,
   `recommend` int(8) DEFAULT NULL,
