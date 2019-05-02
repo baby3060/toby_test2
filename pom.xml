@@ -103,6 +103,18 @@
         <version>${spring.version}</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-core</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-config</artifactId>
+        <version>${spring.version}</version>
+    </dependency>
 
 
       <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
@@ -273,7 +285,6 @@
         <version>2.4</version>
         <configuration>
           <forkMode>once</forkMode>
-          
           <argLine>
             -javaagent:${settings.localRepository}\org\springframework\spring-instrument\${spring.version}\spring-instrument-${spring.version}.jar
           </argLine>
