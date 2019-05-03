@@ -8,7 +8,7 @@
             },
             {
                 "key" : "updateUser",
-                "sql" : "Update User Set name = :name, password = :password, email = :email Where id = :id"
+                "sql" : "Update User Set name = :name, email = :email Where id = :id"
             },
             {
                 "key" : "deleteUser",

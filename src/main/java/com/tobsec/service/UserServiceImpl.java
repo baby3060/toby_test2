@@ -20,9 +20,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Transactional
 @Service("userService")
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    protected PasswordEncoder passwordEncoder;
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -49,6 +54,9 @@ public class UserServiceImpl implements UserService {
                 if( super.countUser(user.getId()) == 0 ) {
                     // Java 7 이상에서 지원 Null String을 ""로
                     user.setRecid(Objects.toString(user.getRecid(), "").trim());
+
+                    String password = passwordEncoder.encode(user.getPassword());
+                    user.setPassword(password);
                     result = userDao.addUser(user);
                 }
             }
@@ -97,6 +105,9 @@ public class UserServiceImpl implements UserService {
                 }
 
                 logger.info("Arguments User : " + user);
+
+                String password = passwordEncoder.encode(user.getPassword());
+                user.setPassword(password);
 
                 result = userDao.addUser(user);
             }
@@ -243,6 +254,9 @@ public class UserServiceImpl implements UserService {
         logger.info("UserService.addUserNew Called");
         if(user != null) {
             if( this.countUser(user.getId()) == 0 ) {
+                String password = passwordEncoder.encode(user.getPassword());
+                user.setPassword(password);
+
                 // Java 7 이상에서 지원 Null String을 ""로
                 user.setRecid(Objects.toString(user.getRecid(), "").trim());
                 userDao.addUser(user);

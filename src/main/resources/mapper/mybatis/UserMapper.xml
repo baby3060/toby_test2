@@ -31,7 +31,6 @@
     <update id="updateUser" parameterType="User">
         Update User 
            Set name = #{name}
-             , password = #{password}
              , email = #{email}
         Where id = #{id}
     </update>

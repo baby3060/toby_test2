@@ -64,7 +64,7 @@ public class SqlServiceTest  implements ParentTest  {
         String deleteUserSql = sqlService.findSql("user", "deleteUser");
 
         assertThat(addUserSql, is("Insert Into User (id, name, password, level, login, recommend, email, recid) Values (:id, :name, :password, :level, :login, :recommend, :email, :recid)"));
-        assertThat(updateUserSql, is("Update User Set name = :name, password = :password, email = :email Where id = :id"));
+        assertThat(updateUserSql, is("Update User Set name = :name, email = :email Where id = :id"));
         assertThat(deleteUserSql, is("Delete From User Where id = :id"));
 
         String addConfirmSql = sqlService.findSql("confirm", "addConfirm");

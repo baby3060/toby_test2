@@ -140,9 +140,9 @@
 >>>>> 원래는 "서비스" 단에서 DB에 저장 시 데이터를 암호화 하는 게 정석임(Spring Security 사용)
 >>>>> 암호화의 경우 단순 Advice에서도 쉽게 가능하지만, 복호화일 경우(사용자가 읽어올 수 있게)에는 반환 타입이 필요하다(List로 읽어올 수도 있고, Map으로 읽어올 수도 있고, 단일 객체로만 읽어올 수도 있다).
 - [X] Spring Security 사용 하여 암호화 및 복호화 해보기(부가기능 적용)
-- [ ] Spring Security 사용 하여 암호화 및 복호화 해보기(Service 단에서)
+- [X] Spring Security 사용 하여 암호화 및 복호화 해보기(Service 단에서)
 >>>> Spring 5부터는 PasswordEncoder 대신 DelegatingPasswordEncoder 사용을 추천(PasswordEncoderFactories의 createDelegatingPasswordEncoder를 가지고 PasswordEncoder 생성)
->>>> 복호화를 하는 것이 아닌 그 값을 비교하는 것
+>>>> 복호화를 하는 것이 아닌 그 값을 비교하는 것(단방향 암호화)
 >>>> DelegatingPasswordEncoder의 경우 Bean을 생성하는 방법에 따라 암호화 로직을 수정할 수도 있음
 
 7. RESTFul Template 사용해보기
