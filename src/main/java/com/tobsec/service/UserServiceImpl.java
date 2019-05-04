@@ -22,6 +22,8 @@ import org.springframework.transaction.annotation.Propagation;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.springframework.beans.factory.annotation.Value;
+
 @Transactional
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -268,5 +270,17 @@ public class UserServiceImpl implements UserService {
     @SecureAccess("level.getValue() >= T(com.tobsec.model.Level).GOLD.getValue()")
     public void goldOverAcceable(User user) {
         logger.info(user.getId() + "회원의 레벨은 GOLD 레벨이상입니다. 해당 메소드 수행 가능");
+    }
+
+    public boolean passwordCheck(String inpPassword, String userId) throws EmptyResultException {
+        if( this.countUser(userId) == 1 ) {
+            User user = this.getUser(userId);
+
+            String savePassword = user.getPassword();
+
+            return passwordEncoder.matches(inpPassword, savePassword);
+        } else {
+            throw new EmptyResultException("해당 UserId로 등록된 User가 없습니다(" + userId + ").");
+        }
     }
 }

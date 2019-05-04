@@ -29,4 +29,11 @@ public interface UserService {
     List<User> selectUserAll();
 
     void goldOverAcceable(User user);
+
+    /**
+     * @param inpPassword 입력받은 패스워드
+     * @param userId 패스워드 검사할 User의 Id
+     * @return 암호화된 패스워드와 입력받은 패스워드가 일치하는가?
+     */
+    boolean passwordCheck(String inpPassword, String userId);
 }

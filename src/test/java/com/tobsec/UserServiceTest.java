@@ -33,9 +33,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
 public class UserServiceTest implements ParentTest  {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Log
     protected Logger serviceLogger;
@@ -94,6 +99,10 @@ public class UserServiceTest implements ParentTest  {
         User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
 
         userService.addUser(user);
+
+        User newUser = userService.getUser("1");
+
+        assertThat("1", is(not(newUser.getPassword())));
 
         count = userService.countAll();
 
@@ -293,6 +302,20 @@ public class UserServiceTest implements ParentTest  {
         } catch(RuntimeException e) {
             serviceLogger.error("accessTest Exception : " + e.getMessage());
         }
+    }
+
+    @Test
+    public void machingTest() {
+        userService.deleteAll();
+
+        User user = new User("5", "사용자5", "5", Level.BRONZE, 0, 36, "e@e.com");
+
+        userService.addUser(user);
+
+        String encrypPass = passwordEncoder.encode("5");
+        
+        assertTrue(userService.passwordCheck("5", user.getId()));
+        assertTrue(passwordEncoder.matches("5", encrypPass));
     }
 
 }

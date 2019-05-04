@@ -29,7 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * 우선 사용하기 편한 Around로 만들었다가, 그 다음에 알맞은 어드바이스로 수정해보기
  */
 @Aspect
-@Component
+// @Component
 public class EncrypAdvice {
     
     @Autowired
