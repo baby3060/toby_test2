@@ -116,4 +116,6 @@
     <bean id="levelUpStrategy" class="com.tobsec.service.StrategyFactory"
         factory-method="defaultStrategy"
     />
+
+    <util:properties id="serviceProps" location="classpath:serviceKeyconfig.properties" />
 </beans>

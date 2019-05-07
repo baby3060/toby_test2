@@ -146,7 +146,17 @@
 >>>> DelegatingPasswordEncoder의 경우 Bean을 생성하는 방법에 따라 암호화 로직을 수정할 수도 있음
 
 7. RESTFul Template 사용해보기
-- [ ] 공공 데이터 포털 현재 내가 서비스 이용 신청한 내역 불러와서 파싱해보기
+- [ ] 공공 데이터 포털 현재 내가 서비스 이용 신청한 내역 불러와서 파싱해보기(동네예보 조회)
+>>> 단순하게 RestTemplate으로 연결하면, ?라던가 &를 인식 못함.
+>>> UriComponentsBuilder를 이용하여, Java의 URI 객체를 생성하고, RestTemplate의 getForObject 메소드에 이 객체를 인자값으로 전달하여 해결
+>>>> 
+1. UriComponentsBuilder를 사용하여, URI를 생성 시 ?나 &를 메소드 파라미터 식(?service=a&test=3)으로는 연결이 안 됨(에러 발생)
+2. UriComponentsBuilder의 query 메소드를 체인식으로 붙이고(query 메소드의 실행 결과가 UriComponentsBuilder), 가장 마지막에 build(boolean) 메소드를 호출하여, UriComponents를 생성한다.
+3. Java의 URI를 UriComponents의 toUri 메소드를 통하여, 생성한다.
 
 8. 스프링에서 제공하는 기능 중 DB 커넥션 생성 최대한 지연시켜주는 확장포인트 사용해보기 : DelegatingDataSource를 상속받아서 Connection 시 카운팅 증가 시킬 수도 있다.
 - [X] DelegatingDataSource를 상속받은 LazyConnectionDataSourceProxy 사용해보기
+
+9. JPA 적용해보기
+- [ ] Spring JPA 사용해보기
+- [ ] Spring JPA와 SQL Mapper(Mybatis 또는 스프링 JDBCTemplate) 함께 사용해보기 : 어려운 쿼리는 SQL Mapper로
