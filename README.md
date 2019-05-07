@@ -146,7 +146,7 @@
 >>>> DelegatingPasswordEncoder의 경우 Bean을 생성하는 방법에 따라 암호화 로직을 수정할 수도 있음
 
 7. RESTFul Template 사용해보기
-- [ ] 공공 데이터 포털 현재 내가 서비스 이용 신청한 내역 불러와서 파싱해보기(동네예보 조회)
+- [X] 공공 데이터 포털 현재 내가 서비스 이용 신청한 내역 불러와서 파싱해보기(동네예보 조회)
 >>> 단순하게 RestTemplate으로 연결하면, ?라던가 &를 인식 못함.
 >>> UriComponentsBuilder를 이용하여, Java의 URI 객체를 생성하고, RestTemplate의 getForObject 메소드에 이 객체를 인자값으로 전달하여 해결
 >>>> 

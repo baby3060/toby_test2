@@ -21,6 +21,9 @@ import static org.junit.Assert.*;
 import java.nio.charset.Charset;
 import org.slf4j.Logger;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 import org.springframework.http.converter.*;
@@ -85,6 +88,8 @@ public class RestTest implements ParentTest  {
         String baseDate = currentDateTime.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String baseTime = currentDateTime.format(DateTimeFormatter.ofPattern("HHmm"));
 
+        baseTime = "2000";
+
         UriComponents components = UriComponentsBuilder.fromHttpUrl(uriString)
                                     .query("serviceKey=" + serviceKey)
                                     .query("_type=json")
@@ -99,9 +104,33 @@ public class RestTest implements ParentTest  {
 
         restLogger.info(uri.toString());
 
-        String result = template.getForObject(uri, String.class);
+        String jsonString = template.getForObject(uri, String.class);
 
-        restLogger.info(result);
+        restLogger.info(jsonString);
+
+        JsonNode rootNode = new ObjectMapper().readTree(jsonString);
+
+        JsonNode response = rootNode.get("response");
+
+        JsonNode resultMsg = response.get("header").get("resultMsg");
+        
+        String msg = resultMsg.asText();
+
+        assertThat(msg, is("OK"));
+
+        Iterator<JsonNode> itemNode = response.get("body").get("items").get("item").elements();
+
+        String category = "";
+        double fcstValue = 0.0D;
+
+        while(itemNode.hasNext()) {
+            JsonNode item = itemNode.next();
+
+            category = item.get("category").textValue();
+            fcstValue = item.get("fcstValue").asDouble(0.0D);
+
+            restLogger.info("Category : " + category + ", Value : " + fcstValue);
+        }
     }
 
 }
