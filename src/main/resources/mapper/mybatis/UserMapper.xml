@@ -19,6 +19,12 @@
         <result column="recommend" property="recommend" />
         <result column="email" property="email" />
         <result column="recid" property="recid" />
+        <collection property="boardList" ofType="Board">
+            <id column="board_no" property="boardNo" />
+            <result column="content" property="content" />
+            <result column="board_gubun" property="boardGubun" />
+            <result column="write_time" property="writeTime" javaType="java.sql.Timestamp" />
+        </collection>
     </resultMap>
 
     <insert id="addUser" parameterType="User" >
@@ -64,9 +70,10 @@
     </select>
 
     <select id="getUser" resultMap="resultUser" parameterType="string">
-        Select * 
-        From USER
-        Where id = #{id}
+        Select a.*, b.* 
+        From USER a
+        Left Outer Join BOARD b On (b.writer_id = a.id)
+        Where a.id = #{id}
     </select>
 
     <select id="selectUserAll" resultMap="resultUser">
