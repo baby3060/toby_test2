@@ -35,6 +35,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
 public class UserServiceTest implements ParentTest  {

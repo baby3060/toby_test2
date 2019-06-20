@@ -17,6 +17,10 @@
             <result property="login" column="login" />
             <result property="recommend" column="recommend" />
             <result property="recid" column="recid" />
+            <result property="email" column="email" />
+            <result property="level" column="level" 
+                    typeHandler="com.tobsec.model.handler.LevelOnlyHandler"
+            />
         </association>
     </resultMap>
 

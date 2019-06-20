@@ -24,6 +24,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.apache.ibatis.session.SqlSession;
 
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
 public class MyBatisTest implements ParentTest  {

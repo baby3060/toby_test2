@@ -79,7 +79,7 @@
     </context:component-scan>
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="targetDataSource" />
+        <property name="dataSource" ref="dataSource" />
     </bean>
 
     <bean id="dataSource"
@@ -108,6 +108,8 @@
         <property name="mapperLocations" value="classpath*:mapper/mybatis/**/*.xml" />
     </bean>
 
+    
+
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -118,10 +120,6 @@
             </bean>
         </property>
     </bean>
-
-    <!-- 
-    <mybatis:scan base-package="com.tobsec.dao.mapper.mybatis" />
-    -->    
 
     <!-- User Level UP 전략 -->
     <bean id="levelUpStrategy" class="com.tobsec.service.StrategyFactory"

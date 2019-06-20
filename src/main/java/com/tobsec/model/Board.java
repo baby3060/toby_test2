@@ -30,7 +30,7 @@ public class Board {
     @Column(name = "board_gubun", precision = 1)
     private int boardGubun;
 
-    @Column(name = "writer_time")
+    @Column(name = "write_time")
     private Timestamp writeTime;
     
 }

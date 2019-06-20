@@ -50,11 +50,10 @@ public class User {
     @Column(length = 50)
     private String email;
 
-    
-    // @JoinColumn(name = "recid", columnDefinition="varchar(10)")
+    @JoinColumn(name = "recid", columnDefinition="varchar(10)")
     private String recid;
 
-    @OneToMany(mappedBy = "writer")
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Board> boardList;
 
     {

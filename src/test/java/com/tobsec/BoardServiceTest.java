@@ -29,6 +29,10 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import com.tobsec.common.Log;
 
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.annotation.Rollback;
+
+@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
 public class BoardServiceTest implements ParentTest  {
@@ -45,6 +49,7 @@ public class BoardServiceTest implements ParentTest  {
     protected Logger boardLogger;
 
     @Before
+    @Rollback(false)
     public void setUp() {
         boardService.deleteAll();
 
@@ -72,8 +77,7 @@ public class BoardServiceTest implements ParentTest  {
         assertThat(increVal, is(1));
         assertThat(countAll, is(0));
 
-        User user = userService.getUser("2");
-
+        User user = new User("2", "사용자2", "2", Level.BRONZE, 0, 0, "a@a.com");
 
         Board board = new Board();
         board.setWriter(user);
@@ -107,6 +111,10 @@ public class BoardServiceTest implements ParentTest  {
 
         boardService.addBoard(board);
 
+        User userGet = userService.getUser("1");
+        
+        assertThat(userGet.getBoardList().size(), is(1));
+
         increVal = boardService.getIncreValue(dbUrl);
         countAll = boardService.countAll();
 
@@ -114,7 +122,7 @@ public class BoardServiceTest implements ParentTest  {
         assertThat(countAll, is(1));
     }
 
-    
+    @Test
     public void updateBoardTest() {
         User user = userService.getUser("1");
 
@@ -141,7 +149,7 @@ public class BoardServiceTest implements ParentTest  {
         assertThat(getBoard, equalTo(getBoardAfter));
     }
 
-    
+    @Test
     public void deleteBoardTest() {
 
         User user = userService.getUser("1");
@@ -195,7 +203,7 @@ public class BoardServiceTest implements ParentTest  {
         assertThat(countAll, is(3));
     }
 
-    
+    @Test
     public void deleteAndInsertTest() {
         Board board = new Board();
         board.setWriter(userService.getUser("1"));
