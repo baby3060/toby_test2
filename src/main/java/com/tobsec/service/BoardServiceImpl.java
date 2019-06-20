@@ -26,17 +26,17 @@ public class BoardServiceImpl implements BoardService {
     private UserService userService;
 
     public void addBoard(Board board) {
-        if( board.getWriterId() == null || board.getWriterId().equals("") ) {
+        if( board.getWriter() == null || board.getWriter().getId().equals("") ) {
             throw new KeyNullException("작성자가 비어있습니다.");
         } else {
-            if( userService.countUser(board.getWriterId()) == 1 ) {
+            if( userService.countUser(board.getWriter().getId()) == 1 ) {
                 int newBoardNo = boardDao.insertBoard(board);
 
                 board.setBoardNo(newBoardNo);
 
                 boardLogger.info("새로 생성된 Board의 번호 : " + newBoardNo);
             } else {
-                throw new EmptyResultException("등록된 User가 아닙니다(" + board.getWriterId() + ").");
+                throw new EmptyResultException("등록된 User가 아닙니다(" + board.getWriter().getId() + ").");
             }
         }
     }

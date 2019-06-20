@@ -5,6 +5,9 @@ import lombok.*;
 import com.tobsec.common.Password;
 import com.tobsec.service.LevelUpStrategy;
 
+import javax.persistence.*;
+import java.util.*;
+
 @Getter
 @Setter
 @ToString
@@ -15,24 +18,48 @@ import com.tobsec.service.LevelUpStrategy;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 // equals와 hashCode 구현 시 level, login, recommend 필드 제외하고 구현
 @EqualsAndHashCode(exclude = {"level", "login", "recommend", "recid"})
+@Entity
 public class User {
     
+    @Id
+    @Column(length = 10)
     @NonNull 
     private String id;
+
     @NonNull 
+    @Column(length = 20)
     private String name;
+
     @Password 
     @NonNull 
+    @Column(length = 1000)
     private String password;
+
     @NonNull 
     private Level level;
+
     @NonNull 
+    @Column(precision = 8)
     private int login;
+
     @NonNull 
+    @Column(precision = 8)
     private int recommend;
+
     @NonNull 
+    @Column(length = 50)
     private String email;
+
+    
+    // @JoinColumn(name = "recid", columnDefinition="varchar(10)")
     private String recid;
+
+    @OneToMany(mappedBy = "writer")
+    private List<Board> boardList;
+
+    {
+        boardList = new ArrayList<Board>();
+    }
 
     public void upgradeLevel() {
         // this의 다음 레벨 

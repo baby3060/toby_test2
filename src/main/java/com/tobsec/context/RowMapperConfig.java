@@ -25,7 +25,7 @@ public class RowMapperConfig {
                 user.setLogin(rs.getInt("login"));
                 user.setRecommend(rs.getInt("recommend"));
                 user.setEmail(rs.getString("email"));
-                user.setRecid(rs.getString("recid"));
+                // user.setRecid(rs.getString("recid"));
                 return user;
             }
         };
@@ -57,12 +57,22 @@ public class RowMapperConfig {
         return new RowMapper<Board>() {
             public Board mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Board board = new Board();
-                
+                User user = new User();
+
                 board.setBoardNo(rs.getInt("board_no"));
-                board.setWriterId(rs.getString("writer_id"));
                 board.setContent(rs.getString("content"));
                 board.setBoardGubun(rs.getInt("board_gubun"));
                 board.setWriteTime(rs.getTimestamp("write_time"));
+
+                user.setId(rs.getString("id"));
+                user.setName(rs.getString("name"));
+                user.setPassword(rs.getString("password"));
+                user.setLevel(Level.valueOf(rs.getInt("level")));
+                user.setLogin(rs.getInt("login"));
+                user.setRecommend(rs.getInt("recommend"));
+                user.setRecid(rs.getString("recid"));
+
+                board.setWriter(user);
 
                 return board;
             }

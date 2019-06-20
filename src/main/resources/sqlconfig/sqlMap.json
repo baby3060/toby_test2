@@ -171,7 +171,7 @@
             },
             {
                 "key" : "getBoard",
-                "sql" : "Select * From BOARD Where board_no = :boardNo"
+                "sql" : "Select a.*, b.* From BOARD a Inner Join User b On (b.id = a.writer_id) Where a.board_no = :boardNo"
             },
             {
                 "key" : "getAllBoardList",

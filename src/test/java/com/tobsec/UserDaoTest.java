@@ -47,6 +47,8 @@ public class UserDaoTest  implements ParentTest {
 
     @Test
     public void count() {
+        userDao.deleteAll();
+
         int count = userDao.countUserAll();
 
         assertThat(count, is(0));
@@ -54,6 +56,8 @@ public class UserDaoTest  implements ParentTest {
 
     @Test
     public void insertTest() {
+        userDao.deleteAll();
+
         int count = userDao.countUserAll();
 
         assertThat(count, is(0));
@@ -69,6 +73,7 @@ public class UserDaoTest  implements ParentTest {
 
     @Test
     public void updateTest() {
+        userDao.deleteAll();
         int count = userDao.countUserAll();
 
         assertThat(count, is(0));
@@ -104,6 +109,7 @@ public class UserDaoTest  implements ParentTest {
 
     @Test
     public void deleteTest() {
+        userDao.deleteAll();
 
         int count = userDao.countUserAll();
 
@@ -136,7 +142,7 @@ public class UserDaoTest  implements ParentTest {
 
     @Test
     public void getUserTest() {
-
+        userDao.deleteAll();
         for( User user : list ) {
             userDao.addUser(user);
         }
@@ -162,13 +168,6 @@ public class UserDaoTest  implements ParentTest {
         assertThat(user4, equalTo(anotherUser4));
         assertThat(user5, equalTo(anotherUser5));
         assertThat(user6, equalTo(anotherUser6));
-    }
-
-    @Test(expected=TransientDataAccessResourceException.class)
-    @Transactional(readOnly=true)
-    public void readOnlyTest() {
-        assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly(), is(true));
-        userDao.deleteAll();
     }
 
 }

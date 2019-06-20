@@ -119,6 +119,10 @@ public class UserServiceTest implements ParentTest  {
     public void upgradeAllOrNothing() throws Exception {
         userServiceTest.deleteAll();
 
+        int count = userService.countAll();
+
+        assertThat(count, is(0));
+
         for(User user : users) {
             userServiceTest.addUser(user);
         }
@@ -148,6 +152,10 @@ public class UserServiceTest implements ParentTest  {
     public void upgradeLevel() {
         userService.deleteAll();
 
+        int count = userService.countAll();
+
+        assertThat(count, is(0));
+
         User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
 
         userService.addUser(user);
@@ -174,6 +182,10 @@ public class UserServiceTest implements ParentTest  {
     @Test
     public void recommendTest() {
         userService.deleteAll();
+
+        int count = userService.countAll();
+
+        assertThat(count, is(0));
 
         User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
         

@@ -26,6 +26,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import org.slf4j.Logger;
+import com.tobsec.common.Log;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
 public class BoardServiceTest implements ParentTest  {
@@ -38,20 +41,22 @@ public class BoardServiceTest implements ParentTest  {
     @Autowired
     private BasicDataSource dataSource;
 
+    @Log
+    protected Logger boardLogger;
+
     @Before
     public void setUp() {
         boardService.deleteAll();
 
         userService.deleteAll();
 
+        int count = userService.countAll();
+
+        boardLogger.info("userService.countAll() : " + count);
+
         User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
 
         userService.addUser(user);
-    }
-
-    @After
-    public void tearDown() {
-        userService.deleteAll();
     }
 
     @Test(expected=EmptyResultException.class)
@@ -67,8 +72,11 @@ public class BoardServiceTest implements ParentTest  {
         assertThat(increVal, is(1));
         assertThat(countAll, is(0));
 
+        User user = userService.getUser("2");
+
+
         Board board = new Board();
-        board.setWriterId("2");
+        board.setWriter(user);
         board.setContent("테스트");
 
         boardService.addBoard(board);
@@ -78,6 +86,10 @@ public class BoardServiceTest implements ParentTest  {
 
     @Test
     public void insertTestNormal() {
+        User user = userService.getUser("1");
+
+        assertThat(user, is(not(nullValue())));
+
         String dbUrl = dataSource.getUrl();
         dbUrl = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?")).toUpperCase();
 
@@ -90,7 +102,7 @@ public class BoardServiceTest implements ParentTest  {
         assertThat(countAll, is(0));
 
         Board board = new Board();
-        board.setWriterId("1");
+        board.setWriter(user);
         board.setContent("테스트");
 
         boardService.addBoard(board);
@@ -102,10 +114,14 @@ public class BoardServiceTest implements ParentTest  {
         assertThat(countAll, is(1));
     }
 
-    @Test
+    
     public void updateBoardTest() {
+        User user = userService.getUser("1");
+
+        assertThat(user, is(not(nullValue())));
+
         Board board = new Board();
-        board.setWriterId("1");
+        board.setWriter(user);
         board.setContent("테스트");
 
         boardService.addBoard(board);
@@ -125,8 +141,12 @@ public class BoardServiceTest implements ParentTest  {
         assertThat(getBoard, equalTo(getBoardAfter));
     }
 
-    @Test
+    
     public void deleteBoardTest() {
+
+        User user = userService.getUser("1");
+
+        assertThat(user, is(not(nullValue())));
 
         String dbUrl = dataSource.getUrl();
         dbUrl = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?")).toUpperCase();
@@ -135,25 +155,25 @@ public class BoardServiceTest implements ParentTest  {
         assertThat(increVal, is(1));
 
         Board board = new Board();
-        board.setWriterId("1");
+        board.setWriter(user);
         board.setContent("테스트");
 
         boardService.addBoard(board);
 
         board = new Board();
-        board.setWriterId("1");
+        board.setWriter(user);
         board.setContent("테스트1");
 
         boardService.addBoard(board);
 
         board = new Board();
-        board.setWriterId("1");
+        board.setWriter(user);
         board.setContent("테스트2");
 
         boardService.addBoard(board);
 
         board = new Board();
-        board.setWriterId("1");
+        board.setWriter(user);
         board.setContent("테스트3");
 
         boardService.addBoard(board);
@@ -175,16 +195,16 @@ public class BoardServiceTest implements ParentTest  {
         assertThat(countAll, is(3));
     }
 
-    @Test
+    
     public void deleteAndInsertTest() {
         Board board = new Board();
-        board.setWriterId("1");
+        board.setWriter(userService.getUser("1"));
         board.setContent("테스트");
 
         boardService.addBoard(board);
 
         board = new Board();
-        board.setWriterId("1");
+        board.setWriter(userService.getUser("1"));
         board.setContent("테스트1");
 
         boardService.addBoard(board);

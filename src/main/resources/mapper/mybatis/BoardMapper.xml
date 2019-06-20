@@ -6,15 +6,23 @@
 <mapper namespace="mapper.mybatis.BoardMapper">
     <resultMap id="boardMap" type="com.tobsec.model.Board">
         <id column="board_no" property="boardNo" />
-        <result column="writer_id" property="writerId" />
         <result column="content" property="content" />
         <result column="board_gubun" property="boardGubun" />
         <result column="write_time" property="writeTime" javaType="java.sql.Timestamp" />
+        
+        <association property="writer" column="writer_id" javaType="User">
+            <id property="id" column="id" />
+            <result property="name" column="name" />
+            <result property="password" column="password" />
+            <result property="login" column="login" />
+            <result property="recommend" column="recommend" />
+            <result property="recid" column="recid" />
+        </association>
     </resultMap>
 
     <!-- MySql은  useGeneratedKeys -->
     <insert id="insertBoard" useGeneratedKeys="true" keyProperty="boardNo" parameterType="Board">
-        Insert Into BOARD (writer_id, content) Values (#{writerId}, #{content})
+        Insert Into BOARD (writer_id, content) Values (#{writer.id}, #{content})
     </insert>
 
     <update id="updateBoard" parameterType="Board">
@@ -36,10 +44,11 @@
     </delete>
 
     <select id="selectAllByWriter" resultMap="boardMap">
-        Select * 
-        From BOARD
-        Where writer_id = #{writerId}
-        Order By board_no
+        Select a.*, b.* 
+        From BOARD a
+        Inner Join User b On (b.id = a.writer_id)
+        Where a.writer_id = #{writerId}
+        Order By a,board_no
     </select>
 
     <select id="selectAll" resultMap="boardMap">
@@ -61,9 +70,10 @@
     </select>
 
     <select id="getBoard" resultMap="boardMap" parameterType="int">
-        Select *
-        From BOARD
-        Where board_no = #{boardNo}
+        Select a.*, b.* 
+        From BOARD a
+        Inner Join User b On (b.id = a.writer_id)
+        Where a.board_no = #{boardNo}
     </select>
 
     <select id="countBoard" resultType="int" parameterType="int">

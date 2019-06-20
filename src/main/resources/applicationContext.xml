@@ -101,11 +101,22 @@
     
     <!-- MyBatis 연동용 Bean -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="targetDataSource" />
+        <property name="dataSource" ref="dataSource" />
         <!-- Alias -->
         <property name="typeAliasesPackage" value="com.tobsec.model" />
         <!-- Mapper 경로 지정 mapper/mybatis 패키지 및 모든 서브 패키지의 xml 파일 탐색 -->
         <property name="mapperLocations" value="classpath*:mapper/mybatis/**/*.xml" />
+    </bean>
+
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="generateDdl" value="true" />
+            </bean>
+        </property>
     </bean>
 
     <!-- 

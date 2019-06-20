@@ -86,6 +86,7 @@ public class UserServiceImpl implements UserService {
         if(user == null) {
             result = 0;
         } else {
+            logger.info("UserService Count(" + user.getId() + ") : " + this.countUser(user.getId()));
             if( this.countUser(user.getId()) == 0 ) {
                 
                 // 등급은 BRONZE로
@@ -96,6 +97,7 @@ public class UserServiceImpl implements UserService {
 
                 // Java 7 이상에서 지원 Null String을 ""로
                 user.setRecid(Objects.toString(user.getRecid(), "").trim());
+                logger.info("Arguments User : " + user);
 
                 if( ((!user.getRecid().equals("")) && (this.countUser(user.getRecid()) == 1)) ) {
                     // 추천 대상
@@ -112,7 +114,7 @@ public class UserServiceImpl implements UserService {
                 user.setPassword(password);
 
                 result = userDao.addUser(user);
-            }
+            } 
         }
 
         logger.info("UserService.addUser End");
