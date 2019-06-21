@@ -6,6 +6,7 @@
 
 <mapper namespace="mapper.mybatis.ConfirmMapper">
     <resultMap id="confirmMap" type="com.tobsec.model.Confirm">
+        <!-- 복합 id 필드 중 하나를 association로 해야 할 경우 resultMap에서 없애지 말고, id field를 그대로 놔두고, association를 설정해야 한다. -->
         <id column="id" property="id" />
         <id column="confirm_date" property="confirm_date" />
         <id column="confirm_seq" property="confirm_seq" />
@@ -15,16 +16,29 @@
         <result column="checkflagad" property="checkflagad" />
         <result column="checkflagus" property="checkflagus" />
         <result column="solve_timestamp" property="solve_timestamp" javaType="java.sql.Timestamp" />
+
+        <association property="approval" column="id" javaType="User">
+            <id property="id" column="id" />
+            <result property="name" column="name" />
+            <result property="password" column="password" />
+            <result property="login" column="login" />
+            <result property="recommend" column="recommend" />
+            <result property="recid" column="recid" />
+            <result property="email" column="email" />
+            <result property="level" column="level" 
+                    typeHandler="com.tobsec.model.handler.LevelOnlyHandler"
+            />
+        </association>
     </resultMap>
 
     <insert id="addConfirm" parameterType="Confirm">
         Insert Into CONFIRM(id, confirm_date, confirm_seq, confirm_time, content) 
-        Values (#{id}, #{confirm_date}, #{confirm_seq}, (Select DATE_FORMAT(NOW(),'%H%i%s')), #{content})
+        Values (#{approval.id}, #{confirm_date}, #{confirm_seq}, (Select DATE_FORMAT(NOW(),'%H%i%s')), #{content})
     </insert>
 
     <delete id="deleteConfirm" parameterType="Confirm">
         Delete From CONFIRM 
-        Where id = #{id}
+        Where id = #{approval.id}
         And confirm_date = #{confirm_date}
         And confirm_seq = #{confirm_seq}
     </delete>
@@ -40,7 +54,7 @@
     <update id="updateConfirmSolve" parameterType="Confirm">
         Update CONFIRM 
         Set checkflagad = 'Y', solve_content = #{solve_content}
-        Where id = #{id}
+        Where id = #{approval.id}
         And confirm_date = #{confirm_date}
         And confirm_seq = #{confirm_seq}
     </update>
@@ -48,7 +62,7 @@
     <update id="updateUserOk" parameterType="Confirm">
         Update CONFIRM 
         Set checkflagus = 'Y', solve_timestamp = CURRENT_TIMESTAMP() 
-        Where id = #{id}
+        Where id = #{approval.id}
         And confirm_date = #{confirm_date}
         And confirm_seq = #{confirm_seq}
     </update>
@@ -88,66 +102,71 @@
     </select>
 
     <select id="selectNoSolveByUser" resultMap="confirmMap">
-        Select * 
-        From CONFIRM 
-        Where id = #{id}
-        And Ifnull(checkflagad, 'N') = 'N'
-        Order By confirm_date
+        Select *
+        From CONFIRM a
+        Inner Join USER b On (b.id = a.id)
+        Where a.id = #{id}
+        And Ifnull(a.checkflagad, 'N') = 'N'
+        Order By a.confirm_date
     </select>
 
     <select id="selectNoSolveByUserBetDt" resultMap="confirmMap">
-        Select * 
-        From CONFIRM 
-        
+        Select *
+        From CONFIRM a
+        Inner Join USER b On (b.id = a.id)
         <where>
             <if test="id != null">
-                Where id = #{id}
+                Where a.id = #{id}
             </if>
 
             <if test="date_from != null and date_from > 0 and date_to != null and date_to >= date_from ">
-            And confirm_date Between #{date_from} And #{date_to}
+            And a.confirm_date Between #{date_from} And #{date_to}
             </if>
         </where>
-        And Ifnull(checkflagad, 'N') = 'N'
-        Order By confirm_seq
+        And Ifnull(a.checkflagad, 'N') = 'N'
+        Order By a.confirm_seq
     </select>
 
     <select id="selectSolveNoCheckUser" resultMap="confirmMap">
-        Select * 
-        From CONFIRM 
+        Select *
+        From CONFIRM a
+        Inner Join USER b On (b.id = a.id)
         <if test="id != null">
-            Where id = #{id}
+            Where a.id = #{id}
         </if>
-        And Ifnull(checkflagad, 'N') = 'Y'
-        And Ifnull(checkflagus, 'N') = 'N'
-        Order By confirm_date
+        And Ifnull(a.checkflagad, 'N') = 'Y'
+        And Ifnull(a.checkflagus, 'N') = 'N'
+        Order By a.confirm_date
     </select>
 
     <select id="selectSolveCheckUser" resultMap="confirmMap">
         Select * 
-        From CONFIRM 
-        Where id = #{id}
-        And Ifnull(checkflagad, 'N') = 'Y' 
-        And Ifnull(checkflagus, 'N') = 'Y' 
-        Order By solve_timestamp
+        From CONFIRM a
+        Inner Join USER b On (b.id = a.id)
+        Where a.id = #{id}
+        And Ifnull(a.checkflagad, 'N') = 'Y' 
+        And Ifnull(a.checkflagus, 'N') = 'Y' 
+        Order By a.solve_timestamp
     </select>
 
     <select id="selectSolveCheckUserSDt" resultMap="confirmMap">
         Select * 
-        From CONFIRM 
-        Where id = #{id}
-        And DATE_FORMAT(solve_timestamp, '%Y%m%d') Between #{date_from} And #{date_to}
-        And Ifnull(checkflagad, 'N') = 'Y' 
-        And Ifnull(checkflagus, 'N') = 'Y' 
-        Order By solve_timestamp
+        From CONFIRM a
+        Inner Join USER b On (b.id = a.id)
+        Where a.id = #{id}
+        And DATE_FORMAT(a.solve_timestamp, '%Y%m%d') Between #{date_from} And #{date_to}
+        And Ifnull(a.checkflagad, 'N') = 'Y' 
+        And Ifnull(a.checkflagus, 'N') = 'Y' 
+        Order By a.solve_timestamp
     </select>
 
     <select id="selectNoSolveBetDt" resultMap="confirmMap">
         Select * 
-        From CONFIRM 
-        Where confirm_date Between #{date_from} And #{date_to}
-        And Ifnull(checkflagad, 'N') = 'N'
-        Order By id, confirm_date, confirm_seq
+        From CONFIRM a
+        Inner Join USER b On (b.id = a.id)
+        Where a.confirm_date Between #{date_from} And #{date_to}
+        And Ifnull(a.checkflagad, 'N') = 'N'
+        Order By a.id, a.confirm_date, a.confirm_seq
     </select>
 
     <!-- 프로시저 호출 -->

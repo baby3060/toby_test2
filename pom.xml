@@ -328,7 +328,7 @@
           <argLine>
             -javaagent:${settings.localRepository}\org\springframework\spring-instrument\${spring.version}\spring-instrument-${spring.version}.jar
           </argLine>
-          <test>BoardDaoTest</test>
+          <test>ConfirmDaoTest</test>
           <useSystemClassloader>true</useSystemClassloader>
         </configuration>
     </plugin>

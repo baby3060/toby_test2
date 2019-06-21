@@ -25,8 +25,8 @@ public class ConfirmServiceImpl implements ConfirmService {
     public void addConfirm(Confirm confirm) throws EmptyResultException {
         confirmServiceLogger.info("ConfirmService.addConfirm Called");
         // 등록된 user인지?
-        if( userService.countUser(confirm.getId()) == 1) {
-            int confirm_seq = this.getMaxSeq(confirm.getId(), confirm.getConfirm_date()) + 1;
+        if( userService.countUser(confirm.getApproval().getId()) == 1) {
+            int confirm_seq = this.getMaxSeq(confirm.getApproval().getId(), confirm.getConfirm_date()) + 1;
 
             confirm.setConfirm_seq(confirm_seq);
 
@@ -34,20 +34,20 @@ public class ConfirmServiceImpl implements ConfirmService {
         } else {
             confirmServiceLogger.error("ConfirmService.addConfirm Error");
 
-            throw new EmptyResultException("회원으로 등록되어 있는 유저가 아닙니다.(" + confirm.getId() + ")");
+            throw new EmptyResultException("회원으로 등록되어 있는 유저가 아닙니다.(" + confirm.getApproval().getId() + ")");
         }
 
         confirmServiceLogger.info("ConfirmService.addConfirm End");
     }
 
     public void deleteConfirm(Confirm confirm) {
-        int count = this.countConfirm(confirm.getId(), confirm.getConfirm_date(), confirm.getConfirm_seq());
+        int count = this.countConfirm(confirm.getApproval().getId(), confirm.getConfirm_date(), confirm.getConfirm_seq());
 
         if( count == 0 ) {
-            if( userService.countUser(confirm.getId()) == 1) {
+            if( userService.countUser(confirm.getApproval().getId()) == 1) {
                 confirmDao.deleteConfirm(confirm);
             } else {
-                throw new EmptyResultException("회원으로 등록되어 있는 유저가 아닙니다.(" + confirm.getId() + ")");
+                throw new EmptyResultException("회원으로 등록되어 있는 유저가 아닙니다.(" + confirm.getApproval().getId() + ")");
             }
         } else {
             throw new EmptyResultException("이미 등록되어 있는 항의 내역입니다.");

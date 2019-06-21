@@ -1,5 +1,7 @@
 package com.tobsec.model;
 
+import javax.persistence.*;
+
 import java.sql.Timestamp;
 
 import lombok.*;
@@ -7,12 +9,13 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-// equals와 hashCode 구현 시 level, login, recommend 필드 제외하고 구현
-@EqualsAndHashCode(exclude = {"confirm_time", "content", "solve_content", "checkflagad", "checkflagus", "solve_timestamp"})
+@EqualsAndHashCode(of = {"approval", "confirm_date", "confirm_seq"})
 public class Confirm {
     private String id;
+    private User approval;
     private int confirm_date;
     private int confirm_seq;
+
     private String confirm_time;
     private String content;
     // 운영진이 해결하면서 조치사항 작성
@@ -25,14 +28,14 @@ public class Confirm {
 
     public Confirm() { }
 
-    public Confirm(String id, int confirm_date, String content) {
-        this.id = id;
+    public Confirm(User approval, int confirm_date, String content) {
+        this.approval = approval;
         this.confirm_date = confirm_date;
         this.content = content;
     }
 
-    public Confirm(String id, int confirm_date, int confirm_seq, String content) {
-        this.id = id;
+    public Confirm(User approval, int confirm_date, int confirm_seq, String content) {
+        this.approval = approval;
         this.confirm_date = confirm_date;
         this.confirm_seq = confirm_seq;
         this.content = content;

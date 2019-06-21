@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.tobsec.context.AppConfig;
-import com.tobsec.dao.ConfirmDao;
-import com.tobsec.model.Confirm;
+import com.tobsec.dao.*;
+import com.tobsec.model.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.Before;
+import org.junit.After;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -22,6 +23,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.test.annotation.Rollback;
+
+import org.slf4j.Logger;
+import com.tobsec.common.Log;
+
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
@@ -31,21 +37,47 @@ public class ConfirmDaoTest  implements ParentTest  {
     @Autowired
     private ConfirmDao confirmDao;
 
+    @Autowired
+    private UserDao userDao;
+
+    @Log
+    protected Logger logger;
+
     @Before
+    @Rollback(false)
     public void setUp() {
+        userDao.deleteAll();
+
+        User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
+        User user2 = new User("2", "사용자2", "2", Level.BRONZE, 0, 0, "b@b.com");
+
+        userDao.addUser(user);
+        userDao.addUser(user2);
+
         list = new ArrayList<Confirm>(Arrays.asList(
-            new Confirm("1", 20190403, 1, "테스트1"),
-            new Confirm("1", 20190403, 2, "테스트2"),
-            new Confirm("1", 20190403, 3, "테스트3"),
-            new Confirm("1", 20190403, 4, "테스트4"),
-            new Confirm("1", 20190404, 1, "테스트5"),
-            new Confirm("2", 20190404, 1, "테스트5_2"),
-            new Confirm("1", 20190405, 1, "테스트6")
+            new Confirm(user, 20190403, 1, "테스트1"),
+            new Confirm(user, 20190403, 2, "테스트2"),
+            new Confirm(user, 20190403, 3, "테스트3"),
+            new Confirm(user, 20190403, 4, "테스트4"),
+            new Confirm(user, 20190404, 1, "테스트5"),
+            new Confirm(user2, 20190404, 1, "테스트5_2"),
+            new Confirm(user, 20190405, 1, "테스트6")
         ));
+    }
+
+    @After
+    @Rollback(false)
+    public void close() {
+        confirmDao.deleteAllUser("1");
+        confirmDao.deleteAllUser("2");
+
+        userDao.deleteAll();
     }
 
     @Test
     public void deleteAndCount() {
+        User user = userDao.getUser("1");
+
         confirmDao.deleteAllUser("1");
 
         int count = confirmDao.countAllUser("1");
@@ -53,7 +85,7 @@ public class ConfirmDaoTest  implements ParentTest  {
         assertThat(count, is(0));
 
         Confirm confirm = new Confirm();
-        confirm.setId("1");
+        confirm.setApproval(user);
         confirm.setConfirm_date(20190403);
         confirm.setConfirm_seq(1);
         confirm.setContent("테스트");
@@ -122,14 +154,15 @@ public class ConfirmDaoTest  implements ParentTest  {
             confirmDao.addConfirm(confirm);
         }
 
-        List<Confirm> noSolveListDt = confirmDao.selectNoSolveBetDt(20190101, 20190601);
+        List<Confirm> noSolveListDt = confirmDao.selectNoSolveBetDt(20190101, 20191231);
 
-        assertThat(noSolveListDt.size(), is(list.size()));
+        logger.info(noSolveListDt.size() + "");
 
         List<Confirm> noSolveUser_1 = confirmDao.selectNoSolveByUser("1");
         List<Confirm> noSolveUser_2 = confirmDao.selectNoSolveByUser("2");
-
-        assertThat(noSolveListDt.size(), is(noSolveUser_1.size() + noSolveUser_2.size()));
+        
+        assertThat(list.size(), is(noSolveUser_1.size() + noSolveUser_2.size()));
+        assertThat(noSolveListDt.size(), is(list.size()));
     }
 
     @Test
@@ -147,12 +180,12 @@ public class ConfirmDaoTest  implements ParentTest  {
         confirmDao.updateConfirmSolve(noSolveUser_1.get(0));
         confirmDao.updateConfirmSolve(noSolveUser_1.get(1));
 
-        List<Confirm> noSolveListDt = confirmDao.selectNoSolveBetDt(20190101, 20190601);
+        List<Confirm> noSolveListDt = confirmDao.selectNoSolveBetDt(20190101, 20191231);
 
         assertThat(noSolveListDt.size(), is(not(noSolveUser_1.size() + noSolveUser_2.size())));
 
         // 유저가 확인해준거
-        List<Confirm> solveUser_1BT = confirmDao.selectSolveCheckUserSDt("1", 20190101, 20190601);
+        List<Confirm> solveUser_1BT = confirmDao.selectSolveCheckUserSDt("1", 20190101, 20191231);
 
         assertThat(solveUser_1BT.size(), is(0));
 
@@ -160,7 +193,7 @@ public class ConfirmDaoTest  implements ParentTest  {
         confirmDao.updateUserOk(noSolveUser_1.get(0));
         confirmDao.updateUserOk(noSolveUser_1.get(1));
 
-        solveUser_1BT = confirmDao.selectSolveCheckUserSDt("1", 20190101, 20190601);
+        solveUser_1BT = confirmDao.selectSolveCheckUserSDt("1", 20190101, 20191231);
 
         assertThat(solveUser_1BT.size(), is(2));
     }
@@ -185,7 +218,7 @@ public class ConfirmDaoTest  implements ParentTest  {
         confirmDao.updateConfirmSolve(noSolveUser_1.get(0));
         confirmDao.updateConfirmSolve(noSolveUser_1.get(1));
 
-        List<Confirm> deleteTarget = confirmDao.selectNoSolveBetDt(20190101, 20190601);
+        List<Confirm> deleteTarget = confirmDao.selectNoSolveBetDt(20190101, 20191231);
 
         for( Confirm confirm : deleteTarget ) {
             confirmDao.deleteConfirm(confirm);
@@ -207,5 +240,4 @@ public class ConfirmDaoTest  implements ParentTest  {
         assertThat(empty_cnt, is(0));
 
     }
-
 }

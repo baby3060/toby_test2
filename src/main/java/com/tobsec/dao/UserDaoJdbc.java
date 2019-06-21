@@ -38,7 +38,7 @@ public class UserDaoJdbc extends DaoSupport implements UserDao {
         paramSource.addValue("login", user.getLogin());
         paramSource.addValue("recommend", user.getRecommend());
         paramSource.addValue("email", user.getEmail());
-        // paramSource.addValue("recid", user.getRecid());
+        paramSource.addValue("recid", user.getRecid());
 
         return paramSource;
     }

@@ -17,7 +17,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     private SqlParameterSource makeParam(Confirm confirm) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
 
-        paramSource.addValue("id", confirm.getId());
+        paramSource.addValue("id", confirm.getApproval().getId());
         paramSource.addValue("confirm_date", confirm.getConfirm_date());
         paramSource.addValue("confirm_seq", confirm.getConfirm_seq());
         paramSource.addValue("confirm_time", confirm.getConfirm_time());
@@ -94,7 +94,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     public int deleteConfirm(Confirm confirm) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
-        param.addValue("id", confirm.getId());
+        param.addValue("id", confirm.getApproval().getId());
         param.addValue("confirm_date", confirm.getConfirm_date());
         param.addValue("confirm_seq", confirm.getConfirm_seq());
 
@@ -167,7 +167,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     public void updateConfirmSolve(Confirm confirm) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
-        param.addValue("id", confirm.getId());
+        param.addValue("id", confirm.getApproval().getId());
         param.addValue("confirm_date", confirm.getConfirm_date());
         param.addValue("confirm_seq", confirm.getConfirm_seq());
 
@@ -181,7 +181,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
     public void updateUserOk(Confirm confirm) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
-        param.addValue("id", confirm.getId());
+        param.addValue("id", confirm.getApproval().getId());
         param.addValue("confirm_date", confirm.getConfirm_date());
         param.addValue("confirm_seq", confirm.getConfirm_seq());
 

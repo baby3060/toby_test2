@@ -46,9 +46,10 @@
 
     <!-- 커넥션 정보가 로그에 출력됨 -->
     <logger name="org.springframework.jdbc.datasource.DataSourceUtils" level="OFF"/>
-
+    
+    <!-- Mybatis SQL 출력 -->
     <logger name="mapper.mybatis" level="OFF" />
-
+    
     <logger name="org.springframework.beans" level="OFF"/>
 
     <!-- Transaction 생성 여부 확인하였으니 없어도 상관 없음 -->

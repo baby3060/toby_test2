@@ -56,8 +56,12 @@ public class User {
     @OneToMany(mappedBy = "writer", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Board> boardList;
 
+    @OneToMany(mappedBy = "approval", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Confirm> confirmList;
+
     {
         boardList = new ArrayList<Board>();
+        confirmList = new ArrayList<Confirm>();
     }
 
     public void upgradeLevel() {

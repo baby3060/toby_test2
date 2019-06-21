@@ -25,7 +25,7 @@ public class RowMapperConfig {
                 user.setLogin(rs.getInt("login"));
                 user.setRecommend(rs.getInt("recommend"));
                 user.setEmail(rs.getString("email"));
-                // user.setRecid(rs.getString("recid"));
+                user.setRecid(rs.getString("recid"));
                 return user;
             }
         };
@@ -36,8 +36,16 @@ public class RowMapperConfig {
         return new RowMapper<Confirm>() {
             public Confirm mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Confirm confirm = new Confirm();
+                User user = new User();
 
-                confirm.setId(rs.getString("id"));
+                user.setId(rs.getString("id"));
+                user.setName(rs.getString("name"));
+                user.setPassword(rs.getString("password"));
+                user.setLevel(Level.valueOf(rs.getInt("level")));
+                user.setLogin(rs.getInt("login"));
+                user.setRecommend(rs.getInt("recommend"));
+                user.setRecid(rs.getString("recid"));
+                
                 confirm.setConfirm_date(rs.getInt("confirm_date"));
                 confirm.setConfirm_seq(rs.getInt("confirm_seq"));
                 confirm.setConfirm_time(rs.getString("confirm_time"));
@@ -46,6 +54,7 @@ public class RowMapperConfig {
                 confirm.setCheckflagad(rs.getString("checkflagad"));
                 confirm.setCheckflagus(rs.getString("checkflagus"));
                 confirm.setSolve_timestamp(rs.getTimestamp("solve_timestamp"));
+                confirm.setApproval(user);
 
                 return confirm;
             }

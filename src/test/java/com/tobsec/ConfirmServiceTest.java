@@ -51,7 +51,7 @@ public class ConfirmServiceTest  implements ParentTest  {
 
         userService.addUser(user);
 
-        Confirm confirm = new Confirm(user.getId(), 20190407, "테스트");
+        Confirm confirm = new Confirm(user, 20190407, "테스트");
 
         int confirmCount1 = confirmService.countAllUser(user.getId());
 
@@ -65,7 +65,9 @@ public class ConfirmServiceTest  implements ParentTest  {
 
         assertThat(confirmCount1, is(1));
 
-        Confirm confirmExcep = new Confirm("2", 20190407, "테스트");
+        User user2 = new User("2", "김길동", "비번2", Level.BRONZE, 49, 0, "b@n.com");
+
+        Confirm confirmExcep = new Confirm(user2, 20190407, "테스트");
 
         confirmService.addConfirm(confirmExcep);
 
