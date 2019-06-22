@@ -40,8 +40,8 @@ public class ConfirmServiceTest  implements ParentTest  {
     
     @Test(expected=EmptyResultException.class)
     public void nonUserAddTest() {
-        userService.deleteAll();
         confirmService.deleteAll();
+        userService.deleteAll();
         
         int count = userService.countAll();
 

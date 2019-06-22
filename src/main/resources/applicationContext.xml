@@ -110,7 +110,7 @@
 
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
-    <!-- 
+    
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="jpaVendorAdapter">
@@ -119,7 +119,7 @@
             </bean>
         </property>
     </bean>
-    -->
+    
 
     <!-- User Level UP 전략 -->
     <bean id="levelUpStrategy" class="com.tobsec.service.StrategyFactory"

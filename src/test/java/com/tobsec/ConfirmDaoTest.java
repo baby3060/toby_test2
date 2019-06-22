@@ -46,14 +46,16 @@ public class ConfirmDaoTest  implements ParentTest  {
     @Before
     @Rollback(false)
     public void setUp() {
+        confirmDao.deleteAllUser("1");
+        confirmDao.deleteAllUser("2");
         userDao.deleteAll();
 
         User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
         User user2 = new User("2", "사용자2", "2", Level.BRONZE, 0, 0, "b@b.com");
-
+        
         userDao.addUser(user);
         userDao.addUser(user2);
-
+        
         list = new ArrayList<Confirm>(Arrays.asList(
             new Confirm(user, 20190403, 1, "테스트1"),
             new Confirm(user, 20190403, 2, "테스트2"),
@@ -70,7 +72,6 @@ public class ConfirmDaoTest  implements ParentTest  {
     public void close() {
         confirmDao.deleteAllUser("1");
         confirmDao.deleteAllUser("2");
-
         userDao.deleteAll();
     }
 

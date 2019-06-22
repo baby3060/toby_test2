@@ -53,10 +53,10 @@ public class User {
     @JoinColumn(name = "recid", columnDefinition="varchar(10)")
     private String recid;
 
-    @OneToMany(mappedBy = "writer", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Board> boardList;
 
-    @OneToMany(mappedBy = "approval", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "approval", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Confirm> confirmList;
 
     {
