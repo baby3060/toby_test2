@@ -160,3 +160,4 @@
 9. JPA 적용해보기
 - [ ] Spring JPA 사용해보기
 - [ ] Spring JPA와 SQL Mapper(Mybatis 또는 스프링 JDBCTemplate) 함께 사용해보기 : 어려운 쿼리는 SQL Mapper로
+>>> Member와 Confirm을 예로 들어봤을 때(Confirm의 필드가 Member의 Key에 의존), DeleteAll 시 Member를 먼저 모두 지우고 나서, Confirm을 모두 지워야 함
