@@ -161,3 +161,8 @@
 - [ ] Spring JPA 사용해보기
 - [ ] Spring JPA와 SQL Mapper(Mybatis 또는 스프링 JDBCTemplate) 함께 사용해보기 : 어려운 쿼리는 SQL Mapper로
 >>> Member와 Confirm을 예로 들어봤을 때(Confirm의 필드가 Member의 Key에 의존), DeleteAll 시 Member를 먼저 모두 지우고 나서, Confirm을 모두 지워야 함
+
+>>>> @PersistenceContext 애노테이션을 사용하여 EntityManager 가져올 경우가 아닐 경우에는 EntityManager와 EntityTransaction(데이터 업데이트)을 따로 생성
+>>>> EntityManager를 따로 생성할 경우에는 크게 어려움 없음
+>>>> @PersistenceContext로 EntityManager를 만든 상태에서 EntityTransaction을 만들 경우 예외 발생(공유된 EntityManager에서는 만들 수 없다는)
+>>>> EntityManager를 공유한 상태에서 executeUpdate를 수행할 경우 @Transactional을 붙여도 TransactionRequired 예외가 발생할 경우, EntityManager의 트랜잭션을 스프링의 @Transactional에 강제로 편승(em.joinTransaction() 메소드를 update or delete 하기 전에 한 번 호출하면 됨)

@@ -66,6 +66,19 @@
     <logger name="org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener" level="OFF"/>
     
     <logger name="org.springframework.test.annotation.ProfileValueUtils" level="OFF"/>
+
+    <!-- JPA에서 Attribute 매칭 시키는거 출력  -->
+    <logger name="org.hibernate.persister.walking.spi.MetamodelGraphWalker" level="OFF"/>
+
+    <logger name="org.hibernate.cfg.Settings" level="OFF"/>
+
+    <logger name="org.hibernate.cfg.Ejb3Column" level="OFF"/>
+
+    <logger name="org.hibernate.type.BasicTypeRegistry" level="OFF"/>
+
+    <logger name="org.hibernate.impl.SessionFactoryImpl" level="OFF"/>
+
+    <logger name="org.hibernate.cfg.annotations.SimpleValueBinder" level="OFF"/>
     
     <!-- Mybatis Mapper 및 설정 -->
     <logger name="org.mybatis.spring.SqlSessionFactoryBean" level="OFF"/>

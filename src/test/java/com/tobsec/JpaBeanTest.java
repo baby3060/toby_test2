@@ -24,31 +24,43 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
+@Transactional
 public class JpaBeanTest implements ParentTest {
+    /*
     @Autowired
     private EntityManagerFactory emf;
+    */
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Log
     protected Logger logger;
 
     @Test
     public void createTest() {
-        EntityManager em = emf.createEntityManager();
+        // @PersistenceContext 애노테이션을 사용하여 EntityManager를 각 테스트 마다 생성해야 할 경우 EntityManager와 EntityTransaction을 따로 생성
         
-        assertThat(em, is(not(nullValue())));
+        // EntityManager em = emf.createEntityManager();
+        // assertThat(em, is(not(nullValue())));
+        // EntityTransaction tx = em.getTransaction();
 
-        EntityTransaction tx = em.getTransaction();
+        // @PersistenceContext로 EntityManager를 만든 상태에서 EntityTransaction을 만들 경우 예외 발생(공유된 EntityManager에서는 만들 수 없다는)
 
         try {
-            tx.begin();
+            // tx.begin();
+
+            // EntityManager를 공유한 상태에서 executeUpdate를 수행할 경우 @Transactional을 붙여도 TransactionRequired 예외가 발생할 경우, 
+            // EntityManager의 트랜잭션에 강제로 편승
+            em.joinTransaction();
 
             em.createNativeQuery("Delete From Board").executeUpdate();
             em.createNativeQuery("Delete From Confirm").executeUpdate();
             em.createNativeQuery("Delete From User").executeUpdate();
 
+            
             em.flush();
 
             List<User> list = new ArrayList<User>(Arrays.asList(
@@ -64,10 +76,7 @@ public class JpaBeanTest implements ParentTest {
 
             assertThat(count, is(0L));
 
-            list.stream()
-                .forEach(member -> {
-                    em.persist(member);
-                });
+            list.stream().forEach(member -> { em.persist(member); });
             
             em.flush();
             
@@ -89,9 +98,9 @@ public class JpaBeanTest implements ParentTest {
             }
             
         } catch(Exception e) {
-            e.printStackTrace();
+            logger.error(e.toString());
         } finally {
-            em.close();
+            // em.close();
         }
     }
 
