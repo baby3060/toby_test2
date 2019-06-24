@@ -46,8 +46,8 @@ public class EncrypAdvice {
     @Pointcut("execution(* com.tobsec.service.UserService.get*(..)) || execution(* com.tobsec.service.UserService.select*(..))")
     public void passwordDecodeService() {} 
 
-    /*
-    // Around 어드바이스 적용 한 것
+    
+    // Around 어드바이스 적용 한 것, 패스워드 암호화
     @Around("passwordUseService()")
     public Object passwordEncryp(ProceedingJoinPoint joinPoint) throws Throwable {
         encrypLogger.info("Password Use PointCut");
@@ -87,7 +87,7 @@ public class EncrypAdvice {
 
         return ret;
     }
-    */
+    
 
     // Before 어드바이스에서 매개변수의 값 바꾸기
     // @Before("passwordEncodeService()")
