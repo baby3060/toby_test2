@@ -36,6 +36,7 @@ public class User {
     private String password;
 
     @NonNull 
+    @Convert(converter = LevelConverter.class)
     private Level level;
 
     @NonNull 
