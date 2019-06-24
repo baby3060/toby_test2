@@ -329,7 +329,7 @@
             -javaagent:${settings.localRepository}\org\springframework\spring-instrument\${spring.version}\spring-instrument-${spring.version}.jar
           </argLine>
           <useSystemClassloader>true</useSystemClassloader>
-          <test>JpaBeanTest</test>
+          <test>UserDaoJpaTest</test>
         </configuration>
     </plugin>
     
