@@ -1,5 +1,8 @@
 package com.tobsec;
 
+import com.tobsec.common.Log;
+import org.slf4j.Logger;
+
 import com.tobsec.context.AppConfig;
 
 import javax.persistence.*;
@@ -28,6 +31,9 @@ public class JpaBeanTest implements ParentTest {
     @Autowired
     private EntityManagerFactory emf;
 
+    @Log
+    protected Logger logger;
+
     @Test
     public void createTest() {
         EntityManager em = emf.createEntityManager();
@@ -54,7 +60,7 @@ public class JpaBeanTest implements ParentTest {
                 new User("6", "사용자6", "6", Level.BRONZE, 0, 0, "f@f.com")
             ));
 
-            long count = em.createQuery("Select Count(m) From User m", Long.class).getSingleResult();
+            long count = em.createQuery("Select Count(u) From User u", Long.class).getSingleResult();
 
             assertThat(count, is(0L));
 
@@ -65,13 +71,41 @@ public class JpaBeanTest implements ParentTest {
             
             em.flush();
             
-            count = em.createQuery("Select Count(m) From User m", Long.class).getSingleResult();
+            count = em.createQuery("Select Count(u) From User u", Long.class).getSingleResult();
 
             assertThat(count, is(6L));
+
+            List<User> findList = em.createQuery("Select u From User u Order By u.id", User.class).getResultList();
+
+            assertThat(findList.size(), is(list.size()));
+
+            User listObj = null;
+            User findListObj = null;
+
+            for( int i = 0; i < findList.size(); i++ ) {
+                listObj = list.get(i);
+                findListObj = findList.get(i);
+                equalsUser(listObj, findListObj);
+            }
+            
         } catch(Exception e) {
             e.printStackTrace();
         } finally {
             em.close();
         }
     }
+
+    private void equalsUser(User expected1, User expected2) {
+        assertThat(expected1.getId(), is(expected2.getId()));
+        assertThat(expected1.getName(), is(expected2.getName()));
+        // Service를 타지 않으므로, 비밀번호가 변환되지 않음
+        assertThat(expected1.getPassword(), is(expected2.getPassword()));
+        assertThat(expected1.getLevel(), is(expected2.getLevel()));
+        assertThat(expected1.getLogin(), is(0));
+        assertThat(expected1.getRecommend(), is(0));
+        assertThat(expected2.getLogin(), is(0));
+        assertThat(expected2.getRecommend(), is(0));
+        assertThat(expected1.getEmail(), is(expected2.getEmail()));
+    }
+
 }
