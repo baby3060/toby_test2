@@ -7,12 +7,17 @@ import javax.persistence.*;
 
 import org.springframework.stereotype.Repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.tobsec.common.JpaTransaction;
 
-@Repository("userDaoJpa")
+@Repository("userDao")
 public class UserDaoJpa implements UserDao {
     
-    @PersistenceContext
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @PersistenceContext 
     private EntityManager em;
 
     @JpaTransaction
@@ -60,9 +65,9 @@ public class UserDaoJpa implements UserDao {
     }
 
     public int countUserCondition(String option) {
-        Query query = em.createNativeQuery("Select Count(*) From User " + option, Integer.class);
+        Query query = em.createNativeQuery("Select Count(*) From User Where 1 = 1 " + option);
 
-        return (Integer)query.getSingleResult();
+        return ((Number) query.getSingleResult()).intValue();
     }
 
     public User getUser(String id) {
@@ -79,31 +84,41 @@ public class UserDaoJpa implements UserDao {
         return query.getResultList();
     }
 
+    @JpaTransaction
     public void upgradeLevel(User user) {
         em.createQuery("Update User u u.level = :level Where u.id = :id")
           .setParameter("level", user.getLevel())
           .setParameter("id", user.getId())
           .executeUpdate();
+          em.flush();
     }
     
+    @JpaTransaction
     public void plusLogin(User user, int login) {
-        em.createQuery("Update User u Set u.login = u.login + :login Where u.id = :id")
-          .setParameter("login", login)
-          .setParameter("id", user.getId())
-          .executeUpdate();
+        User findUser = em.find(User.class, user.getId());
+
+        findUser.setLogin(findUser.getLogin() + login);
+        
+        em.flush();
     }
 
+    @JpaTransaction
     public void plusRecommend(User target, int recommend) {
-        em.createQuery("Update User u Set u.recommend = u.recommend + :recommend Where u.id = :id")
-          .setParameter("recommend", recommend)
-          .setParameter("id", target.getId())
-          .executeUpdate();
+
+        User findUser = em.find(User.class, target.getId());
+
+        findUser.setRecommend(findUser.getRecommend() + recommend);
+
+        em.flush();
     }
 
+    @JpaTransaction
     public void checkedRecommend(User user) {
+
         em.createQuery("Update User u Set u.recid = :recid Where u.id = :id")
           .setParameter("recid", user.getRecid())
           .setParameter("id", user.getId())
           .executeUpdate();
+          em.flush();
     }
 }

@@ -33,7 +33,7 @@ public class UserDaoJpaTest implements ParentTest {
     private List<User> list;
 
     @Autowired
-    private UserDao userDaoJpa;
+    private UserDao userDao;
 
     @Before
     public void setUp() {
@@ -49,42 +49,42 @@ public class UserDaoJpaTest implements ParentTest {
 
     @Test
     public void count() {
-        userDaoJpa.deleteAll();
+        userDao.deleteAll();
 
-        int count = userDaoJpa.countUserAll();
+        int count = userDao.countUserAll();
 
         assertThat(count, is(0));
     }
 
     @Test
     public void insertTest() {
-        userDaoJpa.deleteAll();
+        userDao.deleteAll();
 
-        int count = userDaoJpa.countUserAll();
+        int count = userDao.countUserAll();
 
         assertThat(count, is(0));
 
         for( User user : list ) {
-            userDaoJpa.addUser(user);
+            userDao.addUser(user);
         }
 
-        count = userDaoJpa.countUserAll();
+        count = userDao.countUserAll();
 
         assertThat(count, is(6));
     }
 
     @Test
     public void updateTest() {
-        userDaoJpa.deleteAll();
-        int count = userDaoJpa.countUserAll();
+        userDao.deleteAll();
+        int count = userDao.countUserAll();
 
         assertThat(count, is(0));
 
         for( User user : list ) {
-            userDaoJpa.addUser(user);
+            userDao.addUser(user);
         }
 
-        count = userDaoJpa.countUserAll();
+        count = userDao.countUserAll();
 
         assertThat(count, is(6));
 
@@ -99,9 +99,9 @@ public class UserDaoJpaTest implements ParentTest {
 
         changeUser.setName("사용자(변경)2");
 
-        userDaoJpa.updateUser(changeUser);
+        userDao.updateUser(changeUser);
 
-        User findUser = userDaoJpa.getUser(user2.getId());
+        User findUser = userDao.getUser(user2.getId());
 
         assertThat(user1, is(equalTo(list.get(0))));
         assertThat(findUser.getName(), is(not("사용자2")));
@@ -113,42 +113,42 @@ public class UserDaoJpaTest implements ParentTest {
 
     @Test
     public void deleteTest() {
-        userDaoJpa.deleteAll();
+        userDao.deleteAll();
 
-        int count = userDaoJpa.countUserAll();
+        int count = userDao.countUserAll();
 
         assertThat(count, is(0));
 
         for( User user : list ) {
-            userDaoJpa.addUser(user);
+            userDao.addUser(user);
         }
 
-        count = userDaoJpa.countUserAll();
+        count = userDao.countUserAll();
 
         assertThat(count, is(6));
 
-        count = userDaoJpa.countUser(list.get(0).getId());
+        count = userDao.countUser(list.get(0).getId());
 
         assertThat(count, is(1));
 
-        userDaoJpa.deleteUser(list.get(0).getId());
-        userDaoJpa.deleteUser(list.get(2).getId());
-        userDaoJpa.deleteUser(list.get(3).getId());
+        userDao.deleteUser(list.get(0).getId());
+        userDao.deleteUser(list.get(2).getId());
+        userDao.deleteUser(list.get(3).getId());
 
-        count = userDaoJpa.countUserAll();
+        count = userDao.countUserAll();
 
         assertThat(count, is(3));
 
-        count = userDaoJpa.countUser(list.get(0).getId());
+        count = userDao.countUser(list.get(0).getId());
 
         assertThat(count, is(0));
     }
 
     @Test
     public void getUserTest() {
-        userDaoJpa.deleteAll();
+        userDao.deleteAll();
         for( User user : list ) {
-            userDaoJpa.addUser(user);
+            userDao.addUser(user);
         }
         
         
@@ -159,12 +159,12 @@ public class UserDaoJpaTest implements ParentTest {
         User user5 = list.get(4);
         User user6 = list.get(5);
 
-        User anotherUser1 = userDaoJpa.getUser(user1.getId());
-        User anotherUser2 = userDaoJpa.getUser(user2.getId());
-        User anotherUser3 = userDaoJpa.getUser(user3.getId());
-        User anotherUser4 = userDaoJpa.getUser(user4.getId());
-        User anotherUser5 = userDaoJpa.getUser(user5.getId());
-        User anotherUser6 = userDaoJpa.getUser(user6.getId());
+        User anotherUser1 = userDao.getUser(user1.getId());
+        User anotherUser2 = userDao.getUser(user2.getId());
+        User anotherUser3 = userDao.getUser(user3.getId());
+        User anotherUser4 = userDao.getUser(user4.getId());
+        User anotherUser5 = userDao.getUser(user5.getId());
+        User anotherUser6 = userDao.getUser(user6.getId());
 
         assertThat(user1, equalTo(anotherUser1));
         assertThat(user2, equalTo(anotherUser2));

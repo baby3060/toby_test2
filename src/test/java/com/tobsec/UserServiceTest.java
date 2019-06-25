@@ -169,13 +169,29 @@ public class UserServiceTest implements ParentTest  {
 
         user.setLevel(Level.PLATINUM);
 
-        userService.upgradeLevels();
+        try {
+            userService.upgradeLevels();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void loginTest() {
+        userService.deleteAll();
+
+        int count = userService.countAll();
+
+        assertThat(count, is(0));
+
+        User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
+
+        userService.addUser(user);
 
         userService.plusLogin(user);
         userService.plusLogin(user);
 
         user = userService.getUser("1");
-
 
         assertThat(user.getLogin(), is(2));
     }
@@ -275,7 +291,6 @@ public class UserServiceTest implements ParentTest  {
     }
 
     @Test    
-    @Transactional
     public void compositeTest() {
         serviceLogger.info("Start compositeTest");
 

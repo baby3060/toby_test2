@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Transactional
     @Service("testService")
     public static class TestUserServiceImpl extends UserServiceImpl {
         private String id = "5";

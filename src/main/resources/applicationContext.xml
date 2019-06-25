@@ -120,12 +120,14 @@
             </bean>
         </property>
         <property name="packagesToScan" value="com.tobsec.model" />
+        <!-- 
         <property name="jpaProperties">
-        <props>
-            <prop key="hibernate.hbm2ddl.auto">update</prop>
-            <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-        </props>
-    </property>
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+            </props>
+        </property>
+        -->
     </bean>
     
 
