@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 
 import org.springframework.stereotype.Repository;
 
-@Repository("confirmDaoJpa")
+@Repository("confirmDao")
 public class ConfirmDaoJpa implements ConfirmDao {
 
     @Log
