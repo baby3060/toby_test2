@@ -166,3 +166,4 @@
 >>>> EntityManager를 따로 생성할 경우에는 크게 어려움 없음
 >>>> @PersistenceContext로 EntityManager를 만든 상태에서 EntityTransaction을 만들 경우 예외 발생(공유된 EntityManager에서는 만들 수 없다는)
 >>>> EntityManager를 공유한 상태에서 executeUpdate를 수행할 경우 @Transactional을 붙여도 TransactionRequired 예외가 발생할 경우, EntityManager의 트랜잭션을 스프링의 @Transactional에 강제로 편승(em.joinTransaction() 메소드를 update or delete 하기 전에 한 번 호출하면 됨)
+>>>> createNativeQuery 사용 할 때 두 개의 테이블을 조인하였을 때, 각 테이블에 중복된 컬럼명이 존재할 경우, createNativeQuery의 두 번째 인자로 제너릭 클래스를 작성하지 않을 경우, Asterisk(*)를 입력하였을 경우(컬럼명을 하나하나 입력하지 않을 경우) 에외가 발생. 이를 회피하려면 createNativeQuery(sql, Object.class)와 같이 제너릭 클래스를 명시해줘야 함.

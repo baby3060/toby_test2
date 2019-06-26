@@ -204,5 +204,9 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
 
         return getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("confirm", "countEmptySolveContent"), param, Integer.class);
     }
+
+    public Confirm getConfirm(String id, int confirm_date, int confirm_seq) {
+        return null;
+    }
     
 }

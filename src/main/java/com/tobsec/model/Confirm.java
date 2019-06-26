@@ -18,9 +18,21 @@ public class Confirm {
     private String id;
     
     @ManyToOne
-    @JoinColumn(name = "id", insertable = false, updatable = false, nullable=false)
+    @JoinColumn(name = "id", insertable = false, updatable = false)
     private User approval;
-    
+
+    public void setApproval(User approval) {
+        if( this.approval != null ) {
+            this.approval.getConfirmList().remove(this);
+        }
+
+        this.approval = approval;
+        if( this.approval != null ) {
+            this.approval.getConfirmList().add(this);
+        }
+    }
+
+
     @Id
     @Column(name = "confirm_date", precision = 8)
     private int confirm_date;
@@ -44,6 +56,15 @@ public class Confirm {
     private Timestamp solve_timestamp;   
 
     public Confirm() { }
+
+    @PrePersist
+    public void setupId() {
+        if( this.id == null ) {
+            if( this.approval != null ) {
+                this.id = this.approval.getId();
+            }
+        }
+    }
 
     public Confirm(User approval, int confirm_date, String content) {
         this.approval = approval;

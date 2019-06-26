@@ -20,6 +20,8 @@ public interface ConfirmDao {
     int countConfirm(String id, int confirm_date, int confirm_seq);
     void deleteAllUser(String id);
 
+    Confirm getConfirm(String id, int confirm_date, int confirm_seq);
+
     // 미해결 리스트(유저별)
     List<Confirm> selectNoSolveByUser(String id);
     // 주어진 일자 사이에 미해결 리스트(유저별)

@@ -23,6 +23,17 @@ public class Board {
     @ManyToOne
     @JoinColumn(name = "writer_id")
     private User writer;
+    public void setWriter(User writer) {
+        if( this.writer != null ) {
+            this.writer.getBoardList().remove(this);
+        }
+
+        this.writer = writer;
+        if( this.writer != null ) {
+            this.writer.getBoardList().add(this);
+        }
+    }
+
 
     private String content;
 

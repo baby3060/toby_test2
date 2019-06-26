@@ -158,4 +158,8 @@ public class ConfirmDaoMyBatis extends SqlSessionDaoSupport implements ConfirmDa
     public int countEmptySolveContent() {
         return this.getSqlSession().selectOne("mapper.mybatis.ConfirmMapper.countEmptySolveContent");
     }
+
+    public Confirm getConfirm(String id, int confirm_date, int confirm_seq) {
+        return null;
+    }
 }

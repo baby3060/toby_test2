@@ -99,30 +99,6 @@ public class ConfirmDaoTest  implements ParentTest  {
     }
 
     @Test
-    public void listCount() {
-        confirmDao.deleteAllUser("1");
-        confirmDao.deleteAllUser("2");
-
-        int count = confirmDao.countAllUser("1");
-
-        assertThat(count, is(0));
-
-        for( Confirm confirm : list ) {
-            confirmDao.addConfirm(confirm);
-        }
-
-        count = confirmDao.countAllUser("1");
-
-        assertThat(count, is(6));
-
-        // id 2가 하나 끼어있으니까 같아선 안 된다.
-        assertThat(list.size(), is(not(count)));
-
-        int count_2 = confirmDao.countAllUser("2");
-        assertThat(list.size(), is(count + count_2));
-    }
-
-    @Test
     public void solveDetail() {
         confirmDao.deleteAllUser("1");
         confirmDao.deleteAllUser("2");
@@ -239,6 +215,7 @@ public class ConfirmDaoTest  implements ParentTest  {
 
         empty_cnt = confirmDao.countEmptySolveContent();
         assertThat(empty_cnt, is(0));
-
     }
+
+    
 }
