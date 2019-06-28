@@ -1,5 +1,6 @@
 package com.tobsec.service;
 
+import java.util.List;
 import com.tobsec.model.Confirm;
 
 import com.tobsec.service.exception.*;
@@ -13,4 +14,5 @@ public interface ConfirmService {
     int getMaxSeq(String id, int confirm_date);
     void deleteAll();
     void deleteAllByUser(String id);
+    List<Confirm> selectAllList();
 }

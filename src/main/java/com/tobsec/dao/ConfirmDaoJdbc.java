@@ -209,4 +209,7 @@ public class ConfirmDaoJdbc extends DaoSupport implements ConfirmDao {
         return null;
     }
     
+    public List<Confirm> selectAllList() {
+        return null;
+    }
 }

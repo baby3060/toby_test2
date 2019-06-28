@@ -8,7 +8,7 @@ import lombok.*;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"approval", "id"})
 @EqualsAndHashCode(of = {"approval", "confirm_date", "confirm_seq"})
 @Entity
 @IdClass(ConfirmKey.class)

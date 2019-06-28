@@ -161,4 +161,9 @@ public class ConfirmDaoMyBatis extends SqlSessionDaoSupport implements ConfirmDa
     public Confirm getConfirm(String id, int confirm_date, int confirm_seq) {
         return null;
     }
+
+    
+    public List<Confirm> selectAllList() {
+        return null;
+    }
 }

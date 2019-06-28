@@ -38,7 +38,7 @@ public interface ConfirmDao {
 
     // 해당 유저가 확인해준거, 모든 내역
     List<Confirm> selectSolveCheckUser(String id);
-
+    List<Confirm> selectAllList();
     // 운영자가 불만사항 해결
     void updateConfirmSolve(Confirm confirm);
 

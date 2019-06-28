@@ -50,14 +50,14 @@ public class ConfirmDaoJpa implements ConfirmDao {
     }
 
     public int getMaxSeq(String id, int confirm_date) {
-        TypedQuery<Long> query = em.createQuery("Select Max(c.confirm_seq) " +
-                                                " From CONFIRM c " +
+        TypedQuery<Integer> query = em.createQuery("Select Max(c.confirm_seq) " +
+                                                " From Confirm c " +
                                                 " Where c.id = :id " +
-                                                " And c.confirm_date = :confirm_date", Long.class)
+                                                " And c.confirm_date = :confirm_date", Integer.class)
                                     .setParameter("id", id)
                                     .setParameter("confirm_date", confirm_date);
 
-        return (int)(query.getSingleResult().longValue());
+        return query.getSingleResult().intValue();
     }
 
     public int countAllUser(String id) {
@@ -227,5 +227,9 @@ public class ConfirmDaoJpa implements ConfirmDao {
 
     public Confirm getConfirm(String id, int confirm_date, int confirm_seq) {
         return em.find(Confirm.class, new ConfirmKey(id, confirm_date, confirm_seq));
+    }
+    
+    public List<Confirm> selectAllList() {
+        return em.createNativeQuery("Select * From Confirm c Inner Join User u On (u.id = c.id) Order By c.id, c.confirm_date, c.confirm_seq", Confirm.class).getResultList();
     }
 }

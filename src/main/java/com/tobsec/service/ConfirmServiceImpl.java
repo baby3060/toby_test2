@@ -8,7 +8,7 @@ import com.tobsec.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import org.slf4j.Logger;
 
 @Service("confirmService")
@@ -83,6 +83,10 @@ public class ConfirmServiceImpl implements ConfirmService {
 
     public void deleteAllByUser(String id) {
         confirmDao.deleteAllUser(id);
+    }
+
+    public List<Confirm> selectAllList() {
+        return confirmDao.selectAllList();
     }
 
 }
