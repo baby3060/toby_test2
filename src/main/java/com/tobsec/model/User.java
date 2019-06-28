@@ -17,7 +17,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 // equals와 hashCode 구현 시 level, login, recommend 필드 제외하고 구현
-@EqualsAndHashCode(exclude = {"level", "login", "recommend", "recid"})
+@EqualsAndHashCode(exclude = {"level", "login", "recommend", "recid", "boardList", "confirmList"})
 @Entity
 public class User {
     
@@ -55,9 +55,11 @@ public class User {
     private String recid;
 
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OrderColumn(name = "board_no")
     private List<Board> boardList;
 
     @OneToMany(mappedBy = "approval", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OrderColumn(name = "confirm_seq")
     private List<Confirm> confirmList;
 
     {
