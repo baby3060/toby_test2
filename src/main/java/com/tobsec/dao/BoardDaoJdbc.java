@@ -25,11 +25,12 @@ public class BoardDaoJdbc extends DaoSupport implements BoardDao {
 
     
 
-    public int insertBoard(Board board) {
+    public void insertBoard(Board board) {
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(board);
 
         // SimpleJDBCInsert 사용
-        return jdbcInsert.executeAndReturnKey(param).intValue();
+        // return jdbcInsert.executeAndReturnKey(param).longValue();
+        jdbcInsert.executeAndReturnKey(param);
 
         // KeyHolder에 자동생성 키 담기
         /*
@@ -42,10 +43,10 @@ public class BoardDaoJdbc extends DaoSupport implements BoardDao {
     }
 
     
-    public int getMaxBoardNo() {
+    public Long getMaxBoardNo() {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
-        return this.getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("board", "getMaxBoardNo"), param, Integer.class);
+        return this.getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("board", "getMaxBoardNo"), param, Long.class);
     }
 
     public void updateBoard(Board board) {
@@ -54,7 +55,7 @@ public class BoardDaoJdbc extends DaoSupport implements BoardDao {
         this.getNamedParameterJdbcTemplate().update(sqlService.findSql("board", "updateBoard"), param);
     }
 
-    public void deleteBoard(int boardNo) {
+    public void deleteBoard(Long boardNo) {
         MapSqlParameterSource param = new MapSqlParameterSource();
         param.addValue("boardNo", boardNo);
 
@@ -70,7 +71,7 @@ public class BoardDaoJdbc extends DaoSupport implements BoardDao {
     }
 
     private void initAuto() {
-        alterBoardNo(1);
+        alterBoardNo(1L);
     }
 
     /**
@@ -90,7 +91,7 @@ public class BoardDaoJdbc extends DaoSupport implements BoardDao {
         return this.getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("board", "countAll"), param, Integer.class);
     }
 
-    public int countBoard(int boardNo) {
+    public int countBoard(Long boardNo) {
         MapSqlParameterSource param = new MapSqlParameterSource();
 
         param.addValue("boardNo", boardNo);
@@ -98,7 +99,7 @@ public class BoardDaoJdbc extends DaoSupport implements BoardDao {
         return this.getNamedParameterJdbcTemplate().queryForObject(sqlService.findSql("board", "countBoard"), param, Integer.class);
     }
 
-    public Board getBoard(int boardNo) {
+    public Board getBoard(Long boardNo) {
 
         MapSqlParameterSource param = new MapSqlParameterSource();
 
@@ -113,7 +114,7 @@ public class BoardDaoJdbc extends DaoSupport implements BoardDao {
         return this.getNamedParameterJdbcTemplate().query(sqlService.findSql("board", "getAllBoardList"), param, this.boardMapper);
     }
 
-    public void alterBoardNo(final int autoInit) {
+    public void alterBoardNo(final Long autoInit) {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("init", autoInit);
 

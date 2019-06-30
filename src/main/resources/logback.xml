@@ -52,7 +52,7 @@
     
     <logger name="org.springframework.beans" level="OFF"/>
 
-    <!-- Transaction 생성 여부 확인하였으니 없어도 상관 없음 -->
+    <!-- Transaction 생성 여부 확인하였으니 없어도 상관 없음 -->>
     <logger name="org.mybatis.spring.SqlSessionUtils" level="OFF"/>
     <logger name="org.mybatis.spring.transaction.SpringManagedTransaction" level="OFF"/>
     <!-- Transaction 생성 여부 확인하였으니 없어도 상관 없음 -->
@@ -83,9 +83,52 @@
     <!-- Mybatis Mapper 및 설정 -->
     <logger name="org.mybatis.spring.SqlSessionFactoryBean" level="OFF"/>
 
+    <logger name="org.hibernate" additivity="false" >
+        <level value="INFO" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="org.hibernate.hql.ast.AST" additivity="false" >
+        <level value="INFO" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="org.hibernate.tool.hbm2ddl" additivity="false" >
+        <level value="WARN" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="org.hibernate.cache" additivity="false" >
+        <level value="INFO" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="org.hibernate.hql" additivity="false" >
+        <level value="DEBUG" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="org.hibernate.jdbc" additivity="false" >
+        <level value="DEBUG" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!-- Parameter 추적 -->
+    <logger name="org.hibernate.type" additivity="false" >
+        <level value="TRACE" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="org.hibernate.SQL" additivity="false" >
+        <level value="DEBUG" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!-- 
     <logger name="org.springframework.jdbc.core" level="debug" additivity="false">
         <appender-ref ref="TemplateLogFile" />
     </logger>
+    -->
 
     <root level="DEBUG">
         <appender-ref ref="STDOUT" />

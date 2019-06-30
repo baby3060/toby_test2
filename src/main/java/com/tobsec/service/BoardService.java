@@ -13,8 +13,8 @@ public interface BoardService {
     int countBoard(Board board);
     void deleteByWriter(String writerId);
     int countByWriter(String writerId);
-    Board getBoard(int boardNo);
-    int getMaxBoardNo();
+    Board getBoard(Long boardNo);
+    Long getMaxBoardNo();
     int getIncreValue(String dbName);
     List<Board> selectAll();
     List<Board> selectAllByWriter(String writerId);

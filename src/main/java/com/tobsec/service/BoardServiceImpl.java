@@ -7,45 +7,54 @@ import com.tobsec.common.Log;
 import com.tobsec.model.Board;
 
 import com.tobsec.service.exception.*;
-
+import com.tobsec.common.JpaTransaction;
 import org.slf4j.Logger;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+@Transactional
 @Service("boardService")
 public class BoardServiceImpl implements BoardService {
     @Log
     public Logger boardLogger;
 
-    @Autowired
+    
+    // @Autowired
     private BoardDao boardDao;
+    
 
     @Autowired
     private UserService userService;
 
     public void addBoard(Board board) {
+        /*
         if( board.getWriter() == null || board.getWriter().getId().equals("") ) {
             throw new KeyNullException("작성자가 비어있습니다.");
         } else {
             if( userService.countUser(board.getWriter().getId()) == 1 ) {
-                int newBoardNo = boardDao.insertBoard(board);
+                Long newBoardNo = boardDao.insertBoard(board);
 
                 board.setBoardNo(newBoardNo);
 
-                boardLogger.info("새로 생성된 Board의 번호 : " + newBoardNo);
+                boardLogger.info("새로 생성된 Board의 번호 : " + newBoardNo + ", " + board.toString());
             } else {
                 throw new EmptyResultException("등록된 User가 아닙니다(" + board.getWriter().getId() + ").");
             }
         }
+        */
     }
 
     public int countBoard(Board board) {
-        return boardDao.countBoard(board.getBoardNo());
+        // return boardDao.countBoard(board.getBoardNo());
+        return 0;
     }
 
     public void updateContent(Board board) {
+        /*
         if( board == null || board.getBoardNo() <= 0 ) {
             throw new KeyNullException("수정할 게시물 참조가 비어있습니다.");
         } else {
@@ -55,45 +64,54 @@ public class BoardServiceImpl implements BoardService {
                 throw new EmptyResultException("등록된 게시물이 아닙니다(" + board.getBoardNo() + ").");
             }
         }
+        */
     }
 
     public void deleteBoard(Board board) {
+        /*
         if( board == null || board.getBoardNo() <= 0 ) {
             throw new KeyNullException("삭제할 게시물 참조가 비어있습니다.");
         } else {
             if( this.countBoard(board) == 1 ) {
                 boardDao.deleteBoard(board.getBoardNo());
 
-                boardDao.alterBoardNo(this.getMaxBoardNo() + 1);
+                boardDao.alterBoardNo(this.getMaxBoardNo() + 1L);
             } else {
                 throw new EmptyResultException("등록된 게시물이 아닙니다(" + board.getBoardNo() + ").");
             }
         }
+        */
     }
 
-    public int getMaxBoardNo() {
-        int maxBoardNo = 0;
-
-        if( this.countAll() == 0 ) {
-            maxBoardNo = 0;
+    public Long getMaxBoardNo() {
+        Long maxBoardNo = 0L;
+        /*
+        if( boardDao.countAll() == 0 ) {
+            maxBoardNo = 0L;
         } else {
             maxBoardNo = boardDao.getMaxBoardNo();
         }
-
+        
+        boardLogger.debug("BoardDao GetMaxSeqno : " + maxBoardNo);
+        */
         return maxBoardNo;
     }
 
     public void deleteAll() {
+        /*
         boardDao.deleteAll();
 
-        boardDao.alterBoardNo(1);
+        boardDao.alterBoardNo(0L);
+        */
     }
 
     public int countAll() {
-        return boardDao.countAll();
+        // return boardDao.countAll();
+        return 0;
     }
 
     public void deleteByWriter(String writerId) {
+        /*
         List<Board> listByWriter = boardDao.getAllBoardListByUserId(writerId);
 
         if(listByWriter.size() > 0) {
@@ -102,29 +120,37 @@ public class BoardServiceImpl implements BoardService {
             }
             boardDao.alterBoardNo(this.getMaxBoardNo() + 1);
         }
+        */
     }
 
     public int countByWriter(String writerId) {
-        return this.selectAllByWriter(writerId).size();
+        // return this.selectAllByWriter(writerId).size();
+        return 0;
     }
 
     public int getIncreValue(String dbName) {
-        return boardDao.getAutoValue(dbName);
+        // return boardDao.getAutoValue(dbName);
+        return 0;
     }
 
-    public Board getBoard(int boardNo) {
+    public Board getBoard(Long boardNo) {
+        /*
         if( boardDao.countBoard(boardNo) == 1 ) {
             return boardDao.getBoard(boardNo);
         } else {
             throw new EmptyResultException("등록된 게시물이 아닙니다(" + boardNo + ").");
         }
+        */
+        return null;
     }
 
     public List<Board> selectAll() {
-        return boardDao.getAllBoardList();
+        // return boardDao.getAllBoardList();
+        return null;
     }
 
     public List<Board> selectAllByWriter(String writerId) {
-        return boardDao.getAllBoardListByUserId(writerId);
+        // return boardDao.getAllBoardListByUserId(writerId);
+        return null;
     }
 }

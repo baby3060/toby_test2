@@ -9,22 +9,23 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-@Repository("boardDao")
+// @Repository("boardDao")
 public class BoardDaoMyBatis extends SqlSessionDaoSupport implements BoardDao {
     @Autowired 
     public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) { 
         super.setSqlSessionFactory(sqlSessionFactory); 
     }
 
-    public int insertBoard(Board board) {
-        return this.getSqlSession().insert("mapper.mybatis.BoardMapper.insertBoard", board);
+    public void insertBoard(Board board) {
+        // return (long)this.getSqlSession().insert("mapper.mybatis.BoardMapper.insertBoard", board);
+        this.getSqlSession().insert("mapper.mybatis.BoardMapper.insertBoard", board);
     }
 
     public void updateBoard(Board board) {
         this.getSqlSession().update("mapper.mybatis.BoardMapper.updateBoard", board);
     }
 
-    public void deleteBoard(int boardNo) {
+    public void deleteBoard(Long boardNo) {
         Map<String, Object> param = new HashMap<String, Object>();
 
         param.put("boardNo", boardNo);
@@ -48,11 +49,11 @@ public class BoardDaoMyBatis extends SqlSessionDaoSupport implements BoardDao {
         return this.getSqlSession().selectOne("mapper.mybatis.BoardMapper.countAll");
     }
 
-    public int getMaxBoardNo() {
+    public Long getMaxBoardNo() {
         return this.getSqlSession().selectOne("mapper.mybatis.BoardMapper.getMaxNo");
     }
 
-    public Board getBoard(int boardNo) {
+    public Board getBoard(Long boardNo) {
         Map<String, Object> param = new HashMap<String, Object>();
 
         param.put("boardNo", boardNo);
@@ -72,7 +73,7 @@ public class BoardDaoMyBatis extends SqlSessionDaoSupport implements BoardDao {
         return this.getSqlSession().selectList("mapper.mybatis.BoardMapper.selectAllByWriter", param);
     }
 
-    public int countBoard(int boardNo) {
+    public int countBoard(Long boardNo) {
         Map<String, Object> param = new HashMap<String, Object>();
 
         param.put("boardNo", boardNo);
@@ -80,7 +81,7 @@ public class BoardDaoMyBatis extends SqlSessionDaoSupport implements BoardDao {
         return this.getSqlSession().selectOne("mapper.mybatis.BoardMapper.countBoard", param);
     }
 
-    public void alterBoardNo(int autoInit) {
+    public void alterBoardNo(Long autoInit) {
         Map<String, Object> param = new HashMap<String, Object>();
 
         param.put("autoInit", autoInit);

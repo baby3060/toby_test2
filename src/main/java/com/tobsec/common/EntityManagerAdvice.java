@@ -32,8 +32,7 @@ public class EntityManagerAdvice {
     }
 
     @After("daoPointcut()")
-    public void afterDaoCalled() {
+    public void complatedCall() {
         em.flush();
     }
-
 }

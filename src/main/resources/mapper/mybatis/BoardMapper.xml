@@ -26,7 +26,7 @@
 
     <!-- MySql은  useGeneratedKeys -->
     <insert id="insertBoard" useGeneratedKeys="true" keyProperty="boardNo" parameterType="Board">
-        Insert Into BOARD (writer_id, content) Values (#{writer.id}, #{content})
+        Insert Into BOARD (writer_id, content, write_time) Values (#{writer.id}, #{content}, CURRENT_TIMESTAMP())
     </insert>
 
     <update id="updateBoard" parameterType="Board">

@@ -68,11 +68,12 @@ public class RowMapperConfig {
                 Board board = new Board();
                 User user = new User();
 
-                board.setBoardNo(rs.getInt("board_no"));
+                board.setBoardNo(rs.getLong("board_no"));
                 board.setContent(rs.getString("content"));
                 board.setBoardGubun(rs.getInt("board_gubun"));
                 board.setWriteTime(rs.getTimestamp("write_time"));
 
+                /*
                 user.setId(rs.getString("id"));
                 user.setName(rs.getString("name"));
                 user.setPassword(rs.getString("password"));
@@ -82,7 +83,8 @@ public class RowMapperConfig {
                 user.setRecid(rs.getString("recid"));
 
                 board.setWriter(user);
-
+                */
+                
                 return board;
             }
         };

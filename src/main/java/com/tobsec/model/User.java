@@ -54,16 +54,18 @@ public class User {
     @JoinColumn(name = "recid", columnDefinition="varchar(10)")
     private String recid;
 
-    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    /*
+    @OneToMany(mappedBy = "writer")
     @OrderColumn(name = "board_no")
     private List<Board> boardList;
+    */
 
     @OneToMany(mappedBy = "approval", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderColumn(name = "confirm_seq")
     private List<Confirm> confirmList;
 
     {
-        boardList = new ArrayList<Board>();
+        // boardList = new ArrayList<Board>();
         confirmList = new ArrayList<Confirm>();
     }
 
