@@ -47,13 +47,13 @@ public class ConfirmDaoJpaTest implements ParentTest {
     private UserDao userDao;
 
     @Autowired
-    private ConfirmDao confirmDaoJpa;
+    private ConfirmDao confirmDao;
 
     @Before
     @Rollback(false)
     public void setUp() {
-        confirmDaoJpa.deleteAllUser("1");
-        confirmDaoJpa.deleteAllUser("2");
+        confirmDao.deleteAllUser("1");
+        confirmDao.deleteAllUser("2");
         userDao.deleteAll();
 
         User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
@@ -76,8 +76,8 @@ public class ConfirmDaoJpaTest implements ParentTest {
     @After
     @Rollback(false)
     public void close() {
-        confirmDaoJpa.deleteAllUser("1");
-        confirmDaoJpa.deleteAllUser("2");
+        confirmDao.deleteAllUser("1");
+        confirmDao.deleteAllUser("2");
         userDao.deleteAll();
     }
 
@@ -85,7 +85,7 @@ public class ConfirmDaoJpaTest implements ParentTest {
     public void deleteAndCount() {        
         User user = userDao.getUser("1");
 
-        int count = confirmDaoJpa.countAllUser("1");
+        int count = confirmDao.countAllUser("1");
 
         assertThat(count, is(0));
 
@@ -95,9 +95,9 @@ public class ConfirmDaoJpaTest implements ParentTest {
         confirm.setConfirm_seq(1);
         confirm.setContent("테스트");
 
-        confirmDaoJpa.addConfirm(confirm);
+        confirmDao.addConfirm(confirm);
 
-        count = confirmDaoJpa.countAllUser("1");
+        count = confirmDao.countAllUser("1");
 
         assertThat(count, is(1));
     }
@@ -105,13 +105,13 @@ public class ConfirmDaoJpaTest implements ParentTest {
     @Test
     public void solveDetail() {
         for( Confirm confirm : list ) {
-            confirmDaoJpa.addConfirm(confirm);
+            confirmDao.addConfirm(confirm);
         }
 
-        List<Confirm> noSolveListDt = confirmDaoJpa.selectNoSolveBetDt(20190101, 20191231);
+        List<Confirm> noSolveListDt = confirmDao.selectNoSolveBetDt(20190101, 20191231);
 
-        List<Confirm> noSolveUser_1 = confirmDaoJpa.selectNoSolveByUser("1");
-        List<Confirm> noSolveUser_2 = confirmDaoJpa.selectNoSolveByUser("2");
+        List<Confirm> noSolveUser_1 = confirmDao.selectNoSolveByUser("1");
+        List<Confirm> noSolveUser_2 = confirmDao.selectNoSolveByUser("2");
         
         assertThat(list.size(), is(noSolveUser_1.size() + noSolveUser_2.size()));
         assertThat(noSolveListDt.size(), is(list.size()));
@@ -120,32 +120,32 @@ public class ConfirmDaoJpaTest implements ParentTest {
     @Test
     public void solveTest2() {
         for( Confirm confirm : list ) {
-            confirmDaoJpa.addConfirm(confirm);
+            confirmDao.addConfirm(confirm);
         }
 
-        List<Confirm> noSolveUser_1 = confirmDaoJpa.selectNoSolveByUser("1");
-        List<Confirm> noSolveUser_2 = confirmDaoJpa.selectNoSolveByUser("2");
+        List<Confirm> noSolveUser_1 = confirmDao.selectNoSolveByUser("1");
+        List<Confirm> noSolveUser_2 = confirmDao.selectNoSolveByUser("2");
 
-        confirmDaoJpa.updateConfirmSolve(noSolveUser_1.get(0));
-        confirmDaoJpa.updateConfirmSolve(noSolveUser_1.get(1));
+        confirmDao.updateConfirmSolve(noSolveUser_1.get(0));
+        confirmDao.updateConfirmSolve(noSolveUser_1.get(1));
 
-        List<Confirm> noSolveListDt = confirmDaoJpa.selectNoSolveBetDt(20190101, 20191231);
+        List<Confirm> noSolveListDt = confirmDao.selectNoSolveBetDt(20190101, 20191231);
 
         assertThat(noSolveListDt.size(), is(not(noSolveUser_1.size() + noSolveUser_2.size())));
 
         // 유저가 확인해준거
-        List<Confirm> solveUser_1BT = confirmDaoJpa.selectSolveCheckUserSDt("1", 20190101, 20191231);
+        List<Confirm> solveUser_1BT = confirmDao.selectSolveCheckUserSDt("1", 20190101, 20191231);
 
         assertThat(solveUser_1BT.size(), is(0));
 
         
         // 유저가 확인해줬음
-        confirmDaoJpa.updateUserOk(noSolveUser_1.get(0));
-        confirmDaoJpa.updateUserOk(noSolveUser_1.get(1));
+        confirmDao.updateUserOk(noSolveUser_1.get(0));
+        confirmDao.updateUserOk(noSolveUser_1.get(1));
 
-        Confirm getConfirm = confirmDaoJpa.getConfirm("1", 20190403, 1);
+        Confirm getConfirm = confirmDao.getConfirm("1", 20190403, 1);
 
-        solveUser_1BT = confirmDaoJpa.selectSolveCheckUserSDt("1", 20190101, 20191231);
+        solveUser_1BT = confirmDao.selectSolveCheckUserSDt("1", 20190101, 20191231);
         
         assertThat(solveUser_1BT.size(), is(2));
         
@@ -154,34 +154,34 @@ public class ConfirmDaoJpaTest implements ParentTest {
     @Test
     public void proTest() {
         for( Confirm confirm : list ) {
-            confirmDaoJpa.addConfirm(confirm);
+            confirmDao.addConfirm(confirm);
         }
 
-        List<Confirm> noSolveUser_1 = confirmDaoJpa.selectNoSolveByUser("1");
+        List<Confirm> noSolveUser_1 = confirmDao.selectNoSolveByUser("1");
 
         // 문제 해결
-        confirmDaoJpa.updateConfirmSolve(noSolveUser_1.get(0));
-        confirmDaoJpa.updateConfirmSolve(noSolveUser_1.get(1));
+        confirmDao.updateConfirmSolve(noSolveUser_1.get(0));
+        confirmDao.updateConfirmSolve(noSolveUser_1.get(1));
 
-        List<Confirm> deleteTarget = confirmDaoJpa.selectNoSolveBetDt(20190101, 20191231);
+        List<Confirm> deleteTarget = confirmDao.selectNoSolveBetDt(20190101, 20191231);
 
         for( Confirm confirm : deleteTarget ) {
-            confirmDaoJpa.deleteConfirm(confirm);
+            confirmDao.deleteConfirm(confirm);
         }
         
-        int count = confirmDaoJpa.countAllUser("1");
-        count = count + confirmDaoJpa.countAllUser("2");
+        int count = confirmDao.countAllUser("1");
+        count = count + confirmDao.countAllUser("2");
 
         assertThat(count, is(2));
-        int empty_cnt = confirmDaoJpa.countEmptySolveContent();
+        int empty_cnt = confirmDao.countEmptySolveContent();
         assertThat(count, is(empty_cnt));
 
-        confirmDaoJpa.updateUserOk(noSolveUser_1.get(0));
-        confirmDaoJpa.updateUserOk(noSolveUser_1.get(1));
+        confirmDao.updateUserOk(noSolveUser_1.get(0));
+        confirmDao.updateUserOk(noSolveUser_1.get(1));
 
-        confirmDaoJpa.filedSolveContent();
+        confirmDao.filedSolveContent();
 
-        empty_cnt = confirmDaoJpa.countEmptySolveContent();
+        empty_cnt = confirmDao.countEmptySolveContent();
         assertThat(empty_cnt, is(0));
     }
 

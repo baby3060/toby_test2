@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.tobsec.context.AppConfig;
+import com.tobsec.dao.ConfirmDao;
 import com.tobsec.dao.BoardDao;
 import com.tobsec.dao.UserDao;
 import com.tobsec.model.Board;
@@ -39,7 +40,9 @@ import com.tobsec.common.Log;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
 public class BoardDaoTest implements ParentTest {
-    
+    @Autowired
+    private ConfirmDao confirmDao;
+
     @Autowired
     private BoardDao boardDao;
 
@@ -52,7 +55,7 @@ public class BoardDaoTest implements ParentTest {
     @Before
     @Rollback(false)
     public void setUp() {
-        
+        confirmDao.deleteAll();
         boardDao.deleteAll();
         boardDao.alterBoardNo(0L);
         
@@ -69,6 +72,7 @@ public class BoardDaoTest implements ParentTest {
     @After
     @Rollback(false)
     public void completeClose() {
+        confirmDao.deleteAll();
         boardDao.deleteAll();
         boardDao.alterBoardNo(0L);
         userDao.deleteAll();

@@ -9,7 +9,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-// @Repository("boardDao")
+@Repository("boardDaoBatis")
 public class BoardDaoMyBatis extends SqlSessionDaoSupport implements BoardDao {
     @Autowired 
     public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) { 

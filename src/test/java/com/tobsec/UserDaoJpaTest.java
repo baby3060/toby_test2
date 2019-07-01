@@ -6,6 +6,8 @@ import java.util.Arrays;
 
 import com.tobsec.context.AppConfig;
 import com.tobsec.dao.UserDao;
+import com.tobsec.dao.BoardDao;
+import com.tobsec.dao.ConfirmDao;
 import com.tobsec.model.User;
 import com.tobsec.model.Level;
 
@@ -26,6 +28,8 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import javax.persistence.*;
 
+import org.springframework.test.annotation.Rollback;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
 @Transactional
@@ -33,10 +37,22 @@ public class UserDaoJpaTest implements ParentTest {
     private List<User> list;
 
     @Autowired
+    private BoardDao boardDaoBatis;
+
+    @Autowired
+    private ConfirmDao confirmDaoBatis;
+
+    @Autowired
     private UserDao userDao;
 
     @Before
+    @Rollback(false)
     public void setUp() {
+        boardDaoBatis.deleteAll();
+        confirmDaoBatis.deleteAll();
+
+        userDao.deleteAll();
+
         list = new ArrayList<User>(Arrays.asList(
             new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com"),
             new User("2", "사용자2", "2", Level.BRONZE, 0, 0, "b@b.com"),
@@ -49,8 +65,6 @@ public class UserDaoJpaTest implements ParentTest {
 
     @Test
     public void count() {
-        userDao.deleteAll();
-
         int count = userDao.countUserAll();
 
         assertThat(count, is(0));
@@ -58,24 +72,17 @@ public class UserDaoJpaTest implements ParentTest {
 
     @Test
     public void insertTest() {
-        userDao.deleteAll();
-
-        int count = userDao.countUserAll();
-
-        assertThat(count, is(0));
-
         for( User user : list ) {
             userDao.addUser(user);
         }
 
-        count = userDao.countUserAll();
+        int count = userDao.countUserAll();
 
         assertThat(count, is(6));
     }
 
     @Test
     public void updateTest() {
-        userDao.deleteAll();
         int count = userDao.countUserAll();
 
         assertThat(count, is(0));
@@ -113,17 +120,13 @@ public class UserDaoJpaTest implements ParentTest {
 
     @Test
     public void deleteTest() {
-        userDao.deleteAll();
-
-        int count = userDao.countUserAll();
-
-        assertThat(count, is(0));
+        
 
         for( User user : list ) {
             userDao.addUser(user);
         }
 
-        count = userDao.countUserAll();
+        int count = userDao.countUserAll();
 
         assertThat(count, is(6));
 
@@ -146,7 +149,6 @@ public class UserDaoJpaTest implements ParentTest {
 
     @Test
     public void getUserTest() {
-        userDao.deleteAll();
         for( User user : list ) {
             userDao.addUser(user);
         }

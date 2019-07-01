@@ -5,6 +5,8 @@ import com.tobsec.model.User;
 
 import com.tobsec.context.AppConfig;
 import com.tobsec.service.UserService;
+import com.tobsec.service.BoardService;
+import com.tobsec.service.ConfirmService;
 import com.tobsec.service.UserServiceImpl;
 
 import com.tobsec.common.Log;
@@ -35,6 +37,8 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.springframework.test.annotation.Rollback;
+
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
@@ -51,6 +55,12 @@ public class UserServiceTest implements ParentTest  {
     private UserService userService;
 
     @Autowired
+    private BoardService boardService;
+
+    @Autowired
+    private ConfirmService confirmService;
+
+    @Autowired
     @Qualifier("testService")
     private UserService userServiceTest;
 
@@ -59,7 +69,12 @@ public class UserServiceTest implements ParentTest  {
     List<User> users;
 
     @Before
+    @Rollback(false)
     public void setUp() {
+        boardService.deleteAll();
+        confirmService.deleteAll();
+        userService.deleteAll();
+
         list = new ArrayList<User>(Arrays.asList(
             new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com"),
             new User("2", "사용자2", "2", Level.BRONZE, 0, 0, "b@b.com"),
@@ -91,12 +106,6 @@ public class UserServiceTest implements ParentTest  {
 
     @Test(expected=EmptyResultException.class)
     public void serviceAddTest() {
-        userService.deleteAll();
-
-        int count = userService.countAll();
-
-        assertThat(count, is(0));
-
         User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
 
         userService.addUser(user);
@@ -105,7 +114,7 @@ public class UserServiceTest implements ParentTest  {
 
         assertThat("1", is(not(newUser.getPassword())));
 
-        count = userService.countAll();
+        int count = userService.countAll();
 
         assertThat(count, is(1));
 
@@ -118,12 +127,6 @@ public class UserServiceTest implements ParentTest  {
 
     @Test
     public void upgradeAllOrNothing() throws Exception {
-        userServiceTest.deleteAll();
-
-        int count = userService.countAll();
-
-        assertThat(count, is(0));
-
         for(User user : users) {
             userServiceTest.addUser(user);
         }
@@ -151,12 +154,6 @@ public class UserServiceTest implements ParentTest  {
 
     @Test
     public void upgradeLevel() {
-        userService.deleteAll();
-
-        int count = userService.countAll();
-
-        assertThat(count, is(0));
-
         User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
 
         userService.addUser(user);
@@ -178,12 +175,6 @@ public class UserServiceTest implements ParentTest  {
 
     @Test
     public void loginTest() {
-        userService.deleteAll();
-
-        int count = userService.countAll();
-
-        assertThat(count, is(0));
-
         User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
 
         userService.addUser(user);
@@ -198,12 +189,6 @@ public class UserServiceTest implements ParentTest  {
 
     @Test
     public void recommendTest() {
-        userService.deleteAll();
-
-        int count = userService.countAll();
-
-        assertThat(count, is(0));
-
         User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
         
         userService.addUser(user);
@@ -225,17 +210,11 @@ public class UserServiceTest implements ParentTest  {
 
     @Test
     public void customTest() {
-        userServiceTest.deleteAll();
-
-        int count = userService.countAll();
-
-        assertThat(count, is(0));
-
         for( User user : testList ) {
             userServiceTest.addUser(user);
         }
 
-        count = userService.countAll();
+        int count = userService.countAll();
 
         assertThat(count, is(7));
 
@@ -250,8 +229,6 @@ public class UserServiceTest implements ParentTest  {
 
     @Test
     public void selectUserAllTest() {
-        userServiceTest.deleteAll();
-
         int count = userService.countAll();
 
         assertThat(count, is(0));
@@ -267,8 +244,6 @@ public class UserServiceTest implements ParentTest  {
 
     @Test
     public void countConditionTest() {
-        userService.deleteAll();
-
         for( User user : testList ) {
             userServiceTest.addUser(user);
         }
@@ -292,10 +267,6 @@ public class UserServiceTest implements ParentTest  {
 
     @Test    
     public void compositeTest() {
-        serviceLogger.info("Start compositeTest");
-
-        userService.deleteAll();
-
         for( User user : testList ) {
             userServiceTest.addUser(user);
         }
@@ -334,8 +305,6 @@ public class UserServiceTest implements ParentTest  {
 
     @Test
     public void machingTest() {
-        userService.deleteAll();
-
         User user = new User("5", "사용자5", "5", Level.BRONZE, 0, 36, "e@e.com");
 
         userService.addUser(user);

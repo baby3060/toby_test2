@@ -6,6 +6,8 @@ import java.util.Arrays;
 
 import com.tobsec.context.AppConfig;
 import com.tobsec.dao.UserDao;
+import com.tobsec.dao.BoardDao;
+import com.tobsec.dao.ConfirmDao;
 import com.tobsec.dao.UserDaoMyBatis;
 import com.tobsec.model.User;
 import com.tobsec.model.Level;
@@ -26,11 +28,19 @@ import org.apache.ibatis.session.SqlSession;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.test.annotation.Rollback;
+
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=AppConfig.class)
 public class MyBatisTest implements ParentTest  {
     private List<User> list;
+
+    @Autowired
+    private BoardDao boardDaoBatis;
+
+    @Autowired
+    private ConfirmDao confirmDaoBatis;
 
     @Autowired
     private UserDao userDaoBatis;
@@ -39,7 +49,13 @@ public class MyBatisTest implements ParentTest  {
     private SqlSession sqlSession;
 
     @Before
+    @Rollback(false)
     public void setUp() {
+        boardDaoBatis.deleteAll();
+        confirmDaoBatis.deleteAll();
+
+        userDaoBatis.deleteAll();
+
         list = new ArrayList<User>(Arrays.asList(
             new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com"),
             new User("2", "사용자2", "2", Level.BRONZE, 0, 0, "b@b.com"),
@@ -52,8 +68,6 @@ public class MyBatisTest implements ParentTest  {
 
     @Test
     public void addUserBatis() {
-        userDaoBatis.deleteAll();
-
         int count = userDaoBatis.countUserAll();
 
         assertThat(count, is(0));
@@ -74,8 +88,7 @@ public class MyBatisTest implements ParentTest  {
 
     @Test
     public void selectAllTest() {
-        userDaoBatis.deleteAll();
-
+        
         for( User user : list ) {
             userDaoBatis.addUser(user);
         }

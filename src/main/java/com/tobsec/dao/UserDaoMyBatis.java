@@ -11,7 +11,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-// @Repository("userDao")
+@Repository("userDaoBatis")
 public class UserDaoMyBatis extends SqlSessionDaoSupport implements UserDao {
     /*
     // SqlSessionDaoSupport 사용하지 않을 때 주석 해제
