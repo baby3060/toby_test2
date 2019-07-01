@@ -21,14 +21,12 @@ public class Board {
     @Id
     @Column(name = "board_no", precision = 8)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "BOARD_SEQ_GENERATOR")
-    // @GeneratedValue
     private Long boardNo;
 
-    @NonNull
     @Column(name = "writer_id")
     private String id;
 
-    /*
+    
     @NonNull
     @ManyToOne(fetch=FetchType.LAZY , cascade=CascadeType.ALL)
     @JoinColumn(name = "writer_id", insertable = false, updatable = false)
@@ -44,29 +42,27 @@ public class Board {
             this.writer.getBoardList().add(this);
         }
     }
-    */
+    
 
     @PrePersist
     public void setupId() {
-        /*
+        
         if( this.id == null ) {
             if( this.writer != null ) {
                 this.id = this.writer.getId();
             }
         }
-        */
+        
         writeTime = new Timestamp(System.currentTimeMillis());
     }
 
     @PreUpdate
     public void updateId() {
-        /*
         if( this.id == null ) {
             if( this.writer != null ) {
                 this.id = this.writer.getId();
             }
         }
-        */
     }
 
     @NonNull 

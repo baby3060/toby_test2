@@ -54,7 +54,7 @@ public class BoardDaoJpaTest implements ParentTest{
         // 모두 삭제 한 다음에는 auto_increment의 값은 항상 1로 초기화시킴
         boardDaoJpa.deleteAll();
 
-        boardDaoJpa.alterBoardNo(1L);
+        boardDaoJpa.alterBoardNo(0L);
 
         userDao.deleteAll();
 
@@ -69,7 +69,7 @@ public class BoardDaoJpaTest implements ParentTest{
     @Rollback(false)
     public void closeTest() {
         boardDaoJpa.deleteAll();
-        boardDaoJpa.alterBoardNo(1L);
+        boardDaoJpa.alterBoardNo(0L);
         userDao.deleteAll();
     }
 
@@ -82,7 +82,7 @@ public class BoardDaoJpaTest implements ParentTest{
         // AUTO_INCREMENT의 현재값 조회
         int incrementVal = boardDaoJpa.getAutoValue(dbName);
 
-        assertThat(incrementVal, is(1));
+        assertThat(incrementVal, is(0));
 
         int count = boardDaoJpa.countAll();
 
@@ -90,19 +90,18 @@ public class BoardDaoJpaTest implements ParentTest{
 
         Board board = new Board();
         board.setContent("Test");
-        // board.setWriter(userDao.getUser("1"));
-        board.setId("1");
+        board.setWriter(userDao.getUser("1"));
+        
 
         boardDaoJpa.insertBoard(board);
 
         incrementVal = boardDaoJpa.getAutoValue(dbName);
 
-        assertThat(incrementVal, is(2));
+        assertThat(incrementVal, is(1));
 
         board = new Board();
         board.setContent("Test2");
-        // board.setWriter(userDao.getUser("1"));
-        board.setId("1");
+        board.setWriter(userDao.getUser("1"));
 
         boardDaoJpa.insertBoard(board);
 
@@ -112,10 +111,10 @@ public class BoardDaoJpaTest implements ParentTest{
 
         incrementVal = boardDaoJpa.getAutoValue(dbName);
 
-        assertThat(incrementVal, is(3));
+        assertThat(incrementVal, is(2));
     }
 
-    /*
+    
     @Test
     public void updateBoard() {
         Board board = new Board();
@@ -171,5 +170,5 @@ public class BoardDaoJpaTest implements ParentTest{
 
         assertThat(allListBoard.size(), is(user1Board.size() + user2Board.size()));
     }
-    */
+    
 }

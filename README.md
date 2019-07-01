@@ -161,6 +161,7 @@
 - [X] Spring JPA 사용해보기
 >>> Member와 Confirm을 예로 들어봤을 때(Confirm의 필드가 Member의 Key에 의존), DeleteAll 시 Member를 먼저 모두 지우고 나서, Confirm을 모두 지워야 함
 >>>> GeneratedValue가 붙어 있는 테이블이 다른 테이블과 연관 관계에 있을 경우, 해당 엔티티가 한 번 더 호출되는 일이 발생하기 때문에, 자동 생성번호가 1 더 증가하고, 해당 상태의 가장 큰 값 + 1을 그 다음 자동 순서 번호로 지정한다.
+>>>> 번호가 이상하게 매겨질 때 연관관계에 있는 엔티티를 엔티티로 받아 들일 수도 있지만, @Transient로 설정해야 함(user와 board를 기준으로 비교하면, usse가 등록한 List를 바로 못 불러옴. 즉, 연관관계를 맺는 의미가 없어짐).
 
 >>>> @PersistenceContext 애노테이션을 사용하여 EntityManager 가져올 경우가 아닐 경우에는 EntityManager와 EntityTransaction(데이터 업데이트)을 따로 생성
 >>>> EntityManager를 따로 생성할 경우에는 크게 어려움 없음

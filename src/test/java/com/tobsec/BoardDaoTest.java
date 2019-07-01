@@ -49,16 +49,14 @@ public class BoardDaoTest implements ParentTest {
     @Autowired
     private UserDao userDao;
 
-    /*
-    // @Before
-    // @Rollback(false)
+    @Before
+    @Rollback(false)
     public void setUp() {
         
         boardDao.deleteAll();
         boardDao.alterBoardNo(0L);
         
-        // 모두 삭제 한 다음에는 auto_increment의 값은 항상 1로 초기화시킴
-        // userDao.deleteAll();
+        userDao.deleteAll();
         
         User user = new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com");
         User user2 = new User("2", "사용자2", "2", Level.BRONZE, 0, 0, "a@a.com");
@@ -68,43 +66,40 @@ public class BoardDaoTest implements ParentTest {
         
     }
     
-    // @After
-    // @Rollback(false)
+    @After
+    @Rollback(false)
     public void completeClose() {
-        
         boardDao.deleteAll();
         boardDao.alterBoardNo(0L);
         userDao.deleteAll();
-        
     }
-    */
 
     @Test
-    @Transactional
     public void boardInsertTest() {
-        
+        User user = userDao.getUser("1");
+
         Board board11 = new Board();
         board11.setContent("Test11");
-        // board11.setWriter(userDao.getUser("1"));
-        board11.setId("1");
+        board11.setWriter(user);
         boardDao.insertBoard(board11);
 
-        int count = boardDao.countAll();
-
+        // boardLogger.info("Board List Is " + user.getBoardList().toString());
+        boardLogger.info("Board List Is " + boardDao.getAllBoardListByUserId(user.getId()));
     }
 
     
-    // @Test
+    @Test
     public void updateBoard() {
-        /*
+        
         Board board = new Board();
         board.setContent("Test");
         board.setWriter(userDao.getUser("1"));
 
-        Long insertNo = boardDao.insertBoard(board);
+        boardDao.insertBoard(board);
+
+        long insertNo = board.getBoardNo();
 
         assertThat(insertNo, is(1L));
-        insertNo = insertNo - 1;
 
         Board boardGet = boardDao.getBoard(insertNo);
 
@@ -118,7 +113,7 @@ public class BoardDaoTest implements ParentTest {
         Board boardGet2 = boardDao.getBoard(insertNo);
 
         assertThat(boardGet2.getContent(), is("테스트 수정하였음"));
-        */
+        
     }
     
 }

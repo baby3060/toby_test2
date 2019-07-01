@@ -25,13 +25,12 @@ public class BoardDaoJdbc extends DaoSupport implements BoardDao {
 
     
 
-    public void insertBoard(Board board) {
+    public Long insertBoard(Board board) {
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(board);
 
         // SimpleJDBCInsert 사용
-        // return jdbcInsert.executeAndReturnKey(param).longValue();
-        jdbcInsert.executeAndReturnKey(param);
-
+        return jdbcInsert.executeAndReturnKey(param).longValue();
+        
         // KeyHolder에 자동생성 키 담기
         /*
         KeyHolder keyHolder = new GeneratedKeyHolder();

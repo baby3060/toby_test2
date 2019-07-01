@@ -20,16 +20,17 @@ public class BoardDaoJpa implements BoardDao {
     @Log
     protected Logger daoLogger;
 
-    public void insertBoard(Board board) {
+    public Long insertBoard(Board board) {
         if( board.getBoardNo() == null || board.getBoardNo() == 0L ) {
             em.persist(board);
         } else {
             em.merge(board);
         }
+        return board.getBoardNo();
     }
 
     public void updateBoard(Board board) {
-        
+        em.flush();
     }
 
     public void deleteBoard(Long boardNo) {
@@ -69,7 +70,6 @@ public class BoardDaoJpa implements BoardDao {
     }
 
     public Board getBoard(Long boardNo) {
-        
         Board temp = em.find(Board.class, boardNo);
         return temp;
     }

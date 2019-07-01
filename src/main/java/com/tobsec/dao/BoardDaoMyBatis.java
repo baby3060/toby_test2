@@ -16,9 +16,8 @@ public class BoardDaoMyBatis extends SqlSessionDaoSupport implements BoardDao {
         super.setSqlSessionFactory(sqlSessionFactory); 
     }
 
-    public void insertBoard(Board board) {
-        // return (long)this.getSqlSession().insert("mapper.mybatis.BoardMapper.insertBoard", board);
-        this.getSqlSession().insert("mapper.mybatis.BoardMapper.insertBoard", board);
+    public Long insertBoard(Board board) {
+        return (long)this.getSqlSession().insert("mapper.mybatis.BoardMapper.insertBoard", board);
     }
 
     public void updateBoard(Board board) {

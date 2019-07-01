@@ -71,12 +71,8 @@ public class BoardServiceTest implements ParentTest  {
         userService.addUser(user);
 
         boardList = new ArrayList<Board>(Arrays.asList(
-            /*
             new Board(user, "테스트", 0),
             new Board(user, "테스트2", 0)
-            */
-            new Board("1", "테스트", 0),
-            new Board("1", "테스트2", 0)
         ));
 
     }
@@ -89,24 +85,23 @@ public class BoardServiceTest implements ParentTest  {
         userService.deleteAll();
     }
 
-    // @Test(expected=EmptyResultException.class)
+    @Test(expected=EmptyResultException.class)
     public void insertTestException() {
+        /*
         String dbUrl = dataSource.getUrl();
         dbUrl = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?")).toUpperCase();
+        */
 
-        boardService.deleteAll();
-
-        int increVal = boardService.getIncreValue(dbUrl);
+        int increVal = boardService.getIncreValue("");
         int countAll = boardService.countAll();
 
-        assertThat(increVal, is(1));
+        assertThat(increVal, is(0));
         assertThat(countAll, is(0));
 
-        // User user = new User("2", "사용자2", "2", Level.BRONZE, 0, 0, "a@a.com");
+        User user = new User("2", "사용자2", "2", Level.BRONZE, 0, 0, "a@a.com");
 
         Board board = new Board();
-        // board.setWriter(user);
-        board.setId("1");
+        board.setWriter(user);
         board.setContent("테스트");
 
         boardService.addBoard(board);
@@ -119,25 +114,25 @@ public class BoardServiceTest implements ParentTest  {
         User user = userService.getUser("1");
 
         assertThat(user, is(not(nullValue())));
-
+        /*
         String dbUrl = dataSource.getUrl();
         dbUrl = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?")).toUpperCase();
+        */
 
         boardService.deleteAll();
 
-        int increVal = boardService.getIncreValue(dbUrl);
+        int increVal = boardService.getIncreValue("");
         int countAll = boardService.countAll();
 
         assertThat(increVal, is(0));
         assertThat(countAll, is(0));
 
         Board board = new Board();
-        //board.setWriter(user);
-        board.setId("1");
+        board.setWriter(user);
         board.setContent("테스트");
 
         boardService.addBoard(board);
-
+        assertThat(board.getBoardNo(), is(1L));
         boardLogger.info("Board Print : " + board.toString());
 
         List<Board> allList = boardService.selectAll();
@@ -148,19 +143,17 @@ public class BoardServiceTest implements ParentTest  {
 
         User userGet = userService.getUser("1");
         
-        // assertThat(userGet.getBoardList().size(), is(1));
-
-        increVal = boardService.getIncreValue(dbUrl);
+        increVal = boardService.getIncreValue("");
         countAll = boardService.countAll();
 
-        assertThat(increVal, is(2));
+        assertThat(increVal, is(1));
         assertThat(countAll, is(1));
     }
 
-    // @Test
+    @Test
     public void updateBoardTest() {
-        int initVal = boardService.getIncreValue("TOBY1");
-        assertThat(initVal, is(1));
+        int initVal = boardService.getIncreValue("");
+        assertThat(initVal, is(0));
 
         User user = userService.getUser("1");
 
@@ -180,16 +173,14 @@ public class BoardServiceTest implements ParentTest  {
 
         assertThat(allList.get(0).getBoardNo(), is(1L));
         assertThat(allList.get(1).getBoardNo(), is(2L));
-        
-        /*
 
-        int count = boardService.countBoard(board);
+        int count = boardService.countBoard(allList.get(1));
 
         assertThat(count, is(1));
 
         Board getBoard = boardService.getBoard(maxSeqno);
 
-        assertThat(board, equalTo(getBoard));
+        assertThat(allList.get(1), equalTo(getBoard));
 
         getBoard.setContent("수정(테스트)");
 
@@ -198,55 +189,52 @@ public class BoardServiceTest implements ParentTest  {
         Board getBoardAfter = boardService.getBoard(maxSeqno);
 
         assertThat(getBoard, equalTo(getBoardAfter));
-        */
+        
     }
 
-    // @Test
+    @Test
     public void deleteBoardTest() {
 
         User user = userService.getUser("1");
 
         assertThat(user, is(not(nullValue())));
 
+        /*
         String dbUrl = dataSource.getUrl();
         dbUrl = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?")).toUpperCase();
-
-        int increVal = boardService.getIncreValue(dbUrl);
-        assertThat(increVal, is(1));
+        */
+        int increVal = boardService.getIncreValue("");
+        assertThat(increVal, is(0));
 
         Board board = new Board();
-        // board.setWriter(user);
-        board.setId("1");
+        board.setWriter(user);
         board.setContent("테스트");
 
         boardService.addBoard(board);
 
         board = new Board();
-        // board.setWriter(user);
-        board.setId("1");
+        board.setWriter(user);
         board.setContent("테스트1");
 
         boardService.addBoard(board);
 
         board = new Board();
-        // board.setWriter(user);
-        board.setId("1");
+        board.setWriter(user);
         board.setContent("테스트2");
 
         boardService.addBoard(board);
 
         board = new Board();
-        // board.setWriter(user);
-        board.setId("1");
+        board.setWriter(user);
         board.setContent("테스트3");
 
         boardService.addBoard(board);
 
-        increVal = boardService.getIncreValue(dbUrl);
-        assertThat(increVal, is(5));
+        increVal = boardService.getIncreValue("");
+        assertThat(increVal, is(4));
 
         Long maxSeqno = boardService.getMaxBoardNo();
-        assertThat(maxSeqno, is((increVal - 1)));
+        assertThat(maxSeqno, is(4L));
 
         Board deleteBoard = boardService.getBoard(3L);
 
@@ -254,37 +242,39 @@ public class BoardServiceTest implements ParentTest  {
 
         int countAll = boardService.countAll();
 
-        increVal = boardService.getIncreValue(dbUrl);
-        assertThat(increVal, is(5));
+        increVal = boardService.getIncreValue("");
+        assertThat(increVal, is(4));
         assertThat(countAll, is(3));
     }
 
-    // @Test
+    @Test
     public void deleteAndInsertTest() {
-       
+        
+        User user = userService.getUser("1");
+
         Board board = new Board();
-        // board.setWriter(userService.getUser("1"));
-        board.setId("1");
+        board.setWriter(user);
         board.setContent("테스트");
         boardService.addBoard(board);
 
         board = new Board();
-        // board.setWriter(userService.getUser("1"));
-        board.setId("1");
+        board.setWriter(user);
         board.setContent("테스트1");
         boardService.addBoard(board);
 
+        /*
         String dbUrl = dataSource.getUrl();
         dbUrl = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?")).toUpperCase();
+        */
 
         Board deleteBoard = boardService.getBoard(1L);
         boardService.deleteBoard(deleteBoard);
 
-        int increVal = boardService.getIncreValue(dbUrl);
-        assertThat(increVal, is(3));
+        int increVal = boardService.getIncreValue("");
+        assertThat(increVal, is(2));
         deleteBoard = boardService.getBoard(2L);
         boardService.deleteBoard(deleteBoard);
-        increVal = boardService.getIncreValue(dbUrl);
-        assertThat(increVal, is(1));
+        increVal = boardService.getIncreValue("");
+        assertThat(increVal, is(0));
     }
 }

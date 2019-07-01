@@ -5,7 +5,7 @@ import com.tobsec.model.Board;
 import java.util.List;
 
 public interface BoardDao {
-    void insertBoard(Board board);
+    Long insertBoard(Board board);
     void updateBoard(Board board);
     void deleteBoard(Long boardNo);
     void deleteAll();
