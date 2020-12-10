@@ -11,6 +11,8 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import com.tobsec.model.mapper.UserDSqlMapper;
+
 @Repository("userDaoBatis")
 public class UserDaoMyBatis extends SqlSessionDaoSupport implements UserDao {
     /*
@@ -64,7 +66,7 @@ public class UserDaoMyBatis extends SqlSessionDaoSupport implements UserDao {
         return this.getSqlSession().selectOne("mapper.mybatis.UserMapper.getUser", id);
     }
     public List<User> selectUserAll() {
-        return this.getSqlSession().selectList("mapper.mybatis.UserMapper.selectUserAll");
+        return this.getSqlSession().getMapper(UserDSqlMapper.class).selectList("a.id", "Desc");
     }
 
     public List<User> selectUserCondition(String option) {

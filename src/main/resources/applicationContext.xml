@@ -144,7 +144,16 @@
         <!-- Alias -->
         <property name="typeAliasesPackage" value="com.tobsec.model" />
         <!-- Mapper 경로 지정 mapper/mybatis 패키지 및 모든 서브 패키지의 xml 파일 탐색 -->
-        <property name="mapperLocations" value="classpath*:mapper/mybatis/**/*.xml" />
+        
+        <property name="mapperLocations">
+            <list>
+                <value>classpath*:mapper/mybatis/**/*.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.tobsec.model.mapper" />
     </bean>
 
     <!-- User Level UP 전략 -->

@@ -37,7 +37,7 @@ public class UserDaoTest  implements ParentTest {
     private List<User> list;
 
     @Autowired
-    private UserDao userDao;
+    private UserDao userDaoBatis;
 
     @Autowired
     private BoardDao boardDaoBatis;
@@ -51,7 +51,7 @@ public class UserDaoTest  implements ParentTest {
         boardDaoBatis.deleteAll();
         confirmDaoBatis.deleteAll();
 
-        userDao.deleteAll();
+        userDaoBatis.deleteAll();
 
         list = new ArrayList<User>(Arrays.asList(
             new User("1", "사용자1", "1", Level.BRONZE, 0, 0, "a@a.com"),
@@ -62,7 +62,7 @@ public class UserDaoTest  implements ParentTest {
             new User("6", "사용자6", "6", Level.BRONZE, 0, 0, "f@f.com")
         ));
     }
-
+    /*
     @Test
     public void count() {
         int count = userDao.countUserAll();
@@ -165,6 +165,16 @@ public class UserDaoTest  implements ParentTest {
         assertThat(user4, equalTo(anotherUser4));
         assertThat(user5, equalTo(anotherUser5));
         assertThat(user6, equalTo(anotherUser6));
+    }
+    */
+
+    @Test
+    public void testF() {
+        for( User user : list ) {
+            userDaoBatis.addUser(user);
+        }
+
+        List<User> allList = userDaoBatis.selectUserAll();       
     }
 
 }
